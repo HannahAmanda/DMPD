@@ -31,6 +31,12 @@ public class QSChannel {
 	}
 	
 	
+	public static int[] sendThroughChannel(int[] message) {
+		
+		return null;
+	}
+	
+	/**
 	public static Element[] sendThroughChannel(Element[] message) {	
 		Element[] transmission = new Element[message.length];
 		
@@ -40,6 +46,7 @@ public class QSChannel {
 		
 		return transmission;	
 	}
+	*/
 	
 	/**
 	 * TODO: UN-HARDCODE THIS METHOD
@@ -47,6 +54,7 @@ public class QSChannel {
 	 * @param element
 	 * @return
 	 */
+	/**
 	private static Element perturb(Element element) {
 		double multiCoin = randomNumber();
 		
@@ -116,7 +124,7 @@ public class QSChannel {
 	return null;	
 		
 	}
-
+	*/
 
 	public static double randomNumber() {
 		return (100*rand.nextDouble());
