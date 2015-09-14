@@ -8,7 +8,7 @@ import node.Vertex;
 public class Message {
 	
 	private final double[] message;
-	private Vertex sender;
+	private final Vertex sender;
 	
 	public Message(Vertex sender, double[] message) {
 		this.message = message;

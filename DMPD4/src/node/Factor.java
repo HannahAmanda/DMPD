@@ -9,18 +9,18 @@ import f4.Element;
 
 public class Factor extends Vertex {
 	
-	private List<Element> constraintVector = new ArrayList<Element>();
+	private List<Integer> constraintVector = new ArrayList<Integer>();
 
 	public Factor(int i) {
 		nodeId = i;
 		nodeName = "f" + i;
 	}
 	
-	public void setConstraint(List<Element> constraint) {
+	public void setConstraint(List<Integer> constraint) {
 		constraintVector = constraint;
 	}
 	
-	public List<Element> getConstraint() {
+	public List<Integer> getConstraint() {
 		return constraintVector;
 	}
 	
@@ -135,10 +135,10 @@ public class Factor extends Vertex {
 		}
 	}
 
-	private double getBinaryConstraint(Element constraint) {
-		if (constraint == Element.ONE) {
+	private double getBinaryConstraint(int constraint) {
+		if (constraint == 1) {
 			return 1.0;
-		} else if ( constraint == Element.ZERO) {
+		} else if (constraint == 0) {
 			return 0;
 		}else {
 			return -1349;

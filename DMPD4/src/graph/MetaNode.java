@@ -15,7 +15,7 @@ public class MetaNode {
 	private GNode g;
 	
 	private int nodeId;
-	private Element[] hermitianConstraint = new Element[4];
+	private int[] hermitianConstraint = new int[4];
 	
 	private List<MetaNode> neighbors = new ArrayList<MetaNode>();
 	
@@ -46,13 +46,13 @@ public class MetaNode {
 		for(int i = 0; i < row.length(); i++) {
 			switch (row.charAt(i)) {
 
-			case '0': hermitianConstraint[i] = Element.ZERO;
+			case '0': hermitianConstraint[i] = 0b00;
 					  break;
-			case '1': hermitianConstraint[i] = Element.ONE;
+			case '1': hermitianConstraint[i] = 0b01;
 					  break;
-			case 'v': hermitianConstraint[i] = Element.OMEGA;
+			case 'v': hermitianConstraint[i] = 0b10;
 					  break;
-			case 'w': hermitianConstraint[i] = Element.OMEGASQ;
+			case 'w': hermitianConstraint[i] = 0b11;
 					  break;
 			default: 
 				
@@ -60,7 +60,7 @@ public class MetaNode {
 		}
 	}
 	
-	public Element[] getHermitianConstraint() {
+	public int[] getHermitianConstraint() {
 		return hermitianConstraint;
 	}
 	
