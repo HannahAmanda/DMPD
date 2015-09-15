@@ -31,12 +31,13 @@ public class QSChannel {
 	}
 	
 	
-	public static int[] sendThroughChannel(int[] message) {
-		
-		return null;
-	}
-	
 	/**
+	 * Simulates sending a message consisting of Elements of GF(4)
+	 * through the Quaternary Symmetric Channel.
+	 * 
+	 * @param message
+	 * @return
+	 */
 	public static Element[] sendThroughChannel(Element[] message) {	
 		Element[] transmission = new Element[message.length];
 		
@@ -46,15 +47,16 @@ public class QSChannel {
 		
 		return transmission;	
 	}
-	*/
 	
 	/**
-	 * TODO: UN-HARDCODE THIS METHOD
-	 * For now p=40 and q=20
+	 * Simulates the individual noise applied to each bit, 
+	 * i.e. flips the bit to something different than the parameter
+	 * with a probability of (1-p). 
+	 * 
 	 * @param element
 	 * @return
 	 */
-	/**
+	
 	private static Element perturb(Element element) {
 		double multiCoin = randomNumber();
 		
@@ -76,6 +78,14 @@ public class QSChannel {
 	}
 
 
+	/**
+	 * According to "x" switches the given element to 
+	 * a different element av GF(4).
+	 * 
+	 * @param element
+	 * @param x
+	 * @return
+	 */
 	private static Element flip(Element element, String x) {
 		if(element == Element.ZERO) {
 			if (x == "a") {
@@ -124,7 +134,6 @@ public class QSChannel {
 	return null;	
 		
 	}
-	*/
 
 	public static double randomNumber() {
 		return (100*rand.nextDouble());

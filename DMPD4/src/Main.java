@@ -17,39 +17,38 @@ import node.Variable;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-//		try(BufferedReader br = new BufferedReader(new FileReader("IS.txt"))) {
-//			
-//			
-//			/**
-//			 * --- ---
-//			 * | w 1 |
-//			 * | 1 w |
-//			 * --- ---
-//			 */
-//			
-//			
-//			// CONSTRUCT GRAPH
-//			Graph g = new Graph();
-//			int nrNodes = Integer.parseInt(br.readLine());
-//			for (int i = 0; i < nrNodes; i++) {
-//				g.addNode(new MetaNode(i, 0.6));
-//			}
-//			
-//			// PARSE ADJACENCY MATRIX
-//			for (int i = 0; i < nrNodes; i++) {
-//				String row = br.readLine();
-//				for (int j = 0; j < nrNodes; j++) {
-//					if(row.charAt(j) == '1') {
-//						g.addEdge(i,j);
-//					}
-//				}
-//			}
-//		
-//			
-//			
-//		} catch(Exception e) {
-//			System.out.println(e);
-//		}
+		try(BufferedReader br = new BufferedReader(new FileReader("IS.txt"))) {
+
+			/**
+			 * --- ---
+			 * | w 1 |
+			 * | 1 w |
+			 * --- ---
+			 */
+			
+			
+			// CONSTRUCT GRAPH
+			Graph g = new Graph();
+			int nrNodes = Integer.parseInt(br.readLine());
+			for (int i = 0; i < nrNodes; i++) {
+				g.addNode(new MetaNode(i, 0.6));
+			}
+			
+			// PARSE ADJACENCY MATRIX
+			for (int i = 0; i < nrNodes; i++) {
+				String row = br.readLine();
+				for (int j = 0; j < nrNodes; j++) {
+					if(row.charAt(j) == '1') {
+						g.addEdge(i,j);
+					}
+				}
+			}
+		
+			
+			
+		} catch(Exception e) {
+			System.out.println(e);
+		}
 		
 		
 		

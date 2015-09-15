@@ -5,7 +5,7 @@ import java.util.List;
 
 import message.Message;
 import node.Vertex;
-import f4.Element;
+
 
 public class Factor extends Vertex {
 	
