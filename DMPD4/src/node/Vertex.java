@@ -65,33 +65,35 @@ public abstract class Vertex {
 	
 		// TODO: Need to keep track of the neighbors one has sent to?
 		// A - Yes, update pendingNeighborList
-		for (Vertex n: pendingNeighborList) {
+		/*for (Vertex n: pendingNeighborList) {
 			if (to.equals(n)) {
 				pendingNeighborList.remove(n);
 			}
-		}
+		}*/
 	}
 	
 	public void receiveMessage(Message m) {
 		boolean added = false;
+		int index = -1;
 		for (Message v: messageList) {
 			if (v.getSender().equals(m.getSender())) {
-				messageList.remove(v);
-				messageList.add(m);
-				added = true;
+				index = messageList.indexOf(v);
 			}
 		}
 		
-		if (!added) {
+		if (index == -1) {
+			messageList.add(m);
+		} else {
+			messageList.remove(index);
 			messageList.add(m);
 		}
 		
 		// update pendingNeighborsList
-		for(Vertex n: neighborList){
+		/*for(Vertex n: neighborList){
 			if(!n.equals(m.getSender()) && !pendingNeighborList.contains(n)){
 				pendingNeighborList.add(n);
 			}
-		}
+		}*/
 	}
 	
 	@Override

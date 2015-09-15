@@ -8,8 +8,10 @@ import node.GNode;
 import java.util.ArrayList;
 
 public class Graph {
+	private int iterations = 20;
 	private List<MetaNode> nodes = new ArrayList<MetaNode>();
 	private List<GNode> gNodes = new ArrayList<GNode>();
+	private List<MetaEdge> edges = new ArrayList<MetaEdge>();
 	
 	
 	public void addNode(MetaNode n){
@@ -21,8 +23,13 @@ public class Graph {
 	}
 	
 	public void addEdge(int i, int j) {
-		getNodeFromId(i).addNeighbor(getNodeFromId(j));
-		getNodeFromId(j).addNeighbor(getNodeFromId(i));
+		MetaNode nI = getNodeFromId(i);
+		MetaNode nJ = getNodeFromId(j);
+		nI.addNeighbor(getNodeFromId(j));
+		nJ.addNeighbor(getNodeFromId(i));
+		
+		edges.add(new MetaEdge(nI, nJ));
+		
 	}
 	
 	public int getNrOfNodes() {
@@ -58,7 +65,15 @@ public class Graph {
 	}
 
 	private void propogateBeliefs() {
-		// TODO Auto-generated method stub
+		int it = 0;
+		while (it < iterations) {
+			for (MetaEdge e: edges) {
+				e.theOne.passMessageTo(e.theOther);
+				e.theOther.passMessageTo(e.theOne);
+			}
+			
+			it++;
+		}
 		
 	}
 
@@ -89,4 +104,14 @@ public class Graph {
 	}
 	
 
+	private class MetaEdge {
+		public MetaNode theOne;
+		public MetaNode theOther;
+		
+		public MetaEdge(MetaNode theOne, MetaNode theOther) {
+			this.theOne = theOne;
+			this.theOther = theOther;
+		}
+	}
+	
 }

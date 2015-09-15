@@ -93,5 +93,19 @@ public class MetaNode {
 		v.passInitialMessages();
 		f.passInitialMessages();
 	}
+
+
+	public void passMessageTo(MetaNode theOther) {
+		internalMessagePassing();
+		v.passMessageTo(theOther.getFactor());
+		f.passMessageTo(theOther.getVariable());
+		
+	}
+
+
+	private void internalMessagePassing() {
+		f.passMessageTo(v);
+		v.passMessageTo(f);	
+	}
 	
 }
