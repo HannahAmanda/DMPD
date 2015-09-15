@@ -56,26 +56,33 @@ public class Variable extends Vertex{
 	public void receiveSoftInfo(double[] softInfo) {
 		receivedSoftInfo = true;
 		this.softInfo = softInfo;
+		// System.out.println("Soft info: " + softInfo[0]+ ", " + softInfo[1]+ ", " + softInfo[2] + ", " + softInfo[3]);
 	}
 
 	private void marginalize() {
 		double[] marge = marginalization;
-		for (Message m: messageList) {
-			double[] message = m.getMessage();
-			marge[0] *= message[0];
-			marge[1] *= message[1];
-			marge[2] *= message[2];
-			marge[3] *= message[3];
-		}
-		
-		if(sumsUp(marge)) {
-			marginalization = marge;
-			updateState();			
-		} else {
-			System.out.println(nodeName + " does not sum up.");
-			for (int i = 0; i < marge.length; i++) {
-				System.out.print(marge[i]);
+		if (messageList.size() == neighborList.size()){
+			for (Message m: messageList) {
+				double[] message = m.getMessage();
+				marge[0] *= message[0];
+				marge[1] *= message[1];
+				marge[2] *= message[2];
+				marge[3] *= message[3];
 			}
+			
+			if(sumsUp(marge)) {
+				marginalization = marge;
+				updateState();	
+				
+			} else {
+				System.out.println(nodeName + " does not sum up.");
+				for (int i = 0; i < marge.length; i++) {
+					System.out.print(marge[i]);
+				}
+			}
+		} else {
+			System.out.println("Setting marginalization = soft information");
+			marginalization = softInfo;
 		}
 
 	}

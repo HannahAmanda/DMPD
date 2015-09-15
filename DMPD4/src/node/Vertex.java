@@ -82,8 +82,10 @@ public abstract class Vertex {
 		}
 		
 		if (index == -1) {
+			//System.out.println("index =-1 " + m.toString());
 			messageList.add(m);
 		} else {
+			//System.out.println("index = " + index + " " + m.toString());
 			messageList.remove(index);
 			messageList.add(m);
 		}

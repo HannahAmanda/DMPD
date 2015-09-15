@@ -25,7 +25,7 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(message);
+		return sender.getNodeName() + ": " + Arrays.toString(message);
 	}
 
 }

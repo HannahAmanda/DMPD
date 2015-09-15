@@ -85,11 +85,11 @@ public class Main {
 		Element[][] perturbedCodespace = new Element[4][2];
 		
 		for (int i = 0; i < codespace.length; i++) {
-			System.out.println("Codeword: " + codespace[i][0] + "," + codespace[i][1]);
+			// System.out.println("Codeword: " + codespace[i][0] + "," + codespace[i][1]);
 			Element[] v = channel.sendThroughChannel(codespace[i]);
 			perturbedCodespace[i][0] = v[0];
 			perturbedCodespace[i][1] = v[1];
-			System.out.println("Transmission: " + v[0] + "," + v[1]);
+			// System.out.println("Transmission: " + v[0] + "," + v[1]);
 		}
 		
 		
@@ -97,6 +97,7 @@ public class Main {
 		Element[][] decoded = new Element[4][2];
 		for (int i = 0; i < perturbedCodespace.length; i++) {
 			decoded[i] = g.decode(perturbedCodespace[i]);
+			System.out.println();
 			System.out.println("### ### ###");
 			System.out.println("Decoded : " + decoded[i][0] + "," + decoded[i][1]);
 			System.out.println("Codeword: " + codespace[i][0] + "," + codespace[i][1]);

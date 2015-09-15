@@ -146,7 +146,7 @@ public class Factor extends Vertex {
 	 * received message from |this|
 	 */
 	public void passInitialMessages() {
-		double[] identityMessage = {1,1,1,1};
+		double[] identityMessage = {1.0,1.0,1.0,1.0};
 		
 		for (Vertex n: neighborList) {
 			n.receiveMessage(new Message(this, identityMessage));
