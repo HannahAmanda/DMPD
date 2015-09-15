@@ -19,11 +19,11 @@ import f4.Element;
  */
 public class QSChannel {
 	
-	private static double p;
+	public double p;
 	// a,b,c = q
-	private static double q;
+	public double q;
 	
-	private static final Random rand = new Random();
+	private static final Random rand = new Random(1349);
 	
 	public QSChannel(double p) {
 		this.p = p;
@@ -38,7 +38,7 @@ public class QSChannel {
 	 * @param message
 	 * @return
 	 */
-	public static Element[] sendThroughChannel(Element[] message) {	
+	public Element[] sendThroughChannel(Element[] message) {	
 		Element[] transmission = new Element[message.length];
 		
 		for (int i = 0; i < message.length; i++ ) {
@@ -57,8 +57,8 @@ public class QSChannel {
 	 * @return
 	 */
 	
-	private static Element perturb(Element element) {
-		double multiCoin = randomNumber();
+	private Element perturb(Element element) {
+		double multiCoin = randomNumber();		
 		
 		if (multiCoin <= p) {
 			return element;
@@ -86,7 +86,7 @@ public class QSChannel {
 	 * @param x
 	 * @return
 	 */
-	private static Element flip(Element element, String x) {
+	private Element flip(Element element, String x) {
 		if(element == Element.ZERO) {
 			if (x == "a") {
 				return Element.ONE;
@@ -136,7 +136,7 @@ public class QSChannel {
 	}
 
 	public static double randomNumber() {
-		return (100*rand.nextDouble());
+		return (rand.nextDouble());
 	}
 	
 

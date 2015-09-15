@@ -43,7 +43,7 @@ public abstract class Vertex {
 	
 	public boolean canSendTo(Vertex n) {
 		for (Vertex v: neighborList) {
-			if (!v.equals(n) && !hasMessageFrom(v)) {
+			if (!v.equals(n) && hasMessageFrom(v)) {
 				return false;
 			}
 		}
@@ -62,7 +62,7 @@ public abstract class Vertex {
 	public void passMessageTo(Vertex to) {
 		Message m = new Message(this, calculateTransmission(to));
 		to.receiveMessage(m);
-		
+	
 		// TODO: Need to keep track of the neighbors one has sent to?
 		// A - Yes, update pendingNeighborList
 		for (Vertex n: pendingNeighborList) {
@@ -100,6 +100,11 @@ public abstract class Vertex {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return nodeName;
 	}
 
 }

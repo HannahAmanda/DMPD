@@ -12,20 +12,18 @@ public class MetaNode {
 	
 	private Factor f;
 	private Variable v;
-	private GNode g;
 	
 	private int nodeId;
 	private int[] hermitianConstraint = new int[4];
 	
 	private List<MetaNode> neighbors = new ArrayList<MetaNode>();
 	
-	public MetaNode(int i, double p) {
+	public MetaNode(int i) {
 		
 		nodeId = i;
 		f = new Factor(i);
 		v = new Variable(i);
-		g = new GNode(p, v);
-		
+				
 		makeBuddies();
 	}
 
@@ -89,6 +87,11 @@ public class MetaNode {
 	private void makeBuddies() {
 		f.setBuddy(v);
 		v.setBuddy(f);
+	}
+
+	public void passInitialMessages() {
+		v.passInitialMessages();
+		f.passInitialMessages();
 	}
 	
 }

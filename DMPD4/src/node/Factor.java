@@ -26,64 +26,60 @@ public class Factor extends Vertex {
 	
 	@Override
 	public double[] calculateTransmission(Vertex except) {
-		if (canSendTo(except)) {
-			double[] transmission = new double[4];
-			
-			if (neighborList.size() == 1) {
-				for(int i = 0; i < transmission.length; i++) {
-					double value = getBinaryConstraint(constraintVector.get(i));
-					
-					if ( value < 0 ) {
-						System.out.println("Factor: Value of getBinaryConstraint is negative");
-						return null;
-					} else {
-						transmission[i] = value;
-						
-					}
+		double[] transmission = new double[4];
+		
+		if (neighborList.size() == 1) {
+			for(int i = 0; i < transmission.length; i++) {
+				double value = getBinaryConstraint(constraintVector.get(i));
+				
+				if ( value < 0 ) {
+					System.out.println("Factor: Value of getBinaryConstraint is negative");
+					return null;
+				} else {
+					transmission[i] = value;
 					
 				}
-				return transmission;
-			} else {
-				double[] product = productOfMessages(except);
 				
-				double zero = 0.0;
-				double one = 0.0;
-				double omega = 0.0;
-				double omegasq = 0.0;
-				
-				int pos = neighborList.indexOf(except);
-				int repetitionLength = findLength(pos);
-				
-				int i = 0;
-				while ( i < product.length ) {
-					int count = 0;
-					while ( count < 4) {
-						int j = 0;
-						while (j < repetitionLength) {
-							if ( count == 0) {
-								zero += product[i];
-							} else if (count == 1) {
-								one += product[i];
-							} else if (count == 3) {
-								omega += product[i];
-							} else if (count == 4) {
-								omegasq += product[i];
-							}
+			}
+			return transmission;
+		} else {
+			double[] product = productOfMessages(except);
+			
+			double zero = 0.0;
+			double one = 0.0;
+			double omega = 0.0;
+			double omegasq = 0.0;
+			
+			int pos = neighborList.indexOf(except);
+			int repetitionLength = findLength(pos);
+			
+			int i = 0;
+			while ( i < product.length ) {
+				int count = 0;
+				while ( count < 4) {
+					int j = 0;
+					while (j < repetitionLength) {
+						if ( count == 0) {
+							zero += product[i];
+						} else if (count == 1) {
+							one += product[i];
+						} else if (count == 3) {
+							omega += product[i];
+						} else if (count == 4) {
+							omegasq += product[i];
 						}
 					}
 				}
-				
-				transmission[0] = zero;
-				transmission[1] = one;
-				transmission[2] = omega;
-				transmission[3] = omegasq;
-				
-				return transmission;
 			}
+			
+			transmission[0] = zero;
+			transmission[1] = one;
+			transmission[2] = omega;
+			transmission[3] = omegasq;
+			
+			return transmission;
 		}
 		
-		
-		return null;
 	}
 	
 	private double[] productOfMessages(Vertex except) {
@@ -115,7 +111,6 @@ public class Factor extends Vertex {
 						count++;
 					}
 				}
-				
 			}
 		}
 		return product;
@@ -142,6 +137,19 @@ public class Factor extends Vertex {
 			return 0;
 		}else {
 			return -1349;
+		}
+	}
+
+	/**
+	 * Passes identity message to all neighboring 
+	 * variable nodes such that they all have a 
+	 * received message from |this|
+	 */
+	public void passInitialMessages() {
+		double[] identityMessage = {1,1,1,1};
+		
+		for (Vertex n: neighborList) {
+			n.receiveMessage(new Message(this, identityMessage));
 		}
 	}
 }

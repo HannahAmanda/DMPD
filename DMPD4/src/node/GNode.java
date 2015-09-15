@@ -11,7 +11,7 @@ public class GNode extends Vertex {
 	private Element bit;
 	private int bitNumber;
 	
-	public GNode(double p, Variable n) {
+	public GNode(Variable n, double p) {
 		this.p = p;
 		q = (1-p)/3;
 		this.n = n;
@@ -33,6 +33,9 @@ public class GNode extends Vertex {
 	public Variable getNeighbor() {
 		return n;
 	}
+	public Element getBit() {
+		return bit;
+	}
 	
 	@Override
 	public double[] calculateTransmission(Vertex node) {
@@ -46,6 +49,11 @@ public class GNode extends Vertex {
 		}
 		
 		return softInformation;
+	}
+	
+	@Override
+	public void passMessageTo(Vertex to) {
+		n.receiveSoftInfo(calculateTransmission(n));
 	}
 	
 	
