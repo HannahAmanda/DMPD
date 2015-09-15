@@ -31,6 +31,7 @@ public abstract class Vertex {
 	
 	public void setBuddy(Vertex buddy) {
 		this.buddy = buddy;
+		neighborList.add(buddy);
 	}
 	
 	public List<Vertex> getNeighborList() {
@@ -82,10 +83,10 @@ public abstract class Vertex {
 		}
 		
 		if (index == -1) {
-			//System.out.println("index =-1 " + m.toString());
+			System.out.println(-1 + " " + this.toString() + " to "+ m.toString());
 			messageList.add(m);
 		} else {
-			//System.out.println("index = " + index + " " + m.toString());
+			System.out.println( " " + index + " " + this.toString() + " to " + m.toString());
 			messageList.remove(index);
 			messageList.add(m);
 		}

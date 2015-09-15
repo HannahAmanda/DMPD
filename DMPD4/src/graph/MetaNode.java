@@ -97,6 +97,7 @@ public class MetaNode {
 
 	public void passMessageTo(MetaNode theOther) {
 		internalMessagePassing();
+		System.out.println("Passing to the other node.");
 		v.passMessageTo(theOther.getFactor());
 		f.passMessageTo(theOther.getVariable());
 		
@@ -106,6 +107,14 @@ public class MetaNode {
 	private void internalMessagePassing() {
 		f.passMessageTo(v);
 		v.passMessageTo(f);	
+		System.out.println("Passed messages internally: " + nodeId);
 	}
+
+
+	public Object getNeighborList() {
+		return neighbors;
+	}
+	
+	
 	
 }

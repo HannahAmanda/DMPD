@@ -8,10 +8,11 @@ import node.GNode;
 import java.util.ArrayList;
 
 public class Graph {
-	private int iterations = 20;
+	private int iterations = 5;
 	private List<MetaNode> nodes = new ArrayList<MetaNode>();
 	private List<GNode> gNodes = new ArrayList<GNode>();
 	private List<MetaEdge> edges = new ArrayList<MetaEdge>();
+
 	
 	
 	public void addNode(MetaNode n){
@@ -32,6 +33,10 @@ public class Graph {
 		
 	}
 	
+	public List<MetaNode> getNodes() {
+		return nodes;
+	}
+	
 	public int getNrOfNodes() {
 		return nodes.size();
 	}
@@ -48,7 +53,7 @@ public class Graph {
 	public Element[] decode(Element[] transmission) {
 		passSoftInformation(transmission);
 		init();
-		propogateBeliefs();
+		propagateBeliefs();
 		
 		return getDecodeState();
 	}
@@ -64,7 +69,8 @@ public class Graph {
 		return decodedWord;
 	}
 
-	private void propogateBeliefs() {
+	private void propagateBeliefs() {
+		System.out.println("Commencing belief propagation.");
 		int it = 0;
 		while (it < iterations) {
 			for (MetaEdge e: edges) {
@@ -82,12 +88,14 @@ public class Graph {
 		for (MetaNode n: nodes) {
 			n.passInitialMessages();
 		}
+		System.out.println("Initial messages passed.");
 		
 	}
 	
 	private void passSoftInformation(Element[] transmission) {
 		gNodeBitNotification(transmission);
 		gNodeTransmit();
+		System.out.println("Soft information passed.");
 	}
 
 	private void gNodeBitNotification(Element[] transmission) {

@@ -43,6 +43,7 @@ public class Factor extends Vertex {
 			}
 			return transmission;
 		} else {
+			
 			double[] product = productOfMessages(except);
 			
 			double zero = 0.0;
