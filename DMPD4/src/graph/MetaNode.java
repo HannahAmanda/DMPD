@@ -111,7 +111,7 @@ public class MetaNode {
 	}
 
 
-	public Object getNeighborList() {
+	public List<MetaNode> getNeighborList() {
 		return neighbors;
 	}
 	

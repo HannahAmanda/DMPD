@@ -26,8 +26,8 @@ public class Graph {
 	public void addEdge(int i, int j) {
 		MetaNode nI = getNodeFromId(i);
 		MetaNode nJ = getNodeFromId(j);
-		nI.addNeighbor(getNodeFromId(j));
-		nJ.addNeighbor(getNodeFromId(i));
+		nI.addNeighbor(nJ);
+		nJ.addNeighbor(nI);
 		
 		edges.add(new MetaEdge(nI, nJ));
 		

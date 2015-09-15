@@ -14,6 +14,7 @@ import f4.Element;
 import node.Factor;
 import node.GNode;
 import node.Variable;
+import node.Vertex;
 
 
 
@@ -74,6 +75,21 @@ public class Main {
 			}
 		}
 		
+		
+		for (MetaNode m: g.getNodes()) {
+			for (MetaNode n: m.getNeighborList()) {
+				System.out.println("Meta neighbor: " + n.getFactor().toString() + " - " + n.getVariable().toString());
+			}
+			System.out.println(m.getFactor().toString() + " - " + m.getVariable().toString());
+			System.out.println("factor neighbors");
+			for (Vertex n: m.getFactor().getNeighborList()) {
+				System.out.print(n.toString() + ", ");
+			}
+			System.out.println("variable neighbors");
+			for (Vertex n: m.getVariable().getNeighborList()) {
+				System.out.print(n.toString() + ", ");
+			}
+		}
 		
 		// PERTURB CODESPACE
 		Element[] zero = {Element.ZERO, Element.ZERO};
