@@ -67,29 +67,14 @@ public class Main {
 		}
 		
 		String[] adj = {"w1", "1w"};
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 2; j++) {
+		for(int i = 0; i < adj.length; i++) {
+			for(int j = i+1; j < adj.length; j++) {
 				if(adj[i].charAt(j) == '1') {
 					g.addEdge(i,j);
 				}
 			}
 		}
 		
-		
-		for (MetaNode m: g.getNodes()) {
-			for (MetaNode n: m.getNeighborList()) {
-				System.out.println("Meta neighbor: " + n.getFactor().toString() + " - " + n.getVariable().toString());
-			}
-			System.out.println(m.getFactor().toString() + " - " + m.getVariable().toString());
-			System.out.println("factor neighbors");
-			for (Vertex n: m.getFactor().getNeighborList()) {
-				System.out.print(n.toString() + ", ");
-			}
-			System.out.println("variable neighbors");
-			for (Vertex n: m.getVariable().getNeighborList()) {
-				System.out.print(n.toString() + ", ");
-			}
-		}
 		
 		// PERTURB CODESPACE
 		Element[] zero = {Element.ZERO, Element.ZERO};
