@@ -1,6 +1,7 @@
 package node;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import message.Message;
@@ -63,6 +64,7 @@ public abstract class Vertex {
 	public void passMessageTo(Vertex to) {
 		Message m = new Message(this, calculateTransmission(to));
 		to.receiveMessage(m);
+		System.out.println(toString() + " -> " + to.toString() + ": " + Arrays.toString(m.getMessage()));
 	
 		// TODO: Need to keep track of the neighbors one has sent to?
 		// A - Yes, update pendingNeighborList
@@ -74,7 +76,6 @@ public abstract class Vertex {
 	}
 	
 	public void receiveMessage(Message m) {
-		boolean added = false;
 		int index = -1;
 		for (Message v: messageList) {
 			if (v.getSender().equals(m.getSender())) {
@@ -83,10 +84,10 @@ public abstract class Vertex {
 		}
 		
 		if (index == -1) {
-			System.out.println(-1 + " " + m.toString() + " to " + this.toString());
+			// System.out.println(-1 + " " + m.toString() + " to " + toString());
 			messageList.add(m);
 		} else {
-			System.out.println( " " + index + " "  + m.toString() + " to " + this.toString());
+			// System.out.println( " " + index + " "  + m.toString() + " to " + toString());
 			messageList.remove(index);
 			messageList.add(m);
 		}

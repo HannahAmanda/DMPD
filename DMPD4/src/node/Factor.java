@@ -23,7 +23,7 @@ public class Factor extends Vertex {
 	
 	@Override
 	public double[] calculateTransmission(Vertex except) {
-		System.out.println("Calculating " + this.toString() + " transmission.");
+		// System.out.println("Calculating " + this.toString() + " transmission.");
 		double[] transmission = new double[4];
 		
 		if (neighborList.size() == 1) {
@@ -44,7 +44,7 @@ public class Factor extends Vertex {
 		} else {
 			
 			double[] product = productOfMessages(except);
-			System.out.println("Product: " + Arrays.toString(product));
+			// System.out.println("Product: " + Arrays.toString(product));
 			
 			double zero = 0.0;
 			double one = 0.0;
@@ -91,11 +91,11 @@ public class Factor extends Vertex {
 		for (int i = 0; i < constraintVector.length; i++) {
 			product[i] = getBinaryConstraint(constraintVector[i]);
 		}
-		System.out.println(Arrays.toString(product) + " constraint " + Arrays.toString(constraintVector));
-		System.out.println("Nr of neighbors: " + neighborList.size());
+		//System.out.println(Arrays.toString(product) + " constraint " + Arrays.toString(constraintVector));
+		//System.out.println("Nr of neighbors: " + neighborList.size());
 		for (Vertex n: neighborList) {
 			if (!n.equals(except) && hasMessageFrom(n)) {
-				System.out.println(this.toString() + " has message from " + n.toString());
+				//System.out.println(this.toString() + " has message from " + n.toString());
 				int sizeN = 4;
 				int repetitionLength = findLength(neighborList.indexOf(n));
 				

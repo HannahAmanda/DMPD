@@ -105,10 +105,11 @@ public class Main {
 		Element[][] decoded = new Element[4][2];
 		for (int i = 0; i < perturbedCodespace.length; i++) {
 			decoded[i] = g.decode(perturbedCodespace[i]);
-			System.out.println();
-			System.out.println("### ### ###");
+		
 			System.out.println("Decoded : " + decoded[i][0] + "," + decoded[i][1]);
 			System.out.println("Codeword: " + codespace[i][0] + "," + codespace[i][1]);
+			System.out.println("### ### ###");
+			System.out.println();
 		}
 		
 		

@@ -70,6 +70,11 @@ public class Variable extends Vertex{
 				marge[3] *= message[3];
 			}
 			
+			marge[0] *= softInfo[0];
+			marge[1] *= softInfo[1];
+			marge[2] *= softInfo[2];
+			marge[3] *= softInfo[3];
+			
 			if(sumsUp(marge)) {
 				marginalization = marge;
 				updateState();	
@@ -77,8 +82,10 @@ public class Variable extends Vertex{
 			} else {
 				System.out.println(nodeName + " does not sum up.");
 				for (int i = 0; i < marge.length; i++) {
-					System.out.print(marge[i]);
+					System.out.print(marge[i] + " + ");
 				}
+				System.out.println();
+				System.out.println(marge[0] + marge[1] + marge[2] + marge[3]);
 			}
 		} else {
 			System.out.println("Setting marginalization = soft information");
@@ -92,7 +99,12 @@ public class Variable extends Vertex{
 		for (int i = 0; i < marge.length; i++) {
 			sum += marge[i];
 		}
-		return sum == 1.0;
+		
+		for (int i = 0; i < marge.length; i++) {
+			marge[i] /= sum;
+		}
+		
+		return (marge[0] + marge[1] + marge[2] + marge[3]) == 1.0;
 	}
 
 	private void updateState() {

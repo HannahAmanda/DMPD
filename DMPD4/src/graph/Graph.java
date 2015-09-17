@@ -70,7 +70,8 @@ public class Graph {
 	}
 
 	private void propagateBeliefs() {
-		System.out.println("Commencing belief propagation.");
+		System.out.println("BELIEF PROPOGATION");
+		System.out.println();
 		int it = 0;
 		while (it < iterations) {
 			for (MetaEdge e: edges) {
