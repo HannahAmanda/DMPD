@@ -8,7 +8,7 @@ import node.GNode;
 import java.util.ArrayList;
 
 public class Graph {
-	private int iterations = 5;
+	private int iterations = 2;
 	private List<MetaNode> nodes = new ArrayList<MetaNode>();
 	private List<GNode> gNodes = new ArrayList<GNode>();
 	private List<MetaEdge> edges = new ArrayList<MetaEdge>();

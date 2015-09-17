@@ -83,10 +83,10 @@ public abstract class Vertex {
 		}
 		
 		if (index == -1) {
-			System.out.println(-1 + " " + this.toString() + " to "+ m.toString());
+			System.out.println(-1 + " " + m.toString() + " to " + this.toString());
 			messageList.add(m);
 		} else {
-			System.out.println( " " + index + " " + this.toString() + " to " + m.toString());
+			System.out.println( " " + index + " "  + m.toString() + " to " + this.toString());
 			messageList.remove(index);
 			messageList.add(m);
 		}

@@ -44,7 +44,6 @@ public class Variable extends Vertex{
 	public void passInitialMessages() {
 		if (receivedSoftInfo) {
 			for (Vertex n:neighborList) {
-				System.out.println(this.toString() + " Neighbor: " + n.toString());
 				n.receiveMessage(new Message(this, softInfo));
 			}
 			

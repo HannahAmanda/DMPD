@@ -75,6 +75,13 @@ public class Main {
 			}
 		}
 		
+		int[] f0 = {1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1};
+		int[] f1 = {1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1};
+		
+		g.getNodeFromId(0).getFactor().setConstraint(f0);
+		g.getNodeFromId(1).getFactor().setConstraint(f1);		
+		
+		
 		
 		// PERTURB CODESPACE
 		Element[] zero = {Element.ZERO, Element.ZERO};

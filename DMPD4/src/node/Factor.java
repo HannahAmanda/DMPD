@@ -1,36 +1,35 @@
 package node;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Arrays;
 import message.Message;
 import node.Vertex;
 
 
 public class Factor extends Vertex {
 	
-	private List<Integer> constraintVector = new ArrayList<Integer>();
+	private int[] constraintVector;
 
 	public Factor(int i) {
 		nodeId = i;
 		nodeName = "f" + i;
 	}
 	
-	public void setConstraint(List<Integer> constraint) {
+	public void setConstraint(int[] constraint) {
 		constraintVector = constraint;
 	}
 	
-	public List<Integer> getConstraint() {
+	public int[] getConstraint() {
 		return constraintVector;
 	}
 	
 	@Override
 	public double[] calculateTransmission(Vertex except) {
+		System.out.println("Calculating " + this.toString() + " transmission.");
 		double[] transmission = new double[4];
 		
 		if (neighborList.size() == 1) {
+			System.out.println("Has only one neighbor.");
 			for(int i = 0; i < transmission.length; i++) {
-				double value = getBinaryConstraint(constraintVector.get(i));
+				double value = getBinaryConstraint(constraintVector[i]);
 				
 				if ( value < 0 ) {
 					System.out.println("Factor: Value of getBinaryConstraint is negative");
@@ -45,6 +44,7 @@ public class Factor extends Vertex {
 		} else {
 			
 			double[] product = productOfMessages(except);
+			System.out.println("Product: " + Arrays.toString(product));
 			
 			double zero = 0.0;
 			double one = 0.0;
@@ -69,7 +69,10 @@ public class Factor extends Vertex {
 						} else if (count == 4) {
 							omegasq += product[i];
 						}
+						j++;
+						i++;
 					}
+					count++;
 				}
 			}
 			
@@ -84,19 +87,20 @@ public class Factor extends Vertex {
 	}
 	
 	private double[] productOfMessages(Vertex except) {
-		double[] product = new double[constraintVector.size()];
-		for (int i = 0; i < constraintVector.size(); i++) {
-			product[i] = getBinaryConstraint(constraintVector.get(i));
+		double[] product = new double[constraintVector.length];
+		for (int i = 0; i < constraintVector.length; i++) {
+			product[i] = getBinaryConstraint(constraintVector[i]);
 		}
-		
+		System.out.println(Arrays.toString(product) + " constraint " + Arrays.toString(constraintVector));
+		System.out.println("Nr of neighbors: " + neighborList.size());
 		for (Vertex n: neighborList) {
 			if (!n.equals(except) && hasMessageFrom(n)) {
-				
+				System.out.println(this.toString() + " has message from " + n.toString());
 				int sizeN = 4;
 				int repetitionLength = findLength(neighborList.indexOf(n));
 				
 				int i = 0;
-				while (i < constraintVector.size()) {
+				while (i < constraintVector.length) {
 					int count = 0;
 					while ( count < sizeN) {
 						int j = 0;
