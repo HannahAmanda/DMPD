@@ -112,6 +112,12 @@ public class MetaNode {
 	public List<MetaNode> getNeighborList() {
 		return neighbors;
 	}
+
+
+	public void reset() {
+		f.reset();
+		v.reset();
+	}
 	
 	
 	

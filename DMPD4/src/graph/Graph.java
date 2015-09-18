@@ -58,6 +58,12 @@ public class Graph {
 		return getDecodeState();
 	}
 	
+	public void reset() {
+		for (MetaNode n: nodes) {
+			n.reset();
+		}
+	}
+	
 	private Element[] getDecodeState() {
 		Element[] decodedWord = new Element[4];
 		
@@ -74,6 +80,7 @@ public class Graph {
 		System.out.println();
 		int it = 0;
 		while (it < iterations) {
+			System.out.println("ITERATION: " + (it+1));
 			for (MetaEdge e: edges) {
 				e.theOne.passMessageTo(e.theOther);
 				e.theOther.passMessageTo(e.theOne);

@@ -127,4 +127,17 @@ public class Variable extends Vertex{
 		}
 	}
 
+	@Override
+	public void reset() {
+		double[] s = {0,0,0,0};
+		double[] m = {1,1,1,1};
+			
+		marginalization = m;
+		softInfo = s;
+		state = null;
+		receivedSoftInfo = false;
+		messageList.clear();	
+		
+	}
+
 }

@@ -1,5 +1,4 @@
 package node;
-import java.util.Arrays;
 import message.Message;
 import node.Vertex;
 
@@ -46,42 +45,27 @@ public class Factor extends Vertex {
 			double[] product = productOfMessages(except);
 			// System.out.println("Product: " + Arrays.toString(product));
 			
-			double zero = 0.0;
-			double one = 0.0;
-			double omega = 0.0;
-			double omegasq = 0.0;
+			double[] summation = {0,0,0,0};
 			
+
 			int pos = neighborList.indexOf(except);
-			int repetitionLength = findLength(pos);
-			
+			int rep = (int) Math.pow(4, pos);
 			int i = 0;
-			while ( i < product.length ) {
-				int count = 0;
-				while ( count < 4) {
-					int j = 0;
-					while (j < repetitionLength) {
-						if ( count == 0) {
-							zero += product[i];
-						} else if (count == 1) {
-							one += product[i];
-						} else if (count == 3) {
-							omega += product[i];
-						} else if (count == 4) {
-							omegasq += product[i];
-						}
-						j++;
-						i++;
-					}
-					count++;
+			int count = 0;
+
+			while (i < constraintVector.length) {
+				if ( i%(rep) == 0 ) {
+					// switch to next element of F4
+					summation[((count +1)%4)] += product[i];
+					
+				} else {
+					summation[count] += product[i];
+					
 				}
+				i++;
 			}
 			
-			transmission[0] = zero;
-			transmission[1] = one;
-			transmission[2] = omega;
-			transmission[3] = omegasq;
-			
-			return transmission;
+			return summation;
 		}
 		
 	}
@@ -156,5 +140,10 @@ public class Factor extends Vertex {
 		for (Vertex n: neighborList) {
 			n.receiveMessage(new Message(this, identityMessage));
 		}
+	}
+
+	@Override
+	public void reset() {
+		messageList.clear();
 	}
 }

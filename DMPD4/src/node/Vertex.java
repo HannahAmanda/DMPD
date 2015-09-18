@@ -17,6 +17,7 @@ public abstract class Vertex {
 	protected List<Vertex> pendingNeighborList = new ArrayList<Vertex>();
 	
 	public abstract double[] calculateTransmission(Vertex except);
+	public abstract void reset();
 	
 	public int getNodeId() {
 		return nodeId;
@@ -62,6 +63,10 @@ public abstract class Vertex {
 	}
 	
 	public void passMessageTo(Vertex to) {
+		for (Message m: messageList) {
+			System.out.println(m.toString());
+		}
+		
 		Message m = new Message(this, calculateTransmission(to));
 		to.receiveMessage(m);
 		System.out.println(toString() + " -> " + to.toString() + ": " + Arrays.toString(m.getMessage()));

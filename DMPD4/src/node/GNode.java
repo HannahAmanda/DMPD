@@ -55,6 +55,12 @@ public class GNode extends Vertex {
 	public void passMessageTo(Vertex to) {
 		n.receiveSoftInfo(calculateTransmission(n));
 	}
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

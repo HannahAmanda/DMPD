@@ -110,6 +110,8 @@ public class Main {
 			System.out.println("Codeword: " + codespace[i][0] + "," + codespace[i][1]);
 			System.out.println("### ### ###");
 			System.out.println();
+			
+			g.reset();
 		}
 		
 		
