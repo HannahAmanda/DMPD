@@ -118,6 +118,12 @@ public class MetaNode {
 		f.reset();
 		v.reset();
 	}
+
+
+	public void sortNeighbors() {
+		f.sortNeighbors();
+		
+	}
 	
 	
 	

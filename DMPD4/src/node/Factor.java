@@ -1,4 +1,8 @@
 package node;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import message.Message;
 import node.Vertex;
 
@@ -22,6 +26,13 @@ public class Factor extends Vertex {
 	
 	@Override
 	public double[] calculateTransmission(Vertex except) {
+		
+		/*System.out.println("NeighborList " + toString());
+		for (Vertex n: neighborList) {
+			System.out.println(n.toString() + " i: " + neighborList.indexOf(n));
+		}*/
+		
+		// System.out.println("Done with neighborlist");
 		// System.out.println("Calculating " + this.toString() + " transmission.");
 		double[] transmission = new double[4];
 		
@@ -51,17 +62,23 @@ public class Factor extends Vertex {
 			int pos = neighborList.indexOf(except);
 			int rep = (int) Math.pow(4, pos);
 			int i = 0;
+			int j = 1;
 			int count = 0;
 
 			while (i < constraintVector.length) {
-				if ( i%(rep) == 0 ) {
+				
+				if ( j%(rep) == 0 ) {
 					// switch to next element of F4
-					summation[((count +1)%4)] += product[i];
+					summation[((count)%4)] += product[i];
+					//System.out.println("i: " + i + " count: " + count +"(i % rep): " + (i%rep) + " product[i] = " + product[i] + " summation[" + (count%4)+"]");
 					
+					count++;
+					count %= 4;
 				} else {
 					summation[count] += product[i];
-					
+					//System.out.println("i: " + i + " count: " + count +"(i % rep): " + (i%rep) + " product[i] = " + product[i] + " summation[" + (count)+"]");					
 				}
+				j++;
 				i++;
 			}
 			
@@ -140,6 +157,21 @@ public class Factor extends Vertex {
 		for (Vertex n: neighborList) {
 			n.receiveMessage(new Message(this, identityMessage));
 		}
+	}
+	
+	public void sortNeighbors() {
+		List<Vertex> sorted = new ArrayList<Vertex>();
+		int index = neighborList.size()-1;;
+		while (index >= 0) {
+			for (int i = 0; i < neighborList.size(); i++) {
+				if (neighborList.get(i).nodeId == index) {
+					sorted.add(neighborList.get(i));
+					index--;
+				}
+			}
+		}
+		neighborList.clear();
+		neighborList = sorted;
 	}
 
 	@Override

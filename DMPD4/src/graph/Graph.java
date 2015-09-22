@@ -8,7 +8,7 @@ import node.GNode;
 import java.util.ArrayList;
 
 public class Graph {
-	private int iterations = 2;
+	private int iterations = 3;
 	private List<MetaNode> nodes = new ArrayList<MetaNode>();
 	private List<GNode> gNodes = new ArrayList<GNode>();
 	private List<MetaEdge> edges = new ArrayList<MetaEdge>();
@@ -76,11 +76,11 @@ public class Graph {
 	}
 
 	private void propagateBeliefs() {
-		System.out.println("BELIEF PROPOGATION");
-		System.out.println();
+		// System.out.println("BELIEF PROPOGATION");
+		// System.out.println();
 		int it = 0;
 		while (it < iterations) {
-			System.out.println("ITERATION: " + (it+1));
+			// System.out.println("ITERATION: " + (it+1));
 			for (MetaEdge e: edges) {
 				e.theOne.passMessageTo(e.theOther);
 				e.theOther.passMessageTo(e.theOne);
@@ -96,14 +96,14 @@ public class Graph {
 		for (MetaNode n: nodes) {
 			n.passInitialMessages();
 		}
-		System.out.println("Initial messages passed.");
+		// System.out.println("Initial messages passed.");
 		
 	}
 	
 	private void passSoftInformation(Element[] transmission) {
 		gNodeBitNotification(transmission);
 		gNodeTransmit();
-		System.out.println("Soft information passed.");
+		// System.out.println("Soft information passed.");
 	}
 
 	private void gNodeBitNotification(Element[] transmission) {
@@ -128,6 +128,14 @@ public class Graph {
 			this.theOne = theOne;
 			this.theOther = theOther;
 		}
+	}
+
+
+	public void sortNeighbors() {
+		for (MetaNode m: nodes) {
+			m.sortNeighbors();
+		}
+		
 	}
 	
 }

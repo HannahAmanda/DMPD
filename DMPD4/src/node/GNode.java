@@ -1,5 +1,7 @@
 package node;
 
+import java.util.Arrays;
+
 import f4.Element;
 
 public class GNode extends Vertex {
@@ -15,6 +17,7 @@ public class GNode extends Vertex {
 		this.p = p;
 		q = (1-p)/3;
 		this.n = n;
+		nodeName = "g" + n.nodeId;
 	}
 
 	public void setRecievedBit(Element bit) {
@@ -53,7 +56,9 @@ public class GNode extends Vertex {
 	
 	@Override
 	public void passMessageTo(Vertex to) {
-		n.receiveSoftInfo(calculateTransmission(n));
+		double[] softInfo = calculateTransmission(n);
+		n.receiveSoftInfo(softInfo);
+		// System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo));
 	}
 
 	@Override

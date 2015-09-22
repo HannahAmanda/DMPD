@@ -23,17 +23,19 @@ public class Variable extends Vertex{
 
 	@Override
 	public double[] calculateTransmission(Vertex except) {
-		double[] transmission = new double[4];
+		double[] transmission = softInfo;
 		
 		for (int i = 0; i < messageList.size(); i++) {
 			if (!messageList.get(i).getSender().equals(except)) {
 				
 				for (int j = 0; j < 4; j++) {
-					transmission[j] = messageList.get(i).getMessage()[j];
+					transmission[j] *= messageList.get(i).getMessage()[j];
 				}
 				
 			}
 		}
+		
+		
 		return transmission;
 	}
 
@@ -80,12 +82,7 @@ public class Variable extends Vertex{
 				updateState();	
 				
 			} else {
-				System.out.println(nodeName + " does not sum up.");
-				for (int i = 0; i < marge.length; i++) {
-					System.out.print(marge[i] + " + ");
-				}
-				System.out.println();
-				System.out.println(marge[0] + marge[1] + marge[2] + marge[3]);
+				System.out.println(nodeName + " does not sum up: " + marge[0] + marge[1] + marge[2] + marge[3]);
 			}
 		} else {
 			System.out.println("Setting marginalization = soft information");

@@ -64,7 +64,7 @@ public abstract class Vertex {
 	
 	public void passMessageTo(Vertex to) {
 		for (Message m: messageList) {
-			System.out.println(m.toString());
+		//	System.out.println(m.toString());
 		}
 		
 		Message m = new Message(this, calculateTransmission(to));

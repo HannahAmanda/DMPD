@@ -23,7 +23,7 @@ public class QSChannel {
 	// a,b,c = q
 	public double q;
 	
-	private static final Random rand = new Random(1349);
+	private static final Random rand = new Random(67);
 	
 	public QSChannel(double p) {
 		this.p = p;

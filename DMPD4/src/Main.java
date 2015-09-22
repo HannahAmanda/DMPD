@@ -81,7 +81,7 @@ public class Main {
 		g.getNodeFromId(0).getFactor().setConstraint(f0);
 		g.getNodeFromId(1).getFactor().setConstraint(f1);		
 		
-		
+		g.sortNeighbors();
 		
 		// PERTURB CODESPACE
 		Element[] zero = {Element.ZERO, Element.ZERO};
@@ -106,8 +106,10 @@ public class Main {
 		for (int i = 0; i < perturbedCodespace.length; i++) {
 			decoded[i] = g.decode(perturbedCodespace[i]);
 		
-			System.out.println("Decoded : " + decoded[i][0] + "," + decoded[i][1]);
-			System.out.println("Codeword: " + codespace[i][0] + "," + codespace[i][1]);
+			System.out.println();
+			System.out.println("Perturbed: " + perturbedCodespace[i][0] + ", " +  perturbedCodespace[i][1]);
+			System.out.println("Decoded  : " + decoded[i][0] + ", " + decoded[i][1]);
+			System.out.println("Codeword : " + codespace[i][0] + ", " + codespace[i][1]);
 			System.out.println("### ### ###");
 			System.out.println();
 			
