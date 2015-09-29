@@ -56,7 +56,7 @@ public class Main {
 
 		// GRAPH AND CHANNEL
 		Graph g = new Graph();
-		QSChannel channel = (new QSChannel(0.6));
+		QSChannel channel = (new QSChannel(0.8));
 		
 		
 		// CONSTRUCT GRAPH 
