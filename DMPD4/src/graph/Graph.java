@@ -119,7 +119,23 @@ public class Graph {
 		
 	}
 	
+	public void sortNeighbors() {
+		for (MetaNode m: nodes) {
+			m.sortNeighbors();
+		}
+		
+	}
 
+	@Override
+	public String toString() {
+		String graph = "";
+		for (MetaEdge e: edges) {
+			graph += e.toString() + "\n";
+		}
+		
+		return graph;
+	}
+	
 	private class MetaEdge {
 		public MetaNode theOne;
 		public MetaNode theOther;
@@ -128,14 +144,15 @@ public class Graph {
 			this.theOne = theOne;
 			this.theOther = theOther;
 		}
+		
+		@Override
+		public String toString() {
+			return "(" + theOne.toString() + ", " + theOther.toString() + ")";
+		}
 	}
 
-
-	public void sortNeighbors() {
-		for (MetaNode m: nodes) {
-			m.sortNeighbors();
-		}
-		
+	public void calculateConstraintVectors() {
+				
 	}
 	
 }

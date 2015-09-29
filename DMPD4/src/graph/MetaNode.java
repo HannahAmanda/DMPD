@@ -122,7 +122,11 @@ public class MetaNode {
 
 	public void sortNeighbors() {
 		f.sortNeighbors();
-		
+	}
+	
+	@Override
+	public String toString() {
+		return "M" + nodeId;
 	}
 	
 	
