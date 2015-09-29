@@ -26,20 +26,12 @@ public class Factor extends Vertex {
 	
 	@Override
 	public double[] calculateTransmission(Vertex except) {
-		
-		/*System.out.println("NeighborList " + toString());
-		for (Vertex n: neighborList) {
-			System.out.println(n.toString() + " i: " + neighborList.indexOf(n));
-		}*/
-		
-		// System.out.println("Done with neighborlist");
-		// System.out.println("Calculating " + this.toString() + " transmission.");
 		double[] transmission = new double[4];
 		
 		if (neighborList.size() == 1) {
 			System.out.println("Has only one neighbor.");
 			for(int i = 0; i < transmission.length; i++) {
-				double value = getBinaryConstraint(constraintVector[i]);
+				double value = constraintVector[i];
 				
 				if ( value < 0 ) {
 					System.out.println("Factor: Value of getBinaryConstraint is negative");
@@ -52,51 +44,50 @@ public class Factor extends Vertex {
 			}
 			return transmission;
 		} else {
-			
 			double[] product = productOfMessages(except);
 			// System.out.println("Product: " + Arrays.toString(product));
 			
-			double[] summation = {0,0,0,0};
-			
-
-			int pos = neighborList.indexOf(except);
-			int rep = (int) Math.pow(4, pos);
-			int i = 0;
-			int j = 1;
-			int count = 0;
-
-			while (i < constraintVector.length) {
-				
-				if ( j%(rep) == 0 ) {
-					// switch to next element of F4
-					summation[((count)%4)] += product[i];
-					//System.out.println("i: " + i + " count: " + count +"(i % rep): " + (i%rep) + " product[i] = " + product[i] + " summation[" + (count%4)+"]");
-					
-					count++;
-					count %= 4;
-				} else {
-					summation[count] += product[i];
-					//System.out.println("i: " + i + " count: " + count +"(i % rep): " + (i%rep) + " product[i] = " + product[i] + " summation[" + (count)+"]");					
-				}
-				j++;
-				i++;
-			}
-			
-			return summation;
+			return sumOver(product, except);
 		}
 		
 	}
 	
+	private double[] sumOver(double[] product, Vertex except) {
+		double[] summation = {0,0,0,0};
+		int pos = neighborList.indexOf(except);
+		int rep = (int) Math.pow(4, pos);
+		int i = 0;
+		int j = 1;
+		int count = 0;
+
+		while (i < constraintVector.length) {
+			
+			if ( j%(rep) == 0 ) {
+				// switch to next element of F4
+				summation[((count)%4)] += product[i];
+				//System.out.println("i: " + i + " count: " + count +"(i % rep): " + (i%rep) + " product[i] = " + product[i] + " summation[" + (count%4)+"]");
+				
+				count++;
+				count %= 4;
+			} else {
+				summation[count] += product[i];
+				//System.out.println("i: " + i + " count: " + count +"(i % rep): " + (i%rep) + " product[i] = " + product[i] + " summation[" + (count)+"]");					
+			}
+			j++;
+			i++;
+		}
+		return summation;
+	}
+
 	private double[] productOfMessages(Vertex except) {
 		double[] product = new double[constraintVector.length];
+		
 		for (int i = 0; i < constraintVector.length; i++) {
-			product[i] = getBinaryConstraint(constraintVector[i]);
+			product[i] = constraintVector[i];
 		}
-		//System.out.println(Arrays.toString(product) + " constraint " + Arrays.toString(constraintVector));
-		//System.out.println("Nr of neighbors: " + neighborList.size());
+		
 		for (Vertex n: neighborList) {
 			if (!n.equals(except) && hasMessageFrom(n)) {
-				//System.out.println(this.toString() + " has message from " + n.toString());
 				int sizeN = 4;
 				int repetitionLength = findLength(neighborList.indexOf(n));
 				
@@ -119,6 +110,7 @@ public class Factor extends Vertex {
 				}
 			}
 		}
+		
 		return product;
 	}
 	
@@ -133,16 +125,6 @@ public class Factor extends Vertex {
 				i++;
 			}
 			return size;
-		}
-	}
-
-	private double getBinaryConstraint(int constraint) {
-		if (constraint == 1) {
-			return 1.0;
-		} else if (constraint == 0) {
-			return 0;
-		}else {
-			return -1349;
 		}
 	}
 

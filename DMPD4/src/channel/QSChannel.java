@@ -14,9 +14,8 @@ import f4.Element;
  *  w²| a | b | c | p
  * 
  * ( def. 2 - http://ocw.usu.edu/Electrical_and_Computer_Engineering/Information_Theory/lecture9.pdf ) 
- * 
- * 
  */
+
 public class QSChannel {
 	
 	public double p;

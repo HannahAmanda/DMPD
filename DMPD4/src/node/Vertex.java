@@ -63,21 +63,11 @@ public abstract class Vertex {
 	}
 	
 	public void passMessageTo(Vertex to) {
-		for (Message m: messageList) {
-		//	System.out.println(m.toString());
-		}
 		
 		Message m = new Message(this, calculateTransmission(to));
 		to.receiveMessage(m);
 		System.out.println(toString() + " -> " + to.toString() + ": " + Arrays.toString(m.getMessage()));
-	
-		// TODO: Need to keep track of the neighbors one has sent to?
-		// A - Yes, update pendingNeighborList
-		/*for (Vertex n: pendingNeighborList) {
-			if (to.equals(n)) {
-				pendingNeighborList.remove(n);
-			}
-		}*/
+
 	}
 	
 	public void receiveMessage(Message m) {
@@ -96,13 +86,6 @@ public abstract class Vertex {
 			messageList.remove(index);
 			messageList.add(m);
 		}
-		
-		// update pendingNeighborsList
-		/*for(Vertex n: neighborList){
-			if(!n.equals(m.getSender()) && !pendingNeighborList.contains(n)){
-				pendingNeighborList.add(n);
-			}
-		}*/
 	}
 	
 	@Override

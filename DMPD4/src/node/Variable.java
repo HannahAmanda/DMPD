@@ -1,5 +1,7 @@
 package node;
 
+import java.util.Arrays;
+
 import f4.Element;
 import message.Message;
 
@@ -23,18 +25,24 @@ public class Variable extends Vertex{
 
 	@Override
 	public double[] calculateTransmission(Vertex except) {
-		double[] transmission = softInfo;
+		double[] transmission = {1,1,1,1};
 		
 		for (int i = 0; i < messageList.size(); i++) {
 			if (!messageList.get(i).getSender().equals(except)) {
 				
+				double[] message = messageList.get(i).getMessage();
+				// System.out.println(toString() + " Message: " + Arrays.toString(message) + " from: " + messageList.get(i).getSender());
 				for (int j = 0; j < 4; j++) {
-					transmission[j] *= messageList.get(i).getMessage()[j];
+					// System.out.println("i: " + i + " trans[j]: " + transmission[j] + " j: " + j + " message[j] " + message[j]);
+					transmission[j] *= (message[j]);
 				}
-				
 			}
 		}
 		
+		transmission[0] *= softInfo[0];
+		transmission[1] *= softInfo[1];
+		transmission[2] *= softInfo[2];
+		transmission[3] *= softInfo[3];
 		
 		return transmission;
 	}
@@ -46,7 +54,13 @@ public class Variable extends Vertex{
 	public void passInitialMessages() {
 		if (receivedSoftInfo) {
 			for (Vertex n:neighborList) {
-				n.receiveMessage(new Message(this, softInfo));
+				double[] tran = new double[4];
+				tran[0] = (softInfo[0]);
+				tran[1] = (softInfo[1]);
+				tran[2] = (softInfo[2]);
+				tran[3] = (softInfo[3]);
+				
+				n.receiveMessage(new Message(this, tran));
 			}
 			
 		} else {
@@ -58,7 +72,7 @@ public class Variable extends Vertex{
 	public void receiveSoftInfo(double[] softInfo) {
 		receivedSoftInfo = true;
 		this.softInfo = softInfo;
-		// System.out.println("Soft info: " + softInfo[0]+ ", " + softInfo[1]+ ", " + softInfo[2] + ", " + softInfo[3]);
+		System.out.println(toString() + " Soft info: " + softInfo[0]+ ", " + softInfo[1]+ ", " + softInfo[2] + ", " + softInfo[3]);
 	}
 
 	private void marginalize() {
