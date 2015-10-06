@@ -8,29 +8,25 @@ import node.GNode;
 import java.util.ArrayList;
 
 public class Graph {
+	
 	private int iterations = 3;
+	private double p;
+	
 	private List<MetaNode> nodes = new ArrayList<MetaNode>();
 	private List<GNode> gNodes = new ArrayList<GNode>();
 	private List<MetaEdge> edges = new ArrayList<MetaEdge>();
 
 	
-	
-	public void addNode(MetaNode n){
-		nodes.add(n);
+	public Graph(double p){
+		this.p = p;
 	}
 	
-	public void addGNode(GNode gNode) {
-		gNodes.add(gNode);
+	public double getP() {
+		return p;
 	}
 	
-	public void addEdge(int i, int j) {
-		MetaNode nI = getNodeFromId(i);
-		MetaNode nJ = getNodeFromId(j);
-		nI.addNeighbor(nJ);
-		nJ.addNeighbor(nI);
-		
-		edges.add(new MetaEdge(nI, nJ));
-		
+	public void setP(double p) {
+		this.p = p;
 	}
 	
 	public List<MetaNode> getNodes() {
@@ -48,6 +44,25 @@ public class Graph {
 			}
 		}
 		return null;
+	}
+	
+	public void addNode(MetaNode n){
+		nodes.add(n);
+		gNodes.add(new GNode(n.getVariable(),p));
+	}
+	
+	public void addGNode(GNode gNode) {
+		gNodes.add(gNode);
+	}
+	
+	public void addEdge(int i, int j) {
+		MetaNode nI = getNodeFromId(i);
+		MetaNode nJ = getNodeFromId(j);
+		nI.addNeighbor(nJ);
+		nJ.addNeighbor(nI);
+		
+		edges.add(new MetaEdge(nI, nJ));
+		
 	}
 	
 	public Element[] decode(Element[] transmission) {
@@ -152,7 +167,15 @@ public class Graph {
 	}
 
 	public void calculateConstraintVectors() {
+		generateCodeSpace();
 				
+	}
+
+	private void generateCodeSpace() {
+		Element[][] codespace = new Element[(int) Math.pow(4, nodes.size())][nodes.size()];
+		
+		
+		
 	}
 	
 }

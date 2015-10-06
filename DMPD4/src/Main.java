@@ -30,14 +30,20 @@ public class Main {
 			 * --- ---
 			 */
 			
-			// Number of nodes in graph
-			int nodes = Integer.parseInt(br.readLine());
+			
+			// INITIATE CHANNEL
+			double p = Double.parseDouble(br.readLine());
+			QSChannel channel = new QSChannel(p);
+			
 			
 			// CONSTRUCT GRAPH
-			Graph g = new Graph();
+			Graph g = new Graph(p);
+			int nodes = Integer.parseInt(br.readLine());
+			
 			for (int i = 0; i < nodes; i++) {
 				g.addNode(new MetaNode(i));
 			}
+			
 			
 			// PARSE ADJACENCY MATRIX
 			int k = 0;
@@ -53,25 +59,23 @@ public class Main {
 				k++;
 			}
 			
+			
 			// PRINT OUT GRAPH
 			System.out.println("*** GRAPH ***");
-			System.out.println(g.toString());
+			System.out.print(g.toString());
 			System.out.println("*** ***** ***");
+			
 			
 			// CALCULATE CONSTRAINT VECTORS
 			g.calculateConstraintVectors(); // TODO: yet to be implemented
-			
-			// INITIATE CHANNEL
-			double p = Double.parseDouble(br.readLine());
-			QSChannel channel = new QSChannel(p);
-			
+		
 			
 			
 			/** ##################################################
 			 *  ### The following code is UNDER CONSTRUCTION!! ###
 			 *  ################################################## **/
 			
-			
+	
 			
 			int[] f0 = {1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1};
 			int[] f1 = {1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1};
@@ -89,6 +93,8 @@ public class Main {
 			
 			Element[][] codespace = {zero, oneOmega, omegaOne, omegasq};
 			Element[][] perturbedCodespace = new Element[4][2];
+			
+			
 			
 			for (int i = 0; i < codespace.length; i++) {
 				Element[] v = channel.sendThroughChannel(codespace[i]);
@@ -114,9 +120,11 @@ public class Main {
 		
 			
 			
-		} catch(Exception e) {
-			System.out.println(e);
 		}
+		
+		/*catch(Exception e) {
+			System.out.println(e);
+		}*/
 		
 
 		
