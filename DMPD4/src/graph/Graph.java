@@ -166,16 +166,12 @@ public class Graph {
 		}
 	}
 
-	public void calculateConstraintVectors() {
-		generateCodeSpace();
+	public void generateIndicatorVectors() {
+		sortNeighbors();
+		for (MetaNode n: nodes) {
+			n.generateIndicatorVector();
+		}
 				
-	}
-
-	private void generateCodeSpace() {
-		Element[][] codespace = new Element[(int) Math.pow(4, nodes.size())][nodes.size()];
-		
-		
-		
 	}
 	
 }

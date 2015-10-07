@@ -88,13 +88,13 @@ public class Factor extends Vertex {
 		
 		for (Vertex n: neighborList) {
 			if (!n.equals(except) && hasMessageFrom(n)) {
-				int sizeN = 4;
-				int repetitionLength = findLength(neighborList.indexOf(n));
+
+				int repetitionLength = findRepitionLength(neighborList.indexOf(n));
 				
 				int i = 0;
 				while (i < constraintVector.length) {
 					int count = 0;
-					while ( count < sizeN) {
+					while ( count < 4) {
 						int j = 0;
 						while (j < repetitionLength) {
 							for (Message m: messageList) {
@@ -114,7 +114,101 @@ public class Factor extends Vertex {
 		return product;
 	}
 	
-	private int findLength(int pos) {
+	public void generateVector() {
+		
+		int nrOfZeros = (int) Math.pow(2, 2*(neighborList.size()-1));
+		int[] rVector = findValuesForZero(nrOfZeros);
+		
+		int[] indicatorValues = new int[(int) Math.pow(4, neighborList.size())];
+		
+		for (Vertex n: neighborList) {
+			int i = 0;
+			while (i < indicatorValues.length) {
+				
+				int x = 0;
+				while (x < rVector.length) {
+					
+					
+				}
+			}
+		}
+		
+	}
+	
+	private int[] findValuesForZero(int zeros) {
+		int[] rVector = new int[zeros];
+		
+		int complexity = 0;
+		for (Vertex n: neighborList) {
+			if (!n.equals(buddy)) {
+				
+				
+				int repLength = findRepitionLength(neighborList.indexOf(n));
+				int truthTableLength = (int) Math.pow(4,  neighborList.size());
+				
+				int i = 0;
+				while (i < truthTableLength) {
+					
+					int element = 0;
+					while (element < rVector.length) {
+						
+						int j = 0;
+						while (j < repLength) {
+							int x = rVector[element];
+							rVector[element] = sum(sum(getB(element), x),1);
+							complexity++;
+							i++;
+							j++;
+							element++;
+						}
+						i += (3*repLength);
+						
+					}
+				}
+			}	
+		}
+		
+		System.out.println(toString() + "complexity: " + complexity + " NEW: " + Arrays.toString(rVector));
+		
+		
+		return rVector;
+	}
+
+	/**
+	 * Implementation of single binary addition.
+	 * 
+	 * @param b - 0 || 1
+	 * @param x - 0 || 1
+	 * @return binary sum of b and x
+	 */
+	private int sum(int b, int x) {
+		if (b == x) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	/**
+	 * Returns the b-value of the equation 
+	 *        x = a + bw
+	 * for the element in the truth table. 
+	 * 
+	 * @param element
+	 * @return
+	 */
+	private int getB(int element) {
+		if (element == 0 || element == 1) {
+			return 0;
+		} else if (element == 2 || element == 3) {
+			return 1;
+		}
+		
+		return -1349;
+	}
+
+	
+	private int findRepitionLength(int pos) {
 		if (pos == 0) {
 			return 1;
 		} else {
@@ -143,12 +237,13 @@ public class Factor extends Vertex {
 	
 	public void sortNeighbors() {
 		List<Vertex> sorted = new ArrayList<Vertex>();
-		int index = neighborList.size()-1;;
-		while (index >= 0) {
+		
+		int index = 0;
+		while (index < neighborList.size()) {
 			for (int i = 0; i < neighborList.size(); i++) {
 				if (neighborList.get(i).nodeId == index) {
 					sorted.add(neighborList.get(i));
-					index--;
+					index++;
 				}
 			}
 		}
@@ -160,4 +255,5 @@ public class Factor extends Vertex {
 	public void reset() {
 		messageList.clear();
 	}
+
 }

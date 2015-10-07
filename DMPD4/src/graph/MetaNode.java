@@ -128,6 +128,11 @@ public class MetaNode {
 	public String toString() {
 		return "M" + nodeId;
 	}
+
+
+	public void generateIndicatorVector() {
+		f.generateVector();	
+	}
 	
 	
 	

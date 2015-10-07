@@ -1,13 +1,13 @@
 package node;
 
-import java.util.Arrays;
-
 import f4.Element;
 import message.Message;
 
 public class Variable extends Vertex{
 	
+	
 	private Element state;
+	private int a, b;
 	private boolean receivedSoftInfo = false;
 	private double[] softInfo = {0,0,0,0};
 	private double[] marginalization = {1, 1, 1, 1};
@@ -21,6 +21,14 @@ public class Variable extends Vertex{
 	public Element getState() {
 		marginalize();
 		return state;
+	}
+	
+	public int getB() {
+		return b;
+	}
+	
+	public int getA() {
+		return a;
 	}
 
 	@Override
@@ -72,7 +80,40 @@ public class Variable extends Vertex{
 	public void receiveSoftInfo(double[] softInfo) {
 		receivedSoftInfo = true;
 		this.softInfo = softInfo;
-		System.out.println(toString() + " Soft info: " + softInfo[0]+ ", " + softInfo[1]+ ", " + softInfo[2] + ", " + softInfo[3]);
+		setAB();
+		// System.out.println(toString() + " Soft info: " + softInfo[0]+ ", " + softInfo[1]+ ", " + softInfo[2] + ", " + softInfo[3]);
+	}
+
+	private void setAB() {
+		int j = findReceivedState();
+		
+		if (j == 0) {
+			a = 0;
+			b = 0;
+		
+		} else if (j == 1) {
+			a = 1;
+			b = 0;
+			
+		} else if (j == 2) {
+			a = 0;
+			b = 1;
+			
+		} else if (j == 3) {
+			a = 1;
+			b = 1;
+		}
+		
+	}
+
+	private int findReceivedState() {
+		int j = 0;
+		for (int i = 0; i < 4; i++) {
+			if (softInfo[i] > softInfo[j]) {
+				j = i;
+			}
+		}
+		return j;
 	}
 
 	private void marginalize() {
@@ -150,5 +191,7 @@ public class Variable extends Vertex{
 		messageList.clear();	
 		
 	}
+
+	
 
 }
