@@ -89,8 +89,8 @@ public abstract class Vertex implements Comparable<Vertex> {
 			// toString());
 			messageList.add(m);
 		} else {
-			// System.out.println( " " + index + " " + m.toString() + " to " +
-			// toString());
+			 System.out.println( "REMOVED " +  m.toString() + " to " +
+			 toString());
 			messageList.remove(index);
 			messageList.add(m);
 		}
