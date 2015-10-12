@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import channel.QSChannel;
 import f4.Element;
@@ -20,17 +21,8 @@ import node.Vertex;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("IS.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("IS3.txt"))) {
 
-			/**
-			 * IS.txt
-			 * --- ---
-			 * | w 1 |
-			 * | 1 w |
-			 * --- ---
-			 */
-			
-			
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
 			QSChannel channel = new QSChannel(p);
@@ -65,10 +57,29 @@ public class Main {
 			System.out.print(g.toString());
 			System.out.println("*** ***** ***");
 			
-			
+		
 			// CALCULATE CONSTRAINT VECTORS
 			g.generateIndicatorVectors(); // TODO: yet to be TESTED!!!
 			
+			
+			// THE ZERO CODEWORD
+			Element[] zero = new Element[nodes];
+			for (int i = 0; i < nodes; i++) {
+				zero[i] = Element.ZERO;
+			}
+			
+			
+			// PASS CODEWORD THROUGH CHANNEL
+			Element[] received = channel.sendThroughChannel(zero);
+			
+			
+			// MESSAGE-PASSING
+			Element[] decoded = g.decode(received);
+			
+			System.out.println("##### r" + Arrays.toString(received) + " #####");
+			System.out.println("##### d" + Arrays.toString(decoded) + " #####");
+			
+			g.reset();
 		
 			
 			
@@ -76,23 +87,14 @@ public class Main {
 			 *  ### The following code is UNDER CONSTRUCTION!! ###
 			 *  ################################################## **/
 			
-	
-			
-//			int[] f0 = {1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1};
-//			int[] f1 = {1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1};
-//			
-//			g.getNodeFromId(0).getFactor().setConstraint(f0);
-//			g.getNodeFromId(1).getFactor().setConstraint(f1);		
-//			
-//			
 //			// PERTURB CODESPACE
-//			Element[] zero = {Element.ZERO, Element.ZERO};
-//			Element[] oneOmega = {Element.ONE, Element.OMEGA};
-//			Element[] omegaOne = {Element.OMEGA, Element.ONE};
-//			Element[] omegasq = {Element.OMEGASQ, Element.OMEGASQ};
+//			//Element[] 	zero 		= {Element.ZERO, Element.ZERO};
+//			Element[] 	oneOmega 	= {Element.ONE, Element.OMEGA};
+//			Element[] 	omegaOne 	= {Element.OMEGA, Element.ONE};
+//			Element[] 	omegasq 	= {Element.OMEGASQ, Element.OMEGASQ};
 //			
-//			Element[][] codespace = {zero, oneOmega, omegaOne, omegasq};
-//			Element[][] perturbedCodespace = new Element[4][2];
+//			Element[][] codespace 			= {zero, oneOmega, omegaOne, omegasq};
+//			Element[][] perturbedCodespace 	= new Element[4][2];
 //			
 //			
 //			
@@ -106,15 +108,15 @@ public class Main {
 //			// DECODE PERTURBED CODESPACE
 //			Element[][] decoded = new Element[4][2];
 //			for (int i = 0; i < perturbedCodespace.length; i++) {
-//				//decoded[i] = g.decode(perturbedCodespace[i]);
+//				decoded[i] = g.decode(perturbedCodespace[i]);
 //			
-//			/**	System.out.println();
+//				System.out.println();
+//				System.out.println("Codeword : " + codespace[i][0] + ", " + codespace[i][1]);
 //				System.out.println("Perturbed: " + perturbedCodespace[i][0] + ", " +  perturbedCodespace[i][1]);
 //				System.out.println("Decoded  : " + decoded[i][0] + ", " + decoded[i][1]);
-//				System.out.println("Codeword : " + codespace[i][0] + ", " + codespace[i][1]);
 //				System.out.println("### ### ###");
 //				System.out.println();
-//			*/
+//			
 //				g.reset();
 //			}
 		

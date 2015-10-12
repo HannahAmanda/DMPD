@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Graph {
 	
-	private int iterations = 3;
+	private int iterations = 10;
 	private double p;
 	
 	private List<MetaNode> nodes = new ArrayList<MetaNode>();
@@ -80,7 +80,7 @@ public class Graph {
 	}
 	
 	private Element[] getDecodeState() {
-		Element[] decodedWord = new Element[4];
+		Element[] decodedWord = new Element[nodes.size()];
 		
 		for (MetaNode n: nodes) {
 			Element decodedBit = n.getVariable().getState();
@@ -96,9 +96,18 @@ public class Graph {
 		int it = 0;
 		while (it < iterations) {
 			// System.out.println("ITERATION: " + (it+1));
-			for (MetaEdge e: edges) {
+			
+			/*for (MetaEdge e: edges) {
 				e.theOne.passMessageTo(e.theOther);
 				e.theOther.passMessageTo(e.theOne);
+			}*/
+			System.out.println("ITERATION: " + it);
+			for (MetaNode theOne: nodes) {
+				System.out.println("                                     NODE - " + theOne.toString());
+				theOne.internalMessagePassing();
+				for (MetaNode theOther: theOne.getNeighborList()) {
+					theOne.passMessageTo(theOther);
+				}
 			}
 			
 			it++;
@@ -138,7 +147,6 @@ public class Graph {
 		for (MetaNode m: nodes) {
 			m.sortNeighbors();
 		}
-		
 	}
 
 	@Override

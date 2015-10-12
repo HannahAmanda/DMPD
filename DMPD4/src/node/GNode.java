@@ -45,9 +45,9 @@ public class GNode extends Vertex {
 		double[] softInformation = new double[4];
 		for (int i = 0; i < softInformation.length; i++) {
 			if ( i == bitNumber) {
-				softInformation[i] = p;
+				softInformation[i] = p*10;
 			} else {
-				softInformation[i] = q;
+				softInformation[i] = q*10;
 			}
 		}
 		
@@ -58,7 +58,7 @@ public class GNode extends Vertex {
 	public void passMessageTo(Vertex to) {
 		double[] softInfo = calculateTransmission(n);
 		n.receiveSoftInfo(softInfo);
-		// System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo));
+		System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo));
 	}
 
 	@Override

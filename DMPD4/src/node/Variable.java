@@ -137,6 +137,8 @@ public class Variable extends Vertex{
 				updateState();	
 				
 			} else {
+				marginalization = marge;
+				updateState();
 				System.out.println(nodeName + " does not sum up: " + marge[0] + marge[1] + marge[2] + marge[3]);
 			}
 		} else {

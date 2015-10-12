@@ -23,7 +23,7 @@ public class MetaNode {
 		nodeId = i;
 		f = new Factor(i);
 		v = new Variable(i);
-				
+		
 		makeBuddies();
 	}
 
@@ -96,14 +96,13 @@ public class MetaNode {
 
 
 	public void passMessageTo(MetaNode theOther) {
-		internalMessagePassing();
 		v.passMessageTo(theOther.getFactor());
 		f.passMessageTo(theOther.getVariable());
 		
 	}
 
 
-	private void internalMessagePassing() {
+	public void internalMessagePassing() {
 		f.passMessageTo(v);
 		v.passMessageTo(f);	
 	}
