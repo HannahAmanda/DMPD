@@ -2,6 +2,7 @@ package node;
 
 import java.util.Arrays;
 
+import channel.QSChannel;
 import f4.Element;
 
 public class GNode extends Vertex {
@@ -50,6 +51,11 @@ public class GNode extends Vertex {
 				softInformation[i] = q*10;
 			}
 		}
+		QSChannel c = new QSChannel(p);
+		softInformation[0] = c.randomNumber();
+		softInformation[1] = c.randomNumber();
+		softInformation[2] = c.randomNumber();
+		softInformation[3] = c.randomNumber();
 		
 		return softInformation;
 	}

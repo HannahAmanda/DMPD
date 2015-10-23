@@ -21,7 +21,7 @@ import node.Vertex;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("IS.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("IS3.txt"))) {
 
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());

@@ -76,8 +76,9 @@ public abstract class Vertex implements Comparable<Vertex> {
 		}
 	}
 
-	public void receiveMessage(Message m) {
+	public void receiveMessage(Message incoming) {
 		int index = -1;
+		Message m = normalize(incoming);
 		for (Message v : messageList) {
 			if (v.getSender().equals(m.getSender())) {
 				index = messageList.indexOf(v);
@@ -89,10 +90,33 @@ public abstract class Vertex implements Comparable<Vertex> {
 			// toString());
 			messageList.add(m);
 		} else {
-			 System.out.println( "REMOVED " +  m.toString() + " to " +
-			 toString());
+			
 			messageList.remove(index);
 			messageList.add(m);
+		}
+	}
+
+	private Message normalize(Message incoming) {
+		double[] incomingNormalized = incoming.getMessage();
+		
+		double sum= 0;
+		for (int i = 0; i < incomingNormalized.length; i++) {
+			sum += incomingNormalized[i];
+		}
+		
+		for (int i = 0; i < incomingNormalized.length; i++) {
+			incomingNormalized[i] /= sum;
+		}
+		
+		return new Message(incoming.getSender(), incomingNormalized);
+	}
+	
+	/**
+	 * Calculates and passes messages to all neighbors
+	 */
+	public void passAllMessages() {
+		for (Vertex n: neighborList) {
+			passMessageTo(n);
 		}
 	}
 

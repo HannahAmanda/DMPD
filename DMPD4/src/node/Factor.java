@@ -188,11 +188,15 @@ public class Factor extends Vertex {
 					int x = rVector[i];
 					
 					
-					rVector[i] = binarySum(binarySum(b,x),1);
+					rVector[i] = binarySum(b,x);
 					//System.out.println("index: " + index +" element: " + element + " rVector[i]: " + rVector[i]+ " b: " + b + " x: " + x);
 				}
-				
 			}
+		}
+		
+		for (int i = 0; i < rVector.length; i++) {
+			
+			rVector[i] = binarySum(rVector[i], 1);
 		}
 
 		System.out.println(toString()  +": " +  neighborList.toString()); 
@@ -270,5 +274,6 @@ public class Factor extends Vertex {
 	public void reset() {
 		messageList.clear();
 	}
+
 
 }

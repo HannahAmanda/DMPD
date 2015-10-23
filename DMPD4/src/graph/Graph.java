@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Graph {
 	
-	private int iterations = 10;
+	private int iterations = 1;
 	private double p;
 	
 	private List<MetaNode> nodes = new ArrayList<MetaNode>();
@@ -102,13 +102,22 @@ public class Graph {
 				e.theOther.passMessageTo(e.theOne);
 			}*/
 			System.out.println("ITERATION: " + it);
+			//System.out.println("Factor nodes");
 			for (MetaNode theOne: nodes) {
 				System.out.println("                                     NODE - " + theOne.toString());
 				theOne.internalMessagePassing();
 				for (MetaNode theOther: theOne.getNeighborList()) {
 					theOne.passMessageTo(theOther);
 				}
+	//			theOne.getFactor().passAllMessages();
 			}
+			
+/*			System.out.println("Variable nodes");
+			for (MetaNode theOne:nodes) {
+				System.out.println("                                     NODE - " + theOne.toString());
+				theOne.getVariable().passAllMessages();
+			}*/
+			
 			
 			it++;
 		}
