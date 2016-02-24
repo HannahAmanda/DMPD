@@ -2,30 +2,32 @@ package message;
 
 import java.util.Arrays;
 
-import node.Vertex;
+import node.Node;
+import vertex.Vertex;
 
 
 public class Message {
 	
 	private final double[] message;
-	private final Vertex sender;
+	private final String name;
 	
-	public Message(Vertex sender, double[] message) {
+	public Message(String name, double[] message) {
+		this.name = name;
 		this.message = message;
-		this.sender = sender;
 	}
-
+	
 	public double[] getMessage() {
 		return message;
 	}
 	
-	public Vertex getSender() {
-		return sender;
+	
+	public String getSenderName() {
+		return name;
 	}
 
 	@Override
 	public String toString() {
-		return sender.getNodeName() + ":       " + Arrays.toString(message);
+		return name + ":       " + Arrays.toString(message);
 	}
 
 }

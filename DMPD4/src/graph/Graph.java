@@ -3,18 +3,22 @@ package graph;
 import java.util.List;
 
 import f4.Element;
-import node.GNode;
 
 import java.util.ArrayList;
 
+import node.MetaNode;
+import node.Node;
+import channel.GNode;
+
 public class Graph {
 	
-	private int iterations = 1;
+	private int iterations = 20;
 	private double p;
+	private boolean hasUnderlyingFG;
 	
-	private List<MetaNode> nodes = new ArrayList<MetaNode>();
+	private List<Node> nodes = new ArrayList<Node>();
 	private List<GNode> gNodes = new ArrayList<GNode>();
-	private List<MetaEdge> edges = new ArrayList<MetaEdge>();
+	private List<Edge> edges = new ArrayList<Edge>();
 
 	
 	public Graph(double p){
@@ -29,7 +33,7 @@ public class Graph {
 		this.p = p;
 	}
 	
-	public List<MetaNode> getNodes() {
+	public List<Node> getNodes() {
 		return nodes;
 	}
 	
@@ -37,8 +41,8 @@ public class Graph {
 		return nodes.size();
 	}
 	
-	public MetaNode getNodeFromId(int i) {
-		for(MetaNode n: nodes) {
+	public Node getNodeFromId(int i) {
+		for(Node n: nodes) {
 			if (n.getNodeId() == i) {
 				return n;
 			}
@@ -46,9 +50,9 @@ public class Graph {
 		return null;
 	}
 	
-	public void addNode(MetaNode n){
+	public void addNode(Node n){
 		nodes.add(n);
-		gNodes.add(new GNode(n.getVariable(),p));
+		gNodes.add(new GNode(n,p));
 	}
 	
 	public void addGNode(GNode gNode) {
@@ -56,13 +60,13 @@ public class Graph {
 	}
 	
 	public void addEdge(int i, int j) {
-		MetaNode nI = getNodeFromId(i);
-		MetaNode nJ = getNodeFromId(j);
+		Node nI = getNodeFromId(i);
+		Node nJ = getNodeFromId(j);
+		
 		nI.addNeighbor(nJ);
 		nJ.addNeighbor(nI);
 		
-		edges.add(new MetaEdge(nI, nJ));
-		
+		edges.add(new Edge(nI, nJ));
 	}
 	
 	public Element[] decode(Element[] transmission) {
@@ -74,50 +78,19 @@ public class Graph {
 	}
 	
 	public void reset() {
-		for (MetaNode n: nodes) {
+		for (Node n: nodes) {
 			n.reset();
 		}
 	}
-	
-	private Element[] getDecodeState() {
-		Element[] decodedWord = new Element[nodes.size()];
-		
-		for (MetaNode n: nodes) {
-			Element decodedBit = n.getVariable().getState();
-			decodedWord[n.getNodeId()] = decodedBit;
-		}
-		
-		return decodedWord;
-	}
 
 	private void propagateBeliefs() {
-		// System.out.println("BELIEF PROPOGATION");
-		// System.out.println();
 		int it = 0;
 		while (it < iterations) {
-			// System.out.println("ITERATION: " + (it+1));
 			
-			/*for (MetaEdge e: edges) {
+			for (Edge e: edges) {
 				e.theOne.passMessageTo(e.theOther);
 				e.theOther.passMessageTo(e.theOne);
-			}*/
-			System.out.println("ITERATION: " + it);
-			//System.out.println("Factor nodes");
-			for (MetaNode theOne: nodes) {
-				System.out.println("                                     NODE - " + theOne.toString());
-				theOne.internalMessagePassing();
-				for (MetaNode theOther: theOne.getNeighborList()) {
-					theOne.passMessageTo(theOther);
-				}
-	//			theOne.getFactor().passAllMessages();
-			}
-			
-/*			System.out.println("Variable nodes");
-			for (MetaNode theOne:nodes) {
-				System.out.println("                                     NODE - " + theOne.toString());
-				theOne.getVariable().passAllMessages();
-			}*/
-			
+			}			
 			
 			it++;
 		}
@@ -125,18 +98,34 @@ public class Graph {
 	}
 
 	private void init() {
-		// initial message-passing
-		for (MetaNode n: nodes) {
+		for (Node n: nodes) {
 			n.passInitialMessages();
 		}
-		// System.out.println("Initial messages passed.");
-		
+		System.out.println("Initial messages passed.");	
 	}
+
+	
+	private Element[] getDecodeState() {
+		Element[] decodedWord = new Element[nodes.size()];
+		
+		for (Node x: nodes) {
+			
+			if( x instanceof MetaNode){
+				MetaNode n = (MetaNode) x;
+				
+				Element decodedBit = n.getVariable().getState();
+				decodedWord[n.getNodeId()] = decodedBit;
+			}
+		}
+		
+		return decodedWord;
+	}
+	
 	
 	private void passSoftInformation(Element[] transmission) {
 		gNodeBitNotification(transmission);
 		gNodeTransmit();
-		// System.out.println("Soft information passed.");
+		System.out.println("Soft information passed.");
 	}
 
 	private void gNodeBitNotification(Element[] transmission) {
@@ -147,32 +136,31 @@ public class Graph {
 
 	private void gNodeTransmit() {
 		for (GNode g: gNodes) {
-			g.passMessageTo(g.getBuddy());
-		}
-		
-	}
-	
-	public void sortNeighbors() {
-		for (MetaNode m: nodes) {
-			m.sortNeighbors();
+			g.passChannelInfo();
 		}
 	}
 
 	@Override
 	public String toString() {
 		String graph = "";
-		for (MetaEdge e: edges) {
+		for (Edge e: edges) {
 			graph += e.toString() + "\n";
 		}
 		
 		return graph;
 	}
+
+	public void finalSetup() {
+		for (Node n: nodes) {
+			n.finalSetup();
+		}
+	}
 	
-	private class MetaEdge {
-		public MetaNode theOne;
-		public MetaNode theOther;
+	private class Edge {
+		public Node theOne;
+		public Node theOther;
 		
-		public MetaEdge(MetaNode theOne, MetaNode theOther) {
+		public Edge(Node theOne, Node theOther) {
 			this.theOne = theOne;
 			this.theOther = theOther;
 		}
@@ -181,14 +169,6 @@ public class Graph {
 		public String toString() {
 			return "(" + theOne.toString() + ", " + theOther.toString() + ")";
 		}
-	}
-
-	public void generateIndicatorVectors() {
-		sortNeighbors();
-		for (MetaNode n: nodes) {
-			n.generateIndicatorVector();
-		}
-				
 	}
 	
 }

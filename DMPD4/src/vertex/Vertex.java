@@ -1,4 +1,4 @@
-package node;
+package vertex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +60,7 @@ public abstract class Vertex implements Comparable<Vertex> {
 
 	public boolean hasMessageFrom(Vertex v) {
 		for (Message m : messageList) {
-			if (m.getSender() == v)
+			if (m.getSenderName().equals(v.nodeName))
 				return true;
 		}
 		return false;
@@ -68,7 +68,7 @@ public abstract class Vertex implements Comparable<Vertex> {
 
 	public void passMessageTo(Vertex to) {
 		if (canSendTo(to)) {
-			Message m = new Message(this, calculateTransmission(to));
+			Message m = new Message(nodeName, calculateTransmission(to));
 		 	to.receiveMessage(m);
 		 	System.out.println(toString() + " -> " + to.toString() + ": " + Arrays.toString(m.getMessage()));
 		} else {
@@ -80,7 +80,7 @@ public abstract class Vertex implements Comparable<Vertex> {
 		int index = -1;
 		Message m = normalize(incoming);
 		for (Message v : messageList) {
-			if (v.getSender().equals(m.getSender())) {
+			if (v.getSenderName().equals(m.getSenderName())) {
 				index = messageList.indexOf(v);
 			}
 		}
@@ -108,7 +108,7 @@ public abstract class Vertex implements Comparable<Vertex> {
 			incomingNormalized[i] /= sum;
 		}
 		
-		return new Message(incoming.getSender(), incomingNormalized);
+		return new Message(incoming.getSenderName(), incomingNormalized);
 	}
 	
 	/**

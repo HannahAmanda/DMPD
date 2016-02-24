@@ -1,21 +1,17 @@
 
 
 import graph.Graph;
-import graph.MetaNode;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 
+import node.MetaNode;
 import channel.QSChannel;
 import f4.Element;
-import node.Factor;
-import node.GNode;
-import node.Variable;
-import node.Vertex;
 
 
 
@@ -26,21 +22,33 @@ public class Main {
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
 			QSChannel channel = new QSChannel(p);
+		
+			
+			// UNDERLYING FACTOR GRAPH
+			/*int fg = Integer.parseInt(br.readLine());*/
+			// TODO: contingency for when fg is not 0 or 1. 
 			
 			
 			// CONSTRUCT GRAPH
 			Graph g = new Graph(p);
 			int nodes = Integer.parseInt(br.readLine());
+			int fg = 1;
 			
 			for (int i = 0; i < nodes; i++) {
-				g.addNode(new MetaNode(i));
+				if (fg == 1) {
+					g.addNode(new MetaNode(i));
+				} else if (fg == 0) {
+					// add Node
+				}
 			}
 			
+			System.out.println(g.getNodes().toString());
 			
 			// PARSE ADJACENCY MATRIX
 			int k = 0;
 			while (k < nodes) {
 				String row = br.readLine();
+				System.out.println(row);
 				int j = k;
 				while (j < nodes) {
 					if (row.charAt(j) == '1') {
@@ -59,7 +67,7 @@ public class Main {
 			
 		
 			// CALCULATE CONSTRAINT VECTORS
-			g.generateIndicatorVectors(); // TODO: yet to be TESTED!!!
+			g.finalSetup(); // IndicatorVectors made TODO: yet to be TESTED!!!
 			
 			
 			// THE ZERO CODEWORD

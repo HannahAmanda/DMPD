@@ -1,4 +1,4 @@
-package node;
+package vertex;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -99,7 +99,7 @@ public class Factor extends Vertex {
 						int j = 0;
 						while (j < repetitionLength) {
 							for (Message m : messageList) {
-								if (m.getSender().equals(n)) {
+								if (m.getSenderName().equals(n.nodeName)) {
 									product[i] *= m.getMessage()[count];
 								}
 							}
@@ -262,7 +262,7 @@ public class Factor extends Vertex {
 		double[] identityMessage = { 1.0, 1.0, 1.0, 1.0 };
 
 		for (Vertex n : neighborList) {
-			n.receiveMessage(new Message(this, identityMessage));
+			n.receiveMessage(new Message(nodeName, identityMessage));
 		}
 	}
 

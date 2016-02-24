@@ -1,4 +1,4 @@
-package node;
+package vertex;
 
 import f4.Element;
 import message.Message;
@@ -36,7 +36,7 @@ public class Variable extends Vertex{
 		double[] transmission = {1,1,1,1};
 		
 		for (int i = 0; i < messageList.size(); i++) {
-			if (!messageList.get(i).getSender().equals(except)) {
+			if (!messageList.get(i).getSenderName().equals(except.nodeName)) {
 				
 				double[] message = messageList.get(i).getMessage();
 				// System.out.println(toString() + " Message: " + Arrays.toString(message) + " from: " + messageList.get(i).getSender());
@@ -68,7 +68,7 @@ public class Variable extends Vertex{
 				tran[2] = (softInfo[2]);
 				tran[3] = (softInfo[3]);
 				
-				n.receiveMessage(new Message(this, tran));
+				n.receiveMessage(new Message(nodeName, tran));
 			}
 			
 		} else {

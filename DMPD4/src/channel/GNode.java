@@ -1,24 +1,25 @@
-package node;
+package channel;
 
 import java.util.Arrays;
 
-import channel.QSChannel;
+import node.Node;
 import f4.Element;
 
-public class GNode extends Vertex {
+public class GNode {
 	
-	private Variable n;
+	private Node n;
 	
+	private String nodeName;
 	private double p; 
 	private double q;
 	private Element bit;
 	private int bitNumber;
 	
-	public GNode(Variable n, double p) {
+	public GNode(Node n, double p) {
 		this.p = p;
 		q = (1-p)/3;
 		this.n = n;
-		nodeName = "g" + n.nodeId;
+		nodeName = "g" + n.getNodeId();
 	}
 
 	public void setRecievedBit(Element bit) {
@@ -34,15 +35,15 @@ public class GNode extends Vertex {
 		}
 	}
 	
-	public Variable getNeighbor() {
+	public Node getNeighbor() {
 		return n;
 	}
 	public Element getBit() {
 		return bit;
 	}
 	
-	@Override
-	public double[] calculateTransmission(Vertex node) {
+	
+	private double[] calculateTransmission() {
 		double[] softInformation = new double[4];
 		for (int i = 0; i < softInformation.length; i++) {
 			if ( i == bitNumber) {
@@ -51,26 +52,21 @@ public class GNode extends Vertex {
 				softInformation[i] = q*10;
 			}
 		}
-		QSChannel c = new QSChannel(p);
-		softInformation[0] = c.randomNumber();
-		softInformation[1] = c.randomNumber();
-		softInformation[2] = c.randomNumber();
-		softInformation[3] = c.randomNumber();
 		
 		return softInformation;
 	}
 	
-	@Override
-	public void passMessageTo(Vertex to) {
-		double[] softInfo = calculateTransmission(n);
+
+	public void passChannelInfo() {
+		double[] softInfo = calculateTransmission();
 		n.receiveSoftInfo(softInfo);
 		System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo));
 	}
 
+	
 	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
+	public String toString() {
+		return nodeName;
 	}
 	
 	
