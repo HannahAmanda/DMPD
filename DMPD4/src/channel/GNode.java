@@ -1,6 +1,7 @@
 package channel;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import node.Node;
 import f4.Element;
@@ -14,6 +15,8 @@ public class GNode {
 	private double q;
 	private Element bit;
 	private int bitNumber;
+	private static final Random rand = new Random(67);
+	
 	
 	public GNode(Node n, double p) {
 		this.p = p;
@@ -58,7 +61,7 @@ public class GNode {
 	
 
 	public void passChannelInfo() {
-		double[] softInfo = calculateTransmission();
+		double[] softInfo = {randomNumber(), randomNumber(), randomNumber(), randomNumber()};
 		n.receiveSoftInfo(softInfo);
 		System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo));
 	}
@@ -69,6 +72,9 @@ public class GNode {
 		return nodeName;
 	}
 	
+	public static double randomNumber() {
+		return (rand.nextDouble());
+	}
 	
 	
 }

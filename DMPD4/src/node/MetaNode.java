@@ -1,5 +1,8 @@
 package node;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import message.Message;
 import vertex.Factor;
 import vertex.Variable;
@@ -8,9 +11,11 @@ public class MetaNode extends Node{
 	
 	private Factor f;
 	private Variable v;
+	private List<Message> messages = new ArrayList<Message>();
 	
 	public MetaNode(int i) {
 		
+		nodeName = "M" + i;
 		nodeId = i;
 		f = new Factor(i);
 		v = new Variable(i);
@@ -83,7 +88,29 @@ public class MetaNode extends Node{
 	@Override
 	public void receiveMessage(Message m) {
 		// TODO Auto-generated method stub
+		String name = m.getSenderName();
+		int index = -1;
+		for (Message x: messages) {
+			if (x.getSenderName().equals(name)) {
+				index = messages.indexOf(x);
+			}
+		}
 		
+		if (index != -1) {
+			messages.remove(index);
+		}
+		messages.add(m);
+	}
+
+	@Override
+	public boolean hasMessageFrom(Node to) {
+		boolean has = false; 
+		for (Message m: messages) {
+			if (m.getSenderName().equals(to.getNodeName())) {
+				has = true;
+			}
+		}
+		return has;
 	}
 
 	

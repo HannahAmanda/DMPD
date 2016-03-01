@@ -8,21 +8,31 @@ import java.util.ArrayList;
 
 import node.MetaNode;
 import node.Node;
+import node.SimpleNode;
 import channel.GNode;
 
 public class Graph {
 	
-	private int iterations = 20;
+	private int iterations = 1;
 	private double p;
-	private boolean hasUnderlyingFG;
+	private boolean fg;
+	private boolean isTree; 
 	
 	private List<Node> nodes = new ArrayList<Node>();
 	private List<GNode> gNodes = new ArrayList<GNode>();
 	private List<Edge> edges = new ArrayList<Edge>();
 
 	
-	public Graph(double p){
+	public Graph(double p, boolean tree, int factorgraph){
 		this.p = p;
+		this.isTree = tree;
+		if (factorgraph == 0) {
+			fg = false;
+		} else if (factorgraph == 1) {
+			fg = true;
+		} else {
+			fg = false;
+		}
 	}
 	
 	public double getP() {
@@ -84,17 +94,88 @@ public class Graph {
 	}
 
 	private void propagateBeliefs() {
+		
+		if (isTree) {
+			traverseTree();
+		} else {
+			iterateEdges();
+		}
+		
+	}
+
+	private void traverseTree() {
+		passMessagesFromLeaves(nodes.size()/2);
+		System.out.println("passed messages from leaves.");
+		passMessagesToLeaves(nodes.size()/2);
+		System.out.println("passed messages to leaves.");
+	}
+
+	private void passMessagesToLeaves(int i) {
+		Node from = getNodeFromId(i);
+		if (from.isLeaf()) {
+			from = from.getNeighborList().get(0);
+		}
+		System.out.println("root " + from.getNodeName());
+		for (Node to: from.getNeighborList()) {
+				from.passMessageTo(to);
+				passMessagesToLeaves2(to, from);
+		}
+	}
+
+	private void passMessagesToLeaves2(Node to, Node from) {
+		if (to.getNeighborList().size() == 1) {
+			return;
+		} else {
+			for (Node n: to.getNeighborList()) {
+				if (!n.equals(from)) {
+					to.passMessageTo(n);
+					passMessagesToLeaves2(n, to);
+				}
+			}
+		}
+	}
+
+	private void passMessagesFromLeaves(int i) {
+		Node root = getNodeFromId(i);
+		if (root.isLeaf()) {
+			Node parent = root.getNeighborList().get(0);
+			for (Node n:parent.getNeighborList()) {
+				passMessagesFromLeaves2(n,parent);
+			}
+		} else {
+			for (Node n:root.getNeighborList()) {
+				passMessagesFromLeaves2(n,root);
+			}
+		}
+		return;
+	}
+	
+	private void passMessagesFromLeaves2(Node from, Node to) {
+		if (from.getNeighborList().size() ==1) {
+			from.passMessageTo(to);
+			return;
+		} else {
+			for (Node n:from.getNeighborList()) {
+				if (!n.equals(to)) {
+					passMessagesFromLeaves2(n, from);
+				}
+			}
+			from.passMessageTo(to);
+		}
+	}
+
+	private void iterateEdges() {
 		int it = 0;
 		while (it < iterations) {
 			
 			for (Edge e: edges) {
+				System.out.println(e.toString());
 				e.theOne.passMessageTo(e.theOther);
 				e.theOther.passMessageTo(e.theOne);
 			}			
 			
 			it++;
 		}
-		
 	}
 
 	private void init() {
@@ -104,23 +185,27 @@ public class Graph {
 		System.out.println("Initial messages passed.");	
 	}
 
-	
 	private Element[] getDecodeState() {
 		Element[] decodedWord = new Element[nodes.size()];
 		
 		for (Node x: nodes) {
-			
+
 			if( x instanceof MetaNode){
 				MetaNode n = (MetaNode) x;
 				
 				Element decodedBit = n.getVariable().getState();
+				decodedWord[n.getNodeId()] = decodedBit;
+				
+			} else if (x instanceof SimpleNode) {
+				SimpleNode n = (SimpleNode) x;
+				
+				Element decodedBit = n.getState();
 				decodedWord[n.getNodeId()] = decodedBit;
 			}
 		}
 		
 		return decodedWord;
 	}
-	
 	
 	private void passSoftInformation(Element[] transmission) {
 		gNodeBitNotification(transmission);

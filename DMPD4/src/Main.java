@@ -6,10 +6,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.util.Arrays;
 
 import node.MetaNode;
+import node.SimpleNode;
 import channel.QSChannel;
 import f4.Element;
 
@@ -17,7 +17,7 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("IS3.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("doubleP3.txt"))) {
 
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
@@ -25,20 +25,24 @@ public class Main {
 		
 			
 			// UNDERLYING FACTOR GRAPH
-			/*int fg = Integer.parseInt(br.readLine());*/
+			int fg = Integer.parseInt(br.readLine());
 			// TODO: contingency for when fg is not 0 or 1. 
 			
+			boolean tree = false;
+			String t = br.readLine(); 
+			if (t.equals("t")) {
+				tree = true;
+			}
 			
 			// CONSTRUCT GRAPH
-			Graph g = new Graph(p);
+			Graph g = new Graph(p, tree, fg);
 			int nodes = Integer.parseInt(br.readLine());
-			int fg = 1;
 			
 			for (int i = 0; i < nodes; i++) {
 				if (fg == 1) {
 					g.addNode(new MetaNode(i));
 				} else if (fg == 0) {
-					// add Node
+					g.addNode(new SimpleNode(i));
 				}
 			}
 			
@@ -78,8 +82,9 @@ public class Main {
 			
 			
 			// PASS CODEWORD THROUGH CHANNEL
-			Element[] received = channel.sendThroughChannel(zero);
+			//Element[] received = channel.sendThroughChannel(zero);
 			
+			Element[] received = {Element.ZERO, Element.ONE, Element.ZERO, Element.ONE, Element.ZERO, Element.ZERO};
 			
 			// MESSAGE-PASSING
 			Element[] decoded = g.decode(received);

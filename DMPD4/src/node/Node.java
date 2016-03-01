@@ -14,7 +14,7 @@ public abstract class Node {
 	public abstract void receiveSoftInfo(double[] softInfo);
 	public abstract void passMessageTo(Node theOther);
 	public abstract void passInitialMessages();
-
+	public abstract boolean hasMessageFrom(Node to);
 	public abstract void receiveMessage(Message m);
 	
 	
@@ -37,6 +37,10 @@ public abstract class Node {
 	@Override
 	public String toString() {
 		return "M" + nodeId;
+	}
+	
+	public boolean isLeaf() {
+		return neighbors.size() == 1;
 	}
 	
 
