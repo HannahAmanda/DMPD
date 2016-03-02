@@ -16,6 +16,7 @@ public class GNode {
 	private Element bit;
 	private int bitNumber;
 	private static final Random rand = new Random(67);
+	private double[] softInfo;
 	
 	
 	public GNode(Node n, double p) {
@@ -41,8 +42,17 @@ public class GNode {
 	public Node getNeighbor() {
 		return n;
 	}
+	
 	public Element getBit() {
 		return bit;
+	}
+	
+	public double[] getSoftInfo() {
+		return softInfo;
+	}
+
+	public int getId() {
+		return n.getNodeId();
 	}
 	
 	
@@ -64,6 +74,7 @@ public class GNode {
 		double[] softInfo = {randomNumber(), randomNumber(), randomNumber(), randomNumber()};
 		n.receiveSoftInfo(softInfo);
 		System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo));
+		this.softInfo = softInfo; 
 	}
 
 	

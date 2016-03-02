@@ -116,7 +116,7 @@ public class SimpleNode extends Node {
 		
 		if (isLeaf()) {
 			marginal = messagesB.get(0).getMessage();
-			// marginal = dividedSXSX(marginal, softInfo);
+			marginal = dividedSXSX(marginal, softInfo);
 		
 		} else {
 			marginal = new double[] {1.0,1.0,1.0,1.0};
@@ -125,7 +125,7 @@ public class SimpleNode extends Node {
 				for (Message m: messagesB) {
 					marginal = dividedSSXX(marginal, m.getMessage());
 				}
-				// marginal = dividedSSXX(softInfo, marginal);
+				marginal = dividedSSXX(softInfo, marginal);
 				
 			} else if (!(messagesB.isEmpty() || messagesA.isEmpty())) {
 				for (Message m: messagesA) {
@@ -134,7 +134,7 @@ public class SimpleNode extends Node {
 				for (Message m: messagesB) {
 					marginal = twistedSSXX(marginal, m.getMessage());
 				}
-				// marginal = twistedSSXX(marginal, softInfo);
+				marginal = twistedSSXX(marginal, softInfo);
 			}
 			
 		}

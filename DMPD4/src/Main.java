@@ -1,5 +1,6 @@
 
 
+import graph.GlobalContext;
 import graph.Graph;
 
 import java.io.BufferedReader;
@@ -17,7 +18,7 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("doubleP3.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("P3.txt"))) {
 
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
@@ -84,10 +85,22 @@ public class Main {
 			// PASS CODEWORD THROUGH CHANNEL
 			//Element[] received = channel.sendThroughChannel(zero);
 			
-			Element[] received = {Element.ZERO, Element.ONE, Element.ZERO, Element.ONE, Element.ZERO, Element.ZERO};
+			Element[] received = {Element.ZERO, Element.ONE, Element.ZERO};
 			
 			// MESSAGE-PASSING
 			Element[] decoded = g.decode(received);
+			
+			
+			System.out.println();
+			GlobalContext context = new GlobalContext(g);
+			double[][] marginals = context.getGlobalMarginals();
+			for (int i = 0; i < marginals.length; i++) {
+				System.out.println("Marginal for: " + i);
+				for (int j = 0; j < marginals[i].length; j++) {
+					System.out.print(marginals[i][j] + ", ");
+				}
+				System.out.println();
+			}
 			
 			System.out.println();
 			System.out.println("##### r" + Arrays.toString(received) + " #####");

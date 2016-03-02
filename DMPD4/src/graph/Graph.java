@@ -3,6 +3,7 @@ package graph;
 import java.util.List;
 
 import f4.Element;
+import f4.F4;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class Graph {
 	private List<Node> nodes = new ArrayList<Node>();
 	private List<GNode> gNodes = new ArrayList<GNode>();
 	private List<Edge> edges = new ArrayList<Edge>();
-
+	
 	
 	public Graph(double p, boolean tree, int factorgraph){
 		this.p = p;
@@ -33,6 +34,7 @@ public class Graph {
 		} else {
 			fg = false;
 		}
+		
 	}
 	
 	public double getP() {
@@ -102,7 +104,6 @@ public class Graph {
 		} else {
 			iterateEdges();
 		}
-		
 	}
 
 	private void traverseTree() {
@@ -226,6 +227,7 @@ public class Graph {
 	}
 
 	private void gNodeBitNotification(Element[] transmission) {
+		System.out.println(transmission.length);
 		for (int i = 0; i < transmission.length; i++) {
 			gNodes.get(i).setRecievedBit(transmission[i]);
 		}
@@ -236,7 +238,8 @@ public class Graph {
 			g.passChannelInfo();
 		}
 	}
-
+	
+	
 	@Override
 	public String toString() {
 		String graph = "";
@@ -253,6 +256,7 @@ public class Graph {
 		}
 	}
 	
+	
 	private class Edge {
 		public Node theOne;
 		public Node theOther;
@@ -266,6 +270,19 @@ public class Graph {
 		public String toString() {
 			return "(" + theOne.toString() + ", " + theOther.toString() + ")";
 		}
+	}
+
+
+	
+	
+	public GNode getGNode(int i) {
+		for (GNode g: gNodes) {
+			if (g.getId() == i) {
+				return g;
+			}
+		}
+		
+		return null;
 	}
 	
 }
