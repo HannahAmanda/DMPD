@@ -89,6 +89,7 @@ public class Main {
 			// MESSAGE-PASSING
 			Element[] decoded = g.decode(received);
 			
+			System.out.println();
 			System.out.println("##### r" + Arrays.toString(received) + " #####");
 			System.out.println("##### d" + Arrays.toString(decoded) + " #####");
 			

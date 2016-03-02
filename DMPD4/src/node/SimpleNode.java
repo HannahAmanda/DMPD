@@ -36,14 +36,8 @@ public class SimpleNode extends Node {
 		// Internal node
 		else if (!((SimpleNode) theOther).isLeaf()){
 			
-			// has only internal nodes for neighbors
-			if (messagesB.isEmpty() && !messagesA.isEmpty()) {
-				theOther.receiveMessage(new Message(nodeName, greekVector()));
-				sent = true;
-				
-				
-			} // has both leaves and internal nodes for neighbors
-			else if (!(messagesB.isEmpty() || messagesA.isEmpty())) {
+			 // has both leaves and internal nodes for neighbors
+			if (!(messagesB.isEmpty() || messagesA.isEmpty())) {
 				double[] greek = greekVector();
 				
 				double[] trans = greek;
@@ -55,7 +49,7 @@ public class SimpleNode extends Node {
 				theOther.receiveMessage(new Message(nodeName, trans));
 				sent = true;
 				
-			} // has only leaves for neighbors
+			} // has only internal nodes for neighbors
 			else if (messagesA.isEmpty() && !messagesB.isEmpty()) {
 				double[] trans = softInfo;
 				for (Message m: messagesB) {
@@ -183,10 +177,10 @@ public class SimpleNode extends Node {
 	
 	@Override
 	public void receiveMessage(Message m) {
-		System.out.println(nodeName + " received from " + m.toString());
+		System.out.println(nodeName + " <--- " + m.toString());
+		
 		String name = m.getSenderName();
 		boolean leaf = ((SimpleNode) neighbors.get(findNeighborIndex(name))).isLeaf();
-		
 		int index = -1;
 
 		if (leaf) {
