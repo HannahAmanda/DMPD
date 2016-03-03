@@ -54,6 +54,7 @@ public class Main {
 			while (k < nodes) {
 				String row = br.readLine();
 				System.out.println(row);
+				g.addRow(row);
 				int j = k;
 				while (j < nodes) {
 					if (row.charAt(j) == '1') {

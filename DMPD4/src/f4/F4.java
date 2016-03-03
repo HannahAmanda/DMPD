@@ -1,26 +1,20 @@
 package f4;
 
 
-/**
- * 
- * _*_|_0_|_1_|_w_|_w²_  
- *  0 | 0 | 0 | 0 | 0
- *  1 | 0 | 1 | w | w²
- *  w | 0 | w | w²| 1
- *  w²| 0 | w²| 1 | w
- * 
- * _+_|_0_|_1_|_w_|_w²_  
- *  0 | 0 | 1 | w | w²
- *  1 | 1 | 0 | w²| w
- *  w | w | w²| 0 | 1
- *  w²| w²| w | 1 | 0
- * 
- */
-
 
 
 public class F4 {
-	
+
+	/**
+	 * 
+	 * _*_|_0_|_1_|_w_|_w²_  
+	 *  0 | 0 | 0 | 0 | 0
+	 *  1 | 0 | 1 | w | w²
+	 *  w | 0 | w | w²| 1
+	 *  w²| 0 | w²| 1 | w
+	 * 
+	 */
+
 	public static Element mult(Element x, Element y) {
 		
 		if (x.equals(Element.ZERO) || y.equals(Element.ZERO)) {
@@ -46,14 +40,26 @@ public class F4 {
 			if (y.equals(Element.OMEGA)) {
 				return Element.ONE;
 			
-			} else {
+			} else if (y.equals(Element.OMEGASQ)){
 				return Element.OMEGA;
 			}
 		}
 		
 		return null;
 	}
+
 	
+
+	 /* 
+	 * _+_|_0_|_1_|_w_|_w²_  
+	 *  0 | 0 | 1 | w | w²
+	 *  1 | 1 | 0 | w²| w
+	 *  w | w | w²| 0 | 1
+	 *  w²| w²| w | 1 | 0
+	 * 
+	 */
+
+
 	public static Element add(Element x, Element y) {
 		if (x.equals(Element.ZERO)) {
 			return y;

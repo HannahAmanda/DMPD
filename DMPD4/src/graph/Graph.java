@@ -23,6 +23,7 @@ public class Graph {
 	private List<GNode> gNodes = new ArrayList<GNode>();
 	private List<Edge> edges = new ArrayList<Edge>();
 	
+	private List<ArrayList<Element>> adjMatrix = new ArrayList<ArrayList<Element>>();
 	
 	public Graph(double p, boolean tree, int factorgraph){
 		this.p = p;
@@ -269,6 +270,34 @@ public class Graph {
 			if (g.getId() == i) {
 				return g;
 			}
+		}
+		
+		return null;
+	}
+
+	public List<ArrayList<Element>> getAdjMatrix() {
+		return adjMatrix;
+	}
+
+	public void addRow(String r) {
+		ArrayList<Element> row = new ArrayList<Element>();
+		
+		for (int i = 0; i < r.length(); i++) {
+			row.add(getElement(r.charAt(i)));
+		}
+		
+		adjMatrix.add(row);
+	}
+
+	private Element getElement(char c) {
+		if (c == '0') {
+			return Element.ZERO;
+		} else if (c == '1') {
+			return Element.ONE;
+		} else if (c == 'w') {
+			return Element.OMEGA;
+		} else if (c == 'v') {
+			return Element.OMEGASQ;
 		}
 		
 		return null;

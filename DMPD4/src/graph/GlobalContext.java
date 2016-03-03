@@ -24,13 +24,16 @@ public class GlobalContext {
 	public GlobalContext(Graph g) {
 		this.g = g;
 		nodes  = g.getNrOfNodes();
+		adjMatrix = g.getAdjMatrix();
 		permutations = genPermutations(nodes);
 		marginals = new double[nodes][4];
 		
 		for (ArrayList<Element> p: permutations) {
+			System.out.println();
 			if (isCodeWord(p)) {
 				codeSpace.add(p); 
 			} 
+			System.out.println();
 		}
 		
 		for (Node n: g.getNodes()) {
@@ -94,19 +97,21 @@ public class GlobalContext {
 	private boolean isCodeWord(ArrayList<Element> p) {
 		boolean isCodeWord = true;
 		for (ArrayList<Element> row: adjMatrix) {
-			if (vectorMult(row, p) != Element.ZERO) {
-				isCodeWord = false;
-			}
+			if (hermitianInnerProduct(row, p) != Element.ZERO) {
+				return false;
+			}	
 		}
-		
 		return isCodeWord;
 	}
 
-	private Element vectorMult(ArrayList<Element> row, ArrayList<Element> p2) {
+	private Element hermitianInnerProduct(ArrayList<Element> row, ArrayList<Element> p2) {
 		Element sum = Element.ZERO;
+		
 		for (int i = 0; i < row.size(); i++) {
-			Element product = F4.mult(row.get(i), p2.get(i));
-			sum = F4.add(sum, product);
+			Element one = F4.mult(F4.mult(row.get(i), row.get(i)), p2.get(i));
+			Element two = F4.mult(row.get(i), F4.mult(p2.get(i), p2.get(i)));
+			
+			sum = F4.add(sum, F4.add(one,two));
 		}
 		return sum;
 	}
@@ -139,6 +144,19 @@ public class GlobalContext {
 			return Element.OMEGA;
 		} else {
 			return Element.OMEGASQ;
+		}
+	}
+
+	public void printOutPermutations() {
+		System.out.println("CODESPACE " + codeSpace.size());
+		for (ArrayList<Element> p : codeSpace) {
+			for (int i = 0; i < p.size(); i++) {
+				if (i == p.size()-1) {
+					System.out.println(p.get(i)+ " ");					
+				} else {
+					System.out.print(p.get(i) + " ");
+				}
+			}
 		}
 	}
 
