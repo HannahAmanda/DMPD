@@ -1,5 +1,6 @@
 package node;
 
+import message.Message;
 import f4.Element;
 
 
@@ -13,6 +14,39 @@ public class Dot extends SimpleNode {
 
 	@Override 
 	public void passMessageTo(Node theOther) {
+		
+		if (isLeaf) {
+			theOther.receiveMessage(new Message(nodeName, softInfo));
+			
+		} else {
+			
+			if (theOther.isLeaf()) {
+				
+				// star
+				if(messagesB.isEmpty()) {
+					theOther.receiveMessage(new Message(nodeName, greekVector(theOther)));
+				
+				// both leaves and internal nodes as neighbors
+				} else if (!messagesB.isEmpty()) {
+					
+					System.out.println("ONE. you don't know how to calculate this.");
+				}
+			} /*else {
+				
+				if (messagesB.size() == 1) {
+					theOther.receiveMessage(new Message(nodeName, greekVector()));
+				
+				} else if (messagesA.isEmpty()) {
+					
+					System.out.println("TWO. you don't know how to calculate this." );
+					
+				}
+				
+			}*/
+			
+			
+			
+		}
 		
 	}
 	
@@ -41,50 +75,9 @@ public class Dot extends SimpleNode {
 		
 		return null;
 	}
-	
-	
-	private double[] marginalize() {
-		return null;
-	}
-	
-	
-	private double[] greekVector(){
-		return null;	
-	}
-	
-	private double[] greekVector(Node except) {
-		return null;
-	}
 
 	
-	
-	private double[] dividedSXSX(double[] m, double[] n) {
-		double[] result;
-		
-		double a = m[0]*n[0] + m[1]*n[1];
-		double b = m[0]*n[1] + m[1]*n[0];
-		double c = m[2]*n[2] + m[3]*n[3];
-		double d = m[2]*n[3] + m[3]*n[2];
-		
-		result = new double[] {a,b,c,d};
-		
-		return normalize(result);
-	}
-	
-	private double[] dividedSSXX(double[] m, double[] n) {
-		double[] result;
-		
-		double a = m[0]*n[0] + m[1]*n[1];
-		double b = m[0]*n[1] + m[1]*n[0];
-		double c = m[2]*n[2] + m[3]*n[3];
-		double d = m[2]*n[3] + m[3]*n[2];
-		
-		result = new double[] {a,c,b,d};
-		
-		return normalize(result);
-	}
-	
-	private double[] twistedSXSX(double[] m, double[] n) {
+	private double[] doubleTwistedSXSX(double[] m, double[] n) {
 		double[] result;
 		
 		double a = m[0]*n[0] + m[2]*n[2];
@@ -92,24 +85,79 @@ public class Dot extends SimpleNode {
 		double c = m[1]*n[1] + m[3]*n[3];
 		double d = m[1]*n[3] + m[3]*n[1];
 		
-		result = new double[] {a,b,c,d};
+		result = new double[]{a,b,c,d};
 		
-		return normalize(result);
+		return result;
 	}
 	
 	private double[] twistedSSXX(double[] m, double[] n) {
 		double[] result;
 		
-		double a = m[0]*n[0] + m[2]*n[2];
-		double b = m[0]*n[2] + m[2]*n[0];
-		double c = m[1]*n[1] + m[3]*n[3];
-		double d = m[1]*n[3] + m[3]*n[1];
+		double a = m[0]*n[0] + m[1]*n[2];
+		double b = m[2]*n[1] + m[3]*n[3];
+		double c = m[0]*n[2] + m[1]*n[0];
+		double d = m[2]*n[3] + m[3]*n[1];
 		
-		result = new double[] {a,c,b,d};
+		result = new double[]{a,b,c,d};
 		
-		return normalize(result);
+		return result;
 	}
 	
+	private double[] marginalize() {
+		double[] result; 
+		
+		if (isLeaf) {
+			result = pointwiseProduct(softInfo, messagesB.get(0).getMessage());
+		} else {
+			result = greekVector();
+		}
+		
+		
+		return result;
+	}
+	
+	
+	private double[] greekVector(){
+		double[] result = new double[]{1,1,1,1};
+		/*for (Message m: messagesA) {
+			result = doubleTwistedSXSX(result, m.getMessage());
+		}*/
+		
+		result = doubleTwistedSXSX(messagesA.get(0).getMessage(), messagesA.get(1).getMessage());
+		
+		return pointwiseProduct(result, softInfo);	
+	}
+	
+	private double[] greekVector(Node except) {
+		double[] result = new double[]{1,1,1,1};
+		
+		if (except.isLeaf()) {
+			/*for (Message m: messagesA) {
+				if (!m.getSenderName().equals(except.nodeName)) {
+					result = twistedSSXX(result, m.getMessage());
+				}
+			}*/
+			
+			result = twistedSSXX(softInfo, messagesA.get(1).getMessage());
+			
+		}
+		
+		return result;
+	}
+
+	
+	
+	private double[] pointwiseProduct(double[] result, double[] softInfo) {
+		double a = result[0]*softInfo[0];
+		double b = result[1]*softInfo[1];
+		double c = result[2]*softInfo[2];
+		double d = result[3]*softInfo[3];
+		
+		return new double[]{a,b,c,d};
+	}
+
+
+
 	private double[] normalize(double[] t) {
 		double sum = 0.0;
 		

@@ -8,18 +8,17 @@ import message.Message;
 
 public class SimpleNode extends Node {
 
-	private double[] softInfo;
-	private boolean isLeaf;
+	protected double[] softInfo;
+	protected boolean isLeaf;
 	
-	private List<Message> messagesA = new ArrayList<Message>();
-	private List<Message> messagesB = new ArrayList<Message>();
+	protected List<Message> messagesA = new ArrayList<Message>();
+	protected List<Message> messagesB = new ArrayList<Message>();
 		
 	
 	public SimpleNode(int id) {
 		this.nodeId = id;
 		this.nodeName = "M" +id;
 	}
-	
 	
 	@Override
 	public void receiveSoftInfo(double[] softInfo) {
@@ -238,11 +237,11 @@ public class SimpleNode extends Node {
 		double[] result;
 		
 		double a = m[0]*n[0] + m[1]*n[1];
-		double b = m[0]*n[1] + m[1]*n[0];
-		double c = m[2]*n[2] + m[3]*n[3];
+		double b = m[2]*n[2] + m[3]*n[3];
+		double c = m[0]*n[1] + m[1]*n[0];
 		double d = m[2]*n[3] + m[3]*n[2];
 		
-		result = new double[] {a,c,b,d};
+		result = new double[] {a,b,c,d};
 		
 		return normalize(result);
 	}
@@ -250,10 +249,10 @@ public class SimpleNode extends Node {
 	private double[] twistedSXSX(double[] m, double[] n) {
 		double[] result;
 		
-		double a = m[0]*n[0] + m[2]*n[2];
-		double b = m[0]*n[2] + m[2]*n[0];
-		double c = m[1]*n[1] + m[3]*n[3];
-		double d = m[1]*n[3] + m[3]*n[1];
+		double a = m[0]*n[0] + m[1]*n[2];
+		double b = m[0]*n[2] + m[1]*n[0];
+		double c = m[2]*n[1] + m[3]*n[3];
+		double d = m[2]*n[3] + m[3]*n[1];
 		
 		result = new double[] {a,b,c,d};
 		
@@ -264,12 +263,12 @@ public class SimpleNode extends Node {
 	private double[] twistedSSXX(double[] m, double[] n) {
 		double[] result;
 		
-		double a = m[0]*n[0] + m[2]*n[2];
-		double b = m[0]*n[2] + m[2]*n[0];
-		double c = m[1]*n[1] + m[3]*n[3];
-		double d = m[1]*n[3] + m[3]*n[1];
+		double a = m[0]*n[0] + m[1]*n[2];
+		double b = m[2]*n[1] + m[3]*n[3];
+		double c = m[0]*n[2] + m[1]*n[0];
+		double d = m[2]*n[3] + m[3]*n[1];
 		
-		result = new double[] {a,c,b,d};
+		result = new double[] {a,b,c,d};
 		
 		return normalize(result);
 	}

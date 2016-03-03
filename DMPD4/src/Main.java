@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
+import node.Dot;
 import node.MetaNode;
 import node.SimpleNode;
 import channel.QSChannel;
@@ -26,7 +27,7 @@ public class Main {
 		
 			
 			// UNDERLYING FACTOR GRAPH
-			int fg = Integer.parseInt(br.readLine());
+			int nodeType = Integer.parseInt(br.readLine());
 			// TODO: contingency for when fg is not 0 or 1. 
 			
 			boolean tree = false;
@@ -36,14 +37,16 @@ public class Main {
 			}
 			
 			// CONSTRUCT GRAPH
-			Graph g = new Graph(p, tree, fg);
+			Graph g = new Graph(p, tree, nodeType);
 			int nodes = Integer.parseInt(br.readLine());
 			
 			for (int i = 0; i < nodes; i++) {
-				if (fg == 1) {
+				if (nodeType == 1) {
 					g.addNode(new MetaNode(i));
-				} else if (fg == 0) {
+				} else if (nodeType == 0) {
 					g.addNode(new SimpleNode(i));
+				} else if (nodeType == 2) {
+					g.addNode(new Dot(i));
 				}
 			}
 			
