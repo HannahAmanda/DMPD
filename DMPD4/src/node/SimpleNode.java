@@ -171,6 +171,7 @@ public class SimpleNode extends Node {
 		neighbors.add(n);
 	}
 
+	@Override
 	public boolean isLeaf() {
 		return isLeaf;
 	}
