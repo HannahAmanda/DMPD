@@ -3,6 +3,7 @@ package node;
 import java.util.ArrayList;
 import java.util.List;
 
+import f4.Element;
 import message.Message;
 
 public abstract class Node {
@@ -21,6 +22,7 @@ public abstract class Node {
 	public abstract void finalSetup();
 	public abstract void reset();
 	public abstract void addNeighbor(Node n);
+	public abstract Element getState();
 	
 	public List<Node> getNeighborList(){
 		return neighbors;

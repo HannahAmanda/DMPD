@@ -3,6 +3,7 @@ package node;
 import java.util.ArrayList;
 import java.util.List;
 
+import f4.Element;
 import message.Message;
 import vertex.Factor;
 import vertex.Variable;
@@ -111,6 +112,11 @@ public class MetaNode extends Node{
 			}
 		}
 		return has;
+	}
+
+	@Override
+	public Element getState() {
+		return v.getState();
 	}
 
 	

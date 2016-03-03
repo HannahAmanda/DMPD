@@ -273,6 +273,7 @@ public class SimpleNode extends Node {
 		return normalize(result);
 	}
 
+	@Override
 	public Element getState() {
 		double[] marginal = marginalize();
 		

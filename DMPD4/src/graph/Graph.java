@@ -199,20 +199,9 @@ public class Graph {
 	private Element[] getDecodeState() {
 		Element[] decodedWord = new Element[nodes.size()];
 		
-		for (Node x: nodes) {
-
-			if( x instanceof MetaNode){
-				MetaNode n = (MetaNode) x;
-				
-				Element decodedBit = n.getVariable().getState();
-				decodedWord[n.getNodeId()] = decodedBit;
-				
-			} else if (x instanceof SimpleNode) {
-				SimpleNode n = (SimpleNode) x;
-				
-				Element decodedBit = n.getState();
-				decodedWord[n.getNodeId()] = decodedBit;
-			}
+		for (Node n: nodes) {		
+			Element decodedBit = n.getState();
+			decodedWord[n.getNodeId()] = decodedBit;
 		}
 		
 		return decodedWord;
