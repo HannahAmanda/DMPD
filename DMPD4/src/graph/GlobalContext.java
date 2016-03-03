@@ -29,11 +29,9 @@ public class GlobalContext {
 		marginals = new double[nodes][4];
 		
 		for (ArrayList<Element> p: permutations) {
-			System.out.println();
 			if (isCodeWord(p)) {
 				codeSpace.add(p); 
 			} 
-			System.out.println();
 		}
 		
 		for (Node n: g.getNodes()) {
@@ -82,11 +80,13 @@ public class GlobalContext {
 		
 		for (ArrayList<Element> c: codeSpace) {
 			if (c.get(id).equals(element)) {
+				double product = 1;
 				for (int i = 0; i < c.size(); i++) {
 					if (i != id) {
-						sum += channelInfo(i, getNumberFromElement(c.get(i)));
+						product *= channelInfo(i, getNumberFromElement(c.get(i)));
 					}
 				}
+				sum += product;
 			}
 		}
 		

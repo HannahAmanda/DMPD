@@ -96,7 +96,7 @@ public class Main {
 			GlobalContext context = new GlobalContext(g);
 			double[][] marginals = context.getGlobalMarginals();
 			for (int i = 0; i < marginals.length; i++) {
-				System.out.println("Marginal for: " + i);
+				System.out.print("Marginal  M" + i + ": ");
 				for (int j = 0; j < marginals[i].length; j++) {
 					System.out.print(marginals[i][j] + ", ");
 				}
