@@ -19,7 +19,7 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("P3.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("4star.txt"))) {
 
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
@@ -97,6 +97,7 @@ public class Main {
 			
 			System.out.println();
 			GlobalContext context = new GlobalContext(g);
+			context.printOutPermutations();
 			double[][] marginals = context.getGlobalMarginals();
 			for (int i = 0; i < marginals.length; i++) {
 				System.out.print("Marginal  M" + i + ": ");

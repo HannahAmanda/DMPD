@@ -148,7 +148,6 @@ public class GlobalContext {
 	}
 
 	public void printOutPermutations() {
-		System.out.println("CODESPACE " + codeSpace.size());
 		for (ArrayList<Element> p : codeSpace) {
 			for (int i = 0; i < p.size(); i++) {
 				if (i == p.size()-1) {
@@ -158,6 +157,7 @@ public class GlobalContext {
 				}
 			}
 		}
+		System.out.println("CODESPACE " + codeSpace.size());
 	}
 
 }
