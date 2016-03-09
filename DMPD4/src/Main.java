@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import node.Dot;
+import node.Spot;
 import node.MetaNode;
 import node.SimpleNode;
 import channel.QSChannel;
@@ -19,7 +20,7 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("4star.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("3leavesJoin.txt"))) {
 
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
@@ -90,7 +91,7 @@ public class Main {
 			//Element[] received = channel.sendThroughChannel(zero);
 			
 			Element[] received = {Element.ZERO, Element.ONE, Element.ZERO};
-			
+			//, Element.ZERO, Element.ONE, Element.ZERO
 			// MESSAGE-PASSING
 			Element[] decoded = g.decode(received);
 			

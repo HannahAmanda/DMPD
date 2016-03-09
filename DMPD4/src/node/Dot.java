@@ -1,56 +1,53 @@
 package node;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import message.Calculator;
 import message.Message;
 import f4.Element;
 
-
 public class Dot extends SimpleNode {
+	
+	private Calculator calc = new Calculator();
 
 	public Dot(int id) {
 		super(id);
 	}
-	
 
-
-	@Override 
+	@Override
 	public void passMessageTo(Node theOther) {
-		
 		if (isLeaf) {
 			theOther.receiveMessage(new Message(nodeName, softInfo));
 			
-		} else {
+		} else if (theOther.isLeaf()) {
+			double[] leaves = combineAllLeaves(theOther);
 			
-			if (theOther.isLeaf()) {
-				
-				// star
-				if(messagesB.isEmpty()) {
-					theOther.receiveMessage(new Message(nodeName, greekVector(theOther)));
-				
-				// both leaves and internal nodes as neighbors
-				} else if (!messagesB.isEmpty()) {
-					
-					System.out.println("ONE. you don't know how to calculate this.");
-				}
+			if (messagesB.isEmpty()) {
+				double[] m = calc.tSS(leaves, softInfo);
+				theOther.receiveMessage(new Message(nodeName, m));
+			
 			} else {
-				if (messagesB.size() == 1) {
-					theOther.receiveMessage(new Message(nodeName, greekVector()));
-				
-				} else if (messagesA.isEmpty()) {
-					
-					System.out.println("TWO. you don't know how to calculate this." );
-					
-				}
+				double[] comb = calc.tSX(leaves, softInfo);
+				double[] m = calc.tSS(messagesB.get(0).getMessage(), comb);
+				theOther.receiveMessage(new Message(nodeName, m));
 				
 			}
 			
+		} else if (!theOther.isLeaf()) {
+			double[] leaves = combineAllLeaves();
 			
+			if (isTheOnlyOne(theOther)) {
+				double[] m = calc.dSX(leaves, softInfo);
+				
+				theOther.receiveMessage(new Message(nodeName, m));
+			}
 			
 		}
 		
 	}
 	
+
 	@Override 
 	public Element getState() {
 		double[] marginal = marginalize();
@@ -76,167 +73,139 @@ public class Dot extends SimpleNode {
 		
 		return null;
 	}
-
-	
-	private double[] doubleTwistedSXSX(double[] m, double[] n) {
-		double[] result;
-		
-		double a = m[0]*n[0] + m[2]*n[2];
-		double b = m[0]*n[2] + m[2]*n[0];
-		double c = m[1]*n[1] + m[3]*n[3];
-		double d = m[1]*n[3] + m[3]*n[1];
-		
-		result = new double[]{a,b,c,d};
-		
-		return result;
-	}
-	
-	private double[] twistedSSXX(double[] n, double[] m) {
-		double[] result;
-		
-		double a = m[0]*n[0] + m[1]*n[2];
-		double b = m[2]*n[1] + m[3]*n[3];
-		double c = m[0]*n[2] + m[1]*n[0];
-		double d = m[2]*n[3] + m[3]*n[1];
-		
-		result = new double[]{a,b,c,d};
-		
-		return result;
-	}
-	
-	private double[] twistedSXSX(double[] t, double[] p) {
-		
-		double a = t[0]*p[0] + t[2]*p[1];
-		double b = t[0]*p[1] + t[2]*p[0];
-		double c = t[1]*p[2] + t[3]*p[3];
-		double d = t[1]*p[3] + t[3]*p[2];
-		
-		return new double[]{a,b,c,d};
-		
-	}
 	
 	private double[] marginalize() {
-		double[] result; 
 		
 		if (isLeaf) {
-			result = pointwiseProduct(softInfo, messagesB.get(0).getMessage());
+			return calc.dot(softInfo, messagesB.get(0).getMessage());
+			
+		} else if (onlyLeaves()) {
+			double[] leaves = combineAllLeaves();
+			
+			return calc.dot(leaves, softInfo);
+			
+			
+		} else if (onlyInternal()) {
+			System.out.println("you don't know this marginal yet.");
+			return null;
+			
 		} else {
+			double[] comb = calc.tSX(messagesB.get(0).getMessage(), combineAllLeaves());
 			
-			if (messagesB.isEmpty()) {
-				result = greekVector();
-			} else {
-				result = dividedSXSX(messagesB.get(0).getMessage(), greekVector());
-			}
-		}
-		
-		
-		return result;
-	}
-	
-	
-	private double[] greekVector(){
-		double[] result = new double[]{1,1,1,1};
-		
-		for (int i = 1; i < messagesA.size(); i++) {
-			if (i == 1) {
-				result = doubleTwistedSXSX(messagesA.get(0).getMessage(), messagesA.get(1).getMessage());
-			} else {
-				result = twistedSXSX(messagesA.get(i).getMessage(), result);
-			}
-		}
-		
-		return pointwiseProduct(result, softInfo);	
-	}
-	
-	private double[] greekVector(Node except) {
-		double[] result = new double[]{1,1,1,1};
-		boolean first = false;
-		
-		ArrayList<Message> mA = removeMessagesFromRecipient(except);
-		
-		if (except.isLeaf()) { 
-			int i = 0;
-			while (i < mA.size()) {
-				if (!first) {
-					result = doubleTwistedSSXX(mA.get(i).getMessage(), mA.get(++i).getMessage());
-					first = true;
-					i++;
-				} else if (first){
-					result = doubleTwistedSSXX(result, mA.get(i).getMessage());		
-					i++;
-				}
-				
-			}
+			return calc.dot(comb, softInfo);
 			
-			result = twistedSSXX(result, softInfo);
 		}
-		
-		return result;
 	}
 
-	
-	
-	private ArrayList<Message> removeMessagesFromRecipient(Node except) {
-		ArrayList<Message> mA = new ArrayList<Message>();
+	private double[] combineAllLeaves(){
 		
-		mA.addAll(messagesA);
-		int index = -1;
-		for (Message m: mA) {
-			if (m.getSenderName().equals(except.nodeName)) {
-				index = mA.indexOf(m);
+		if (onlyLeaves()) {
+			double[] leaves = new double[]{1,1,1,1};
+			
+			for (int i = 1; i < messagesA.size(); i++) {
+				if (i == 1) {
+					leaves = calc.dTSX(messagesA.get(0).getMessage(), messagesA.get(1).getMessage());
+				} else {
+					leaves = calc.tSX(messagesA.get(i).getMessage(), leaves);
+				}
+			}
+			
+			return leaves;
+			
+		} else {
+		
+			if (messagesA.isEmpty()) {
+				return null;
+				
+			} else if (messagesA.size() == 1) {
+				return messagesA.get(0).getMessage();
+			
+			} else if (messagesA.size() > 1) {
+				double[] base = calc.dTSX(messagesA.get(0).getMessage(), messagesA.get(1).getMessage());
+				
+				for (int i = 2; i < messagesA.size(); i++) {
+					base = calc.tSX(messagesA.get(i).getMessage(), base);
+				}
+				
+				return base;
+			} 
+		}
+		
+		return null;
+	}
+	
+	private double[] combineAllLeaves(Node except) {
+		ArrayList<Message> mA = removeMessage(except);
+		
+		if (onlyLeaves()) {
+			if (mA.isEmpty()) {
+				return null;
+				
+			} else if (mA.size() == 1) {
+				System.out.println("mA == 1");
+				return mA.get(0).getMessage();
+			
+			} else if (mA.size() > 1) {
+				double[] base = calc.dTSS(mA.get(0).getMessage(), mA.get(1).getMessage());
+				
+				for (int i = 2; i < mA.size(); i++) {
+					base = calc.dTSS(base, mA.get(i).getMessage());
+				}
+				
+				return base;
+			} 
+		} else {
+			
+			if (mA.isEmpty()) {
+				return null;
+			} else if (mA.size() == 1) {
+				return mA.get(0).getMessage();
+				
+			} else if (mA.size() > 1) {
+				double[] base = calc.dTSS(mA.get(0).getMessage(), mA.get(1).getMessage());
+				
+				for (int i = 2; i < mA.size(); i++) {
+					base = calc.dTSS(base, mA.get(i).getMessage());
+				}
+				
+				return base;
+				
 			}
 		}
-		mA.remove(index);
+		return null;
+	}
+	
+	private ArrayList<Message> removeMessage(Node except) {
+		ArrayList<Message> mA = new ArrayList<Message>();
+		mA.addAll(messagesA);
+		
+		int[] index = new int[messagesA.size()];
+		int count = 0;
+		
+		for (Message m: mA) {
+			if (m.getSenderName().equals(except.nodeName)) {
+				index[count] = mA.indexOf(m);
+				count++;
+			}
+		}
+
+		for (int i = 0; i < count; i++) {
+			mA.remove(index[i]);
+		}
+		
 		return mA;
 	}
 
-
-
-	private double[] doubleTwistedSSXX(double[] m, double[] n) {
-		double[] result;
-		
-		double a = m[0]*n[0] + m[2]*n[2];
-		double b = m[1]*n[1] + m[3]*n[3];
-		double c = m[0]*n[2] + m[2]*n[0];
-		double d = m[1]*n[3] + m[3]*n[1];
-		
-		result = new double[]{a,b,c,d};
-		
-		return result;
+	private boolean isTheOnlyOne(Node theOther) {
+		return (messagesB.size() == 1 && messagesB.get(0).getSenderName().equals(theOther.nodeName));
+	}
+	
+	private boolean onlyInternal() {
+		return (!messagesB.isEmpty() && messagesA.isEmpty());
 	}
 
-	private double[] dividedSXSX(double[] m, double[] n) {
-		
-		double a = m[0]*n[0] + m[1]*n[1];
-		double b = m[0]*n[1] + m[1]*n[0];
-		double c = m[2]*n[2] + m[3]*n[3];
-		double d = m[2]*n[3] + m[3]*n[2];		
-		
-		return new double[]{a,b,c,d};
+	private boolean onlyLeaves() {
+		return (messagesB.isEmpty() && !messagesA.isEmpty());
 	}
 
-
-	private double[] pointwiseProduct(double[] result, double[] softInfo) {
-		double a = result[0]*softInfo[0];
-		double b = result[1]*softInfo[1];
-		double c = result[2]*softInfo[2];
-		double d = result[3]*softInfo[3];
-		
-		return new double[]{a,b,c,d};
-	}
-
-
-
-	private double[] normalize(double[] t) {
-		double sum = 0.0;
-		
-		for (int i = 0; i < t.length; i++) {
-			sum+= t[i];
-		}
-		
-		for (int i = 0; i < t.length; i++) {
-			t[i] /= sum;
-		}
-		return t;
-	}
 }
