@@ -20,7 +20,7 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("3leavesJoin.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("between.txt"))) {
 
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
@@ -98,7 +98,7 @@ public class Main {
 			
 			System.out.println();
 			GlobalContext context = new GlobalContext(g);
-			context.printOutPermutations();
+			//context.printOutPermutations();
 			double[][] marginals = context.getGlobalMarginals();
 			for (int i = 0; i < marginals.length; i++) {
 				System.out.print("Marginal  M" + i + ": ");

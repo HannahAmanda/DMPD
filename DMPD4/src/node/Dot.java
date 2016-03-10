@@ -41,12 +41,21 @@ public class Dot extends SimpleNode {
 				double[] m = calc.dSX(leaves, softInfo);
 				
 				theOther.receiveMessage(new Message(nodeName, m));
+			} else {
+				System.out.println("not the only other one." );
+				double[] internals = combineAllInternal(theOther);
+				
+				if (messagesA.size() == 0) {
+					System.out.println("No Leaves");
+					double[] m = calc.tSS(internals, softInfo);
+					theOther.receiveMessage(new Message(nodeName, m));
+				}
+			
 			}
 			
 		}
 		
 	}
-	
 
 	@Override 
 	public Element getState() {
@@ -86,15 +95,52 @@ public class Dot extends SimpleNode {
 			
 			
 		} else if (onlyInternal()) {
-			System.out.println("you don't know this marginal yet.");
-			return null;
+			
+			double[] internal = combineAllInternal();
+			
+			return calc.dot(softInfo, internal);
 			
 		} else {
-			double[] comb = calc.tSX(messagesB.get(0).getMessage(), combineAllLeaves());
+			double[] comb = calc.tSX(combineAllInternal(), combineAllLeaves());
 			
 			return calc.dot(comb, softInfo);
 			
 		}
+	}
+
+	private double[] combineAllInternal() {
+		double[] result = new double[]{1,1,1,1};
+		if (messagesB.size() > 1) {
+			for (int i = 1; i < messagesB.size(); i++) {
+				if (i == 1) {
+					result = calc.dTSX(messagesB.get(0).getMessage(), messagesB.get(1).getMessage());
+				} else {
+					System.out.println("guess work!");
+					result = calc.tSX(messagesB.get(i).getMessage(), result);
+				}
+			}
+		} else if (messagesB.size() == 1) {
+			return messagesB.get(0).getMessage();
+			
+		}
+		return result;
+	}
+	
+	private double[] combineAllInternal(Node theOther) {
+		double[] result = new double[]{1,1,1,1};
+		
+		ArrayList<Message> mB = removeMessage(theOther);
+		
+		if (mB.size() == 0) {
+			System.out.println("There are no more internal nodes.");
+			return new double[]{1,1,1,1};
+		
+		} else if (mB.size() == 1) {
+			return mB.get(0).getMessage();
+			
+		}
+		
+		return null;
 	}
 
 	private double[] combineAllLeaves(){
@@ -176,24 +222,46 @@ public class Dot extends SimpleNode {
 	}
 	
 	private ArrayList<Message> removeMessage(Node except) {
-		ArrayList<Message> mA = new ArrayList<Message>();
-		mA.addAll(messagesA);
-		
-		int[] index = new int[messagesA.size()];
-		int count = 0;
-		
-		for (Message m: mA) {
-			if (m.getSenderName().equals(except.nodeName)) {
-				index[count] = mA.indexOf(m);
-				count++;
+		if (except.isLeaf()){
+			ArrayList<Message> mA = new ArrayList<Message>();
+			mA.addAll(messagesA);
+			
+			int[] index = new int[messagesA.size()];
+			int count = 0;
+			
+			for (Message m: mA) {
+				if (m.getSenderName().equals(except.nodeName)) {
+					index[count] = mA.indexOf(m);
+					count++;
+				}
 			}
-		}
 
-		for (int i = 0; i < count; i++) {
-			mA.remove(index[i]);
+			for (int i = 0; i < count; i++) {
+				mA.remove(index[i]);
+			}
+			
+			return mA;
+		} else {
+			ArrayList<Message> mB = new ArrayList<Message>();
+			mB.addAll(messagesB);
+			
+			int[] index = new int[messagesB.size()];
+			int count = 0;
+			
+			for (Message m: mB) {
+				if (m.getSenderName().equals(except.nodeName)) {
+					index[count] = mB.indexOf(m);
+					count++;
+				}
+			}
+
+			for (int i = 0; i < count; i++) {
+				mB.remove(index[i]);
+			}
+			
+			return mB;
+			
 		}
-		
-		return mA;
 	}
 
 	private boolean isTheOnlyOne(Node theOther) {
