@@ -20,7 +20,7 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("between.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("between_shuffled.txt"))) {
 
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());

@@ -27,7 +27,7 @@ public class Dot extends SimpleNode {
 				double[] m = calc.tSS(leaves, softInfo);
 				theOther.receiveMessage(new Message(nodeName, m));
 			
-			} else {
+			} else if (otherLeavesExist(theOther)) {
 				/*
 				 * This works for the doubleP#
 				 * double[] comb = calc.tSX(leaves, softInfo);
@@ -37,26 +37,33 @@ public class Dot extends SimpleNode {
 				 */
 				
 				double[] comb = calc.tSX(leaves, softInfo);
-				double[] m = calc.tSS(messagesB.get(0).getMessage(), comb);
+				double[] m = calc.tSS(combineAllInternal(), comb);
 				theOther.receiveMessage(new Message(nodeName, m));
+				
+			} else {
+				System.out.println("Other leaves don't exist");
+				
 				
 			}
 			
 		} else if (!theOther.isLeaf()) {
 			double[] leaves = combineAllLeaves();
+			double[] internals = combineAllInternal(theOther);
+			
 			
 			if (isTheOnlyOne(theOther)) {
-				double[] m = calc.dSX(leaves, softInfo);
-				
+				double[] m = calc.dSX(leaves, softInfo);	
 				theOther.receiveMessage(new Message(nodeName, m));
-			} else {
-				System.out.println("not the only other one." );
-				double[] internals = combineAllInternal(theOther);
 				
+			} else {
 				if (messagesA.size() == 0) {
-					System.out.println("No Leaves");
-					double[] m = calc.tSS(internals, softInfo);
+					double[] m = calc.tSX(internals, softInfo);
 					theOther.receiveMessage(new Message(nodeName, m));
+				
+				} else {
+					//double[] m = calc.tSX(internals,  leaves);
+					
+					
 				}
 			
 			}
@@ -109,6 +116,7 @@ public class Dot extends SimpleNode {
 			return calc.dot(softInfo, internal);
 			
 		} else {
+			System.out.println("shallow grave. this works for between without the leaves. You need another case");
 			double[] comb = calc.tSX(combineAllInternal(), combineAllLeaves());
 			
 			return calc.dot(comb, softInfo);
@@ -116,8 +124,13 @@ public class Dot extends SimpleNode {
 		}
 	}
 
+	private double[] combineInternalsDivSX() {
+		return calc.dSX(messagesB.get(0).getMessage(), messagesB.get(1).getMessage());
+	}
+	
 	private double[] combineAllInternal() {
 		double[] result = new double[]{1,1,1,1};
+		
 		if (messagesB.size() > 1) {
 			for (int i = 1; i < messagesB.size(); i++) {
 				if (i == 1) {
@@ -270,6 +283,10 @@ public class Dot extends SimpleNode {
 			return mB;
 			
 		}
+	}
+	
+	private boolean otherLeavesExist(Node theOther) {
+		return (theOther.isLeaf() && messagesA.size() > 1);
 	}
 
 	private boolean isTheOnlyOne(Node theOther) {
