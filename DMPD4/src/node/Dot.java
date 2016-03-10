@@ -28,6 +28,14 @@ public class Dot extends SimpleNode {
 				theOther.receiveMessage(new Message(nodeName, m));
 			
 			} else {
+				/*
+				 * This works for the doubleP#
+				 * double[] comb = calc.tSX(leaves, softInfo);
+				 * double[] m = calc.tSS(messagesB.get(0).getMessage(), comb);
+				 * theOther.receiveMessage(new Message(nodeName, m));
+				 * 
+				 */
+				
 				double[] comb = calc.tSX(leaves, softInfo);
 				double[] m = calc.tSS(messagesB.get(0).getMessage(), comb);
 				theOther.receiveMessage(new Message(nodeName, m));
