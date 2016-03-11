@@ -116,8 +116,7 @@ public class Dot extends SimpleNode {
 			return calc.dot(softInfo, internal);
 			
 		} else {
-			System.out.println("shallow grave. this works for between without the leaves. You need another case");
-			double[] comb = calc.tSX(combineAllInternal(), combineAllLeaves());
+			double[] comb = calc.dSX(combineAllInternal(), combineAllLeaves());
 			
 			return calc.dot(comb, softInfo);
 			
