@@ -14,7 +14,7 @@ public class Calculator {
 	public double[] dSS(double[] m, double[] n) {
 		
 		double a = m[0]*n[0] + m[1]*n[1];
-		double b = m[2]*n[2] + n[3]*n[3];
+		double b = m[2]*n[2] + m[3]*n[3];
 		double c = m[0]*n[1] + m[1]*n[0];
 		double d = m[2]*n[3] + m[3]*n[2];
 		

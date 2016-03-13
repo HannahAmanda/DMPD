@@ -29,17 +29,22 @@ public class Dot extends SimpleNode {
 			
 			} else if (otherLeavesExist(theOther)) {
 				/*
-				 * This works for the doubleP#
+				 * This works for the doubleP3
 				 * double[] comb = calc.tSX(leaves, softInfo);
 				 * double[] m = calc.tSS(messagesB.get(0).getMessage(), comb);
 				 * theOther.receiveMessage(new Message(nodeName, m));
 				 * 
 				 */
-				
-				double[] comb = calc.tSX(leaves, softInfo);
-				double[] m = calc.tSS(combineAllInternal(), comb);
-				theOther.receiveMessage(new Message(nodeName, m));
-				
+				if (messagesB.size() == 1) {
+					double[] comb = calc.tSX(leaves, softInfo);
+					double[] m = calc.tSS(combineAllInternal(), comb);
+					theOther.receiveMessage(new Message(nodeName, m));
+				} else {
+					leaves = combineAllLeaves(theOther);
+					double[] comb = calc.tSX(leaves,  softInfo);
+					double[] m = calc.dSS(combineAllInternal(),  comb);
+					theOther.receiveMessage(new Message(nodeName, m));
+				}
 			} else {
 				System.out.println("Other leaves don't exist");
 				
@@ -63,7 +68,7 @@ public class Dot extends SimpleNode {
 				} else {
 					//double[] m = calc.tSX(internals,  leaves);
 					
-					
+					System.out.println("omg. " + nodeName + " ->> " + theOther.nodeName);
 				}
 			
 			}
@@ -123,9 +128,7 @@ public class Dot extends SimpleNode {
 		}
 	}
 
-	private double[] combineInternalsDivSX() {
-		return calc.dSX(messagesB.get(0).getMessage(), messagesB.get(1).getMessage());
-	}
+
 	
 	private double[] combineAllInternal() {
 		double[] result = new double[]{1,1,1,1};
@@ -158,6 +161,9 @@ public class Dot extends SimpleNode {
 		} else if (mB.size() == 1) {
 			return mB.get(0).getMessage();
 			
+		} else {
+			System.out.println("Didn't even guess!");
+			
 		}
 		
 		return null;
@@ -179,11 +185,13 @@ public class Dot extends SimpleNode {
 			return leaves;
 			
 		} else {
+
 		
 			if (messagesA.isEmpty()) {
 				return null;
 				
 			} else if (messagesA.size() == 1) {
+				System.out.println("only one leaf.");
 				return messagesA.get(0).getMessage();
 			
 			} else if (messagesA.size() > 1) {
@@ -208,7 +216,7 @@ public class Dot extends SimpleNode {
 				return null;
 				
 			} else if (mA.size() == 1) {
-				System.out.println("mA == 1");
+
 				return mA.get(0).getMessage();
 			
 			} else if (mA.size() > 1) {
@@ -221,13 +229,14 @@ public class Dot extends SimpleNode {
 				return base;
 			} 
 		} else {
-			
 			if (mA.isEmpty()) {
 				return null;
 			} else if (mA.size() == 1) {
+				System.out.println("only one " + mA.get(0).getSenderName());
 				return mA.get(0).getMessage();
 				
-			} else if (mA.size() > 1) {
+			} else if (mA.size() > 1) {			
+				
 				double[] base = calc.dTSS(mA.get(0).getMessage(), mA.get(1).getMessage());
 				
 				for (int i = 2; i < mA.size(); i++) {

@@ -98,7 +98,7 @@ public class Main {
 			
 			System.out.println();
 			GlobalContext context = new GlobalContext(g);
-			context.printOutPermutations();
+			//context.printOutPermutations();
 			double[][] marginals = context.getGlobalMarginals();
 			for (int i = 0; i < marginals.length; i++) {
 				System.out.print("Marginal  M" + i + ": ");
