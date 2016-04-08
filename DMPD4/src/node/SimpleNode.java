@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import f4.Element;
+import message.Calculator;
 import message.Message;
 
 public class SimpleNode extends Node {
 
 	protected double[] softInfo;
 	protected boolean isLeaf;
+	protected Calculator calc = new Calculator();
 	
 	protected List<Message> messagesA = new ArrayList<Message>();
 	protected List<Message> messagesB = new ArrayList<Message>();
@@ -79,6 +81,13 @@ public class SimpleNode extends Node {
 		
 	}
 
+	/**
+	 * A method for combining all the leaves of an internal node, 
+	 * except theOther. 
+	 * 
+	 * @param theOther
+	 * @return
+	 */
 	private double[] greekVector(Node theOther) {
 		double[] result = new double[] {1,1,1,1};
 		
@@ -87,14 +96,18 @@ public class SimpleNode extends Node {
 			if (!m.getSenderName().equals(theOther.nodeName)) {
 				result = dividedSXSX(result, m.getMessage());	
 			}
-		}
-		
+		}		
 		// The final Greek vector. 
 		result = dividedSSXX(result, softInfo);
 		
 		return result;
 	}
 
+	/**
+	 * A method for combining all the leaves of an internal node.
+	 * 
+	 * @return
+	 */
 	private double[] greekVector() {
 		double[] result = new double[] {1,1,1,1};
 		
@@ -330,5 +343,10 @@ public class SimpleNode extends Node {
 			}
 		}
 		return has;
+	}
+
+	@Override
+	public boolean hasLeaves() {
+		return !isLeaf() && messagesA.size() > 0;
 	}
 }

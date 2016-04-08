@@ -47,10 +47,10 @@ public class Variable extends Vertex{
 			}
 		}
 		
-		transmission[0] *= softInfo[0];
+		/*transmission[0] *= softInfo[0];
 		transmission[1] *= softInfo[1];
 		transmission[2] *= softInfo[2];
-		transmission[3] *= softInfo[3];
+		transmission[3] *= softInfo[3];*/
 		
 		return transmission;
 	}
@@ -127,10 +127,10 @@ public class Variable extends Vertex{
 				marge[3] *= message[3];
 			}
 			
-			/*marge[0] *= softInfo[0];
+			marge[0] *= softInfo[0];
 			marge[1] *= softInfo[1];
 			marge[2] *= softInfo[2];
-			marge[3] *= softInfo[3];*/
+			marge[3] *= softInfo[3];
 			
 			if(sumsUp(marge)) {
 				marginalization = marge;

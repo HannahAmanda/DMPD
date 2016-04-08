@@ -119,6 +119,13 @@ public class MetaNode extends Node{
 		return v.getState();
 	}
 
+	@Override
+	public boolean hasLeaves() {
+		// TODO Auto-generated method stub
+		System.out.println("unnecessary method");
+		return false;
+	}
+
 	
 	
 }

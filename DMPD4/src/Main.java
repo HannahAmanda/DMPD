@@ -20,8 +20,9 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("between_leaves_shuffled.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("7star.txt"))) {
 
+			
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
 			QSChannel channel = new QSChannel(p);
@@ -48,6 +49,8 @@ public class Main {
 					g.addNode(new SimpleNode(i));
 				} else if (nodeType == 2) {
 					g.addNode(new Dot(i));
+				} else if (nodeType == 3) {
+					g.addNode(new Spot(i));
 				}
 			}
 			
@@ -98,7 +101,7 @@ public class Main {
 			
 			System.out.println();
 			GlobalContext context = new GlobalContext(g);
-			//context.printOutPermutations();
+			// context.printOutPermutations();
 			double[][] marginals = context.getGlobalMarginals();
 			for (int i = 0; i < marginals.length; i++) {
 				System.out.print("Marginal  M" + i + ": ");

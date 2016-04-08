@@ -71,7 +71,13 @@ public class GNode {
 	
 
 	public void passChannelInfo() {
-		double[] softInfo = {randomNumber(), randomNumber(), randomNumber(), randomNumber()};
+		// double[] softInfo = {randomNumber(), randomNumber(), randomNumber(), randomNumber()};
+		double[] softInfo = {0.8, 0.1, 0.1, 0.1};
+		if (this.getId() == 0 || this.getId() == 1) {
+			double[] s = {0.1, 0.8, 0.1, 0.1};
+			softInfo = s;
+		}
+		
 		n.receiveSoftInfo(softInfo);
 		System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo));
 		this.softInfo = softInfo; 

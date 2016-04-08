@@ -18,7 +18,7 @@ public abstract class Node {
 	public abstract boolean hasMessageFrom(Node to);
 	public abstract void receiveMessage(Message m);
 	
-	
+	public abstract boolean hasLeaves();
 	public abstract void finalSetup();
 	public abstract void reset();
 	public abstract void addNeighbor(Node n);
@@ -43,7 +43,6 @@ public abstract class Node {
 	
 	public boolean isLeaf() {
 		return neighbors.size() == 1;
-	}
-	
+	}	
 
 }

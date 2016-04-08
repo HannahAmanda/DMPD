@@ -23,52 +23,82 @@ public class Dot extends SimpleNode {
 		} else if (theOther.isLeaf()) {
 			double[] leaves = combineAllLeaves(theOther);
 			
+			// 1.) If there are only leaf nodes for neighbors
 			if (messagesB.isEmpty()) {
 				double[] m = calc.tSS(leaves, softInfo);
 				theOther.receiveMessage(new Message(nodeName, m));
 			
-			} else if (otherLeavesExist(theOther)) {
-				/*
-				 * This works for the doubleP3
-				 * double[] comb = calc.tSX(leaves, softInfo);
-				 * double[] m = calc.tSS(messagesB.get(0).getMessage(), comb);
-				 * theOther.receiveMessage(new Message(nodeName, m));
-				 * 
-				 */
+			} // 2.) If there is more than one leaf 
+			else if (otherLeavesExist(theOther)) {
+				
+				// 2.1.) if only one internal neighbor exist
 				if (messagesB.size() == 1) {
+						
+					// System.out.println("THE OTHER ONE IN QUESTION......");
 					double[] comb = calc.tSX(leaves, softInfo);
-					double[] m = calc.tSS(combineAllInternal(), comb);
+					
+						// works for between_leaves
+						double[] m = calc.dSS(combineAllInternal(), comb);
+
+						// works up to between
+						//double[] m = calc.tSS(combineAllInternal(), comb);
+					
+					
 					theOther.receiveMessage(new Message(nodeName, m));
-				} else {
+					
+				} // 2.2.) More than one internal neighbor exists 
+				else {
+					// Dont't know if this works for all cases. 
 					leaves = combineAllLeaves(theOther);
 					double[] comb = calc.tSX(leaves,  softInfo);
 					double[] m = calc.dSS(combineAllInternal(),  comb);
 					theOther.receiveMessage(new Message(nodeName, m));
 				}
-			} else {
-				System.out.println("Other leaves don't exist");
 				
+				
+			} // 3.) Other leaves don't exist
+			else {
+				System.out.println("Other leaves don't exist");
 				
 			}
 			
 		} else if (!theOther.isLeaf()) {
+			
 			double[] leaves = combineAllLeaves();
 			double[] internals = combineAllInternal(theOther);
 			
 			
+			// 1.) Is the only internal neighbor
 			if (isTheOnlyOne(theOther)) {
+				
+				System.out.println("|theOther| is the only other internal neighbor.");
 				double[] m = calc.dSX(leaves, softInfo);	
 				theOther.receiveMessage(new Message(nodeName, m));
 				
-			} else {
+			} // 2.) Other internal neighbors exist 
+			else {
+				// 2.1.) There are no leaves. 
 				if (messagesA.size() == 0) {
+					System.out.println("The one without leaves");
 					double[] m = calc.tSX(internals, softInfo);
 					theOther.receiveMessage(new Message(nodeName, m));
 				
-				} else {
-					//double[] m = calc.tSX(internals,  leaves);
+				} // 2.2.) Leaves exist. 
+				else {
 					
-					System.out.println("omg. " + nodeName + " ->> " + theOther.nodeName);
+				/*	
+				 	worked for previous graphs. the ones before between_leaves_shuffled_n6.txt
+				  	double[] comb = calc.tSX(leaves, softInfo);
+					double[] m = calc.tSS(internals, comb);
+					theOther.receiveMessage(new Message(nodeName, m));
+				*/
+					
+					System.out.println("THE ONE IN QUESTION..............");
+					double[] comb = calc.dSX(leaves, softInfo);
+					double[] m = calc.tSS(internals, comb);
+					
+					theOther.receiveMessage(new Message(nodeName, m));
+					
 				}
 			
 			}
@@ -77,7 +107,168 @@ public class Dot extends SimpleNode {
 		
 	}
 
-	@Override 
+	private double[] marginalize() {
+		
+		if (isLeaf) {
+			return calc.dot(softInfo, messagesB.get(0).getMessage());
+			
+		} else if (onlyLeaves()) {
+			double[] leaves = combineAllLeaves();
+			
+			return calc.dot(leaves, softInfo);
+			
+			
+		} else if (onlyInternal()) {
+			
+			double[] internal = combineAllInternal();
+			
+			return calc.dot(softInfo, internal);
+			
+		} else {
+			
+			if (messagesB.size() > 1) {
+				System.out.println("Has several internal neighbors.");
+				double[] comb = calc.dSX(combineAllInternal(), combineAllLeaves());
+			
+				return calc.dot(comb, softInfo);
+			} else {
+				System.out.println("One internal neighbor.");
+				// for n6 shuffled. 
+				double[] comb = calc.dSX(combineAllInternal(), combineAllLeaves());
+				
+				
+				// for between
+				//double[] comb = calc.tSX(combineAllInternal(),  combineAllLeaves());
+				
+				return calc.dot(comb, softInfo);
+			}
+		}
+	}
+
+
+	
+	private double[] combineAllInternal() {
+		
+		if (messagesB.isEmpty()) {
+			return null;
+		} else {
+			double[] result = messagesB.get(0).getMessage();
+			
+			for (int i = 1; i < messagesB.size(); i++) {
+				if (i == 1) {
+					result = calc.dTSX(result, messagesB.get(1).getMessage());
+				} else {
+					System.out.println("guess work!");
+					result = calc.tSX(messagesB.get(i).getMessage(), result);
+				}
+			}
+			
+			return result;
+		}
+	}
+	
+	private double[] combineAllInternal(Node theOther) {
+		double[] dummy = new double[]{1,1,1,1};
+		
+		ArrayList<Message> mB = removeMessage(theOther);
+		
+		if (mB.size() == 1) {
+			return mB.get(0).getMessage();
+			
+		} else if (mB.size() > 1) {
+			System.out.println("Several internal nodes. Unkown formula.");
+			
+		}
+		
+		return dummy;
+	}
+
+	private double[] combineAllLeaves(){
+		if (messagesA.isEmpty()) {
+			return null;
+		} else {
+			double[] leaves = messagesA.get(0).getMessage();
+			
+			for (int i = 1; i < messagesA.size(); i++) {
+				if (i == 1) {
+					leaves = calc.dTSX(leaves, messagesA.get(1).getMessage());
+				} else {
+					leaves = calc.tSX(messagesA.get(i).getMessage(), leaves);
+				}
+			}
+			
+			return leaves;
+		}
+	}
+	
+	private double[] combineAllLeaves(Node except) {
+		ArrayList<Message> mA = removeMessage(except);
+		
+		if (mA.isEmpty()) {
+			return null;
+			
+		} else {
+			double[] leaves = mA.get(0).getMessage();	
+			
+			for (int i = 1; i < mA.size(); i++) {
+				leaves = calc.dTSS(leaves, mA.get(i).getMessage());
+			}
+			
+			return leaves;
+		}
+	}
+	
+	private ArrayList<Message> removeMessage(Node except) {
+		if (except.isLeaf()){
+			return removeLeaf(except);
+		} else {
+			return removeInternal(except);
+		}
+	}
+
+	private ArrayList<Message> removeInternal(Node except) {
+		ArrayList<Message> mB = new ArrayList<Message>();
+		mB.addAll(messagesB);
+		
+		int[] index = new int[messagesB.size()];
+		int count = 0;
+		
+		for (Message m: mB) {
+			if (m.getSenderName().equals(except.nodeName)) {
+				index[count] = mB.indexOf(m);
+				count++;
+			}
+		}
+
+		for (int i = 0; i < count; i++) {
+			mB.remove(index[i]);
+		}
+		
+		return mB;
+	}
+
+	private ArrayList<Message> removeLeaf(Node except) {
+		ArrayList<Message> mA = new ArrayList<Message>();
+		mA.addAll(messagesA);
+		
+		int[] index = new int[messagesA.size()];
+		int count = 0;
+		
+		for (Message m: mA) {
+			if (m.getSenderName().equals(except.nodeName)) {
+				index[count] = mA.indexOf(m);
+				count++;
+			}
+		}
+
+		for (int i = 0; i < count; i++) {
+			mA.remove(index[i]);
+		}
+		
+		return mA;
+	}
+	
+	@Override
 	public Element getState() {
 		double[] marginal = marginalize();
 		
@@ -101,196 +292,6 @@ public class Dot extends SimpleNode {
 		}
 		
 		return null;
-	}
-	
-	private double[] marginalize() {
-		
-		if (isLeaf) {
-			return calc.dot(softInfo, messagesB.get(0).getMessage());
-			
-		} else if (onlyLeaves()) {
-			double[] leaves = combineAllLeaves();
-			
-			return calc.dot(leaves, softInfo);
-			
-			
-		} else if (onlyInternal()) {
-			
-			double[] internal = combineAllInternal();
-			
-			return calc.dot(softInfo, internal);
-			
-		} else {
-			double[] comb = calc.dSX(combineAllInternal(), combineAllLeaves());
-			
-			return calc.dot(comb, softInfo);
-			
-		}
-	}
-
-
-	
-	private double[] combineAllInternal() {
-		double[] result = new double[]{1,1,1,1};
-		
-		if (messagesB.size() > 1) {
-			for (int i = 1; i < messagesB.size(); i++) {
-				if (i == 1) {
-					result = calc.dTSX(messagesB.get(0).getMessage(), messagesB.get(1).getMessage());
-				} else {
-					System.out.println("guess work!");
-					result = calc.tSX(messagesB.get(i).getMessage(), result);
-				}
-			}
-		} else if (messagesB.size() == 1) {
-			return messagesB.get(0).getMessage();
-			
-		}
-		return result;
-	}
-	
-	private double[] combineAllInternal(Node theOther) {
-		double[] result = new double[]{1,1,1,1};
-		
-		ArrayList<Message> mB = removeMessage(theOther);
-		
-		if (mB.size() == 0) {
-			System.out.println("There are no more internal nodes.");
-			return new double[]{1,1,1,1};
-		
-		} else if (mB.size() == 1) {
-			return mB.get(0).getMessage();
-			
-		} else {
-			System.out.println("Didn't even guess!");
-			
-		}
-		
-		return null;
-	}
-
-	private double[] combineAllLeaves(){
-		
-		if (onlyLeaves()) {
-			double[] leaves = new double[]{1,1,1,1};
-			
-			for (int i = 1; i < messagesA.size(); i++) {
-				if (i == 1) {
-					leaves = calc.dTSX(messagesA.get(0).getMessage(), messagesA.get(1).getMessage());
-				} else {
-					leaves = calc.tSX(messagesA.get(i).getMessage(), leaves);
-				}
-			}
-			
-			return leaves;
-			
-		} else {
-
-		
-			if (messagesA.isEmpty()) {
-				return null;
-				
-			} else if (messagesA.size() == 1) {
-				System.out.println("only one leaf.");
-				return messagesA.get(0).getMessage();
-			
-			} else if (messagesA.size() > 1) {
-				double[] base = calc.dTSX(messagesA.get(0).getMessage(), messagesA.get(1).getMessage());
-				
-				for (int i = 2; i < messagesA.size(); i++) {
-					base = calc.tSX(messagesA.get(i).getMessage(), base);
-				}
-				
-				return base;
-			} 
-		}
-		
-		return null;
-	}
-	
-	private double[] combineAllLeaves(Node except) {
-		ArrayList<Message> mA = removeMessage(except);
-		
-		if (onlyLeaves()) {
-			if (mA.isEmpty()) {
-				return null;
-				
-			} else if (mA.size() == 1) {
-
-				return mA.get(0).getMessage();
-			
-			} else if (mA.size() > 1) {
-				double[] base = calc.dTSS(mA.get(0).getMessage(), mA.get(1).getMessage());
-				
-				for (int i = 2; i < mA.size(); i++) {
-					base = calc.dTSS(base, mA.get(i).getMessage());
-				}
-				
-				return base;
-			} 
-		} else {
-			if (mA.isEmpty()) {
-				return null;
-			} else if (mA.size() == 1) {
-				System.out.println("only one " + mA.get(0).getSenderName());
-				return mA.get(0).getMessage();
-				
-			} else if (mA.size() > 1) {			
-				
-				double[] base = calc.dTSS(mA.get(0).getMessage(), mA.get(1).getMessage());
-				
-				for (int i = 2; i < mA.size(); i++) {
-					base = calc.dTSS(base, mA.get(i).getMessage());
-				}
-				
-				return base;
-				
-			}
-		}
-		return null;
-	}
-	
-	private ArrayList<Message> removeMessage(Node except) {
-		if (except.isLeaf()){
-			ArrayList<Message> mA = new ArrayList<Message>();
-			mA.addAll(messagesA);
-			
-			int[] index = new int[messagesA.size()];
-			int count = 0;
-			
-			for (Message m: mA) {
-				if (m.getSenderName().equals(except.nodeName)) {
-					index[count] = mA.indexOf(m);
-					count++;
-				}
-			}
-
-			for (int i = 0; i < count; i++) {
-				mA.remove(index[i]);
-			}
-			
-			return mA;
-		} else {
-			ArrayList<Message> mB = new ArrayList<Message>();
-			mB.addAll(messagesB);
-			
-			int[] index = new int[messagesB.size()];
-			int count = 0;
-			
-			for (Message m: mB) {
-				if (m.getSenderName().equals(except.nodeName)) {
-					index[count] = mB.indexOf(m);
-					count++;
-				}
-			}
-
-			for (int i = 0; i < count; i++) {
-				mB.remove(index[i]);
-			}
-			
-			return mB;
-			
-		}
 	}
 	
 	private boolean otherLeavesExist(Node theOther) {
