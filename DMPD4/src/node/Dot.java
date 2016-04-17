@@ -18,93 +18,106 @@ public class Dot extends SimpleNode {
 	@Override
 	public void passMessageTo(Node theOther) {
 		if (isLeaf) {
-			theOther.receiveMessage(new Message(nodeName, softInfo));
+			passLeafInfo(theOther);
 			
 		} else if (theOther.isLeaf()) {
-			double[] leaves = combineAllLeaves(theOther);
-			
-			// 1.) If there are only leaf nodes for neighbors
-			if (messagesB.isEmpty()) {
-				double[] m = calc.tSS(leaves, softInfo);
-				theOther.receiveMessage(new Message(nodeName, m));
-			
-			} // 2.) If there is more than one leaf 
-			else if (otherLeavesExist(theOther)) {
-				
-				// 2.1.) if only one internal neighbor exist
-				if (messagesB.size() == 1) {
-						
-					// System.out.println("THE OTHER ONE IN QUESTION......");
-					double[] comb = calc.tSX(leaves, softInfo);
-					
-						// works for between_leaves
-						double[] m = calc.dSS(combineAllInternal(), comb);
-
-						// works up to between
-						//double[] m = calc.tSS(combineAllInternal(), comb);
-					
-					
-					theOther.receiveMessage(new Message(nodeName, m));
-					
-				} // 2.2.) More than one internal neighbor exists 
-				else {
-					// Dont't know if this works for all cases. 
-					leaves = combineAllLeaves(theOther);
-					double[] comb = calc.tSX(leaves,  softInfo);
-					double[] m = calc.dSS(combineAllInternal(),  comb);
-					theOther.receiveMessage(new Message(nodeName, m));
-				}
-				
-				
-			} // 3.) Other leaves don't exist
-			else {
-				System.out.println("Other leaves don't exist");
-				
-			}
+			passToLeaf(theOther);
 			
 		} else if (!theOther.isLeaf()) {
 			
-			double[] leaves = combineAllLeaves();
-			double[] internals = combineAllInternal(theOther);
-			
-			
-			// 1.) Is the only internal neighbor
-			if (isTheOnlyOne(theOther)) {
-				
-				System.out.println("|theOther| is the only other internal neighbor.");
-				double[] m = calc.dSX(leaves, softInfo);	
-				theOther.receiveMessage(new Message(nodeName, m));
-				
-			} // 2.) Other internal neighbors exist 
-			else {
-				// 2.1.) There are no leaves. 
-				if (messagesA.size() == 0) {
-					System.out.println("The one without leaves");
-					double[] m = calc.tSX(internals, softInfo);
-					theOther.receiveMessage(new Message(nodeName, m));
-				
-				} // 2.2.) Leaves exist. 
-				else {
-					
-				/*	
-				 	worked for previous graphs. the ones before between_leaves_shuffled_n6.txt
-				  	double[] comb = calc.tSX(leaves, softInfo);
-					double[] m = calc.tSS(internals, comb);
-					theOther.receiveMessage(new Message(nodeName, m));
-				*/
-					
-					System.out.println("THE ONE IN QUESTION..............");
-					double[] comb = calc.dSX(leaves, softInfo);
-					double[] m = calc.tSS(internals, comb);
-					
-					theOther.receiveMessage(new Message(nodeName, m));
-					
-				}
-			
-			}
+			passToInternal(theOther);
 			
 		}
 		
+	}
+
+	private void passToInternal(Node theOther) {
+		double[] leaves = combineAllLeaves();
+		double[] internals = combineAllInternal(theOther);
+		
+		
+		// 1.) Is the only internal neighbor
+		if (isTheOnlyOne(theOther)) {
+			
+			System.out.println("|theOther| is the only other internal neighbor.");
+			double[] m = calc.dSX(leaves, softInfo);	
+			theOther.receiveMessage(new Message(nodeName, m));
+			
+		} // 2.) Other internal neighbors exist 
+		else {
+			// 2.1.) There are no leaves. 
+			if (messagesA.size() == 0) {
+				System.out.println("The one without leaves");
+				double[] m = calc.tSX(internals, softInfo);
+				
+				theOther.receiveMessage(new Message(nodeName, m));
+			
+			} // 2.2.) Leaves exist. 
+			else {
+				System.out.println("The one with leaves");
+				
+				// worked for previous graphs. the ones before between_leaves_shuffled_n6.txt
+			  	double[] comb = calc.tSX(leaves, softInfo);
+				double[] m = calc.tSS(internals, comb);
+				theOther.receiveMessage(new Message(nodeName, m));
+			
+				
+				System.out.println("THE ONE IN QUESTION..............");
+				/**double[] comb = calc.dSX(leaves, softInfo);
+				double[] m = calc.tSS(internals, comb);
+				
+				theOther.receiveMessage(new Message(nodeName, m));*/
+				
+			}
+		
+		}
+	}
+
+	private void passToLeaf(Node theOther) {
+		double[] leaves = combineAllLeaves(theOther);
+		
+		// 1.) If there are only leaf nodes for neighbors
+		if (messagesB.isEmpty()) {
+			double[] m = calc.tSS(leaves, softInfo);
+			theOther.receiveMessage(new Message(nodeName, m));
+		
+		} // 2.) If there is more than one leaf 
+		else if (otherLeavesExist(theOther)) {
+			
+			// 2.1.) if only one internal neighbor exist
+			if (messagesB.size() == 1) {
+					
+				// System.out.println("THE OTHER ONE IN QUESTION......");
+				double[] comb = calc.tSX(leaves, softInfo);
+				
+					// works for between_leaves
+					// double[] m = calc.dSS(combineAllInternal(), comb);
+
+					// works up to between
+					double[] m = calc.tSS(combineAllInternal(), comb);
+				
+				
+				theOther.receiveMessage(new Message(nodeName, m));
+				
+			} // 2.2.) More than one internal neighbor exists 
+			else {
+				// Dont't know if this works for all cases. 
+				leaves = combineAllLeaves(theOther);
+				double[] comb = calc.tSX(leaves,  softInfo);
+				double[] m = calc.dSS(combineAllInternal(),  comb);
+				theOther.receiveMessage(new Message(nodeName, m));
+			}
+			
+			
+		} // 3.) Other leaves don't exist
+		else {
+			System.out.println("Other leaves don't exist");
+			
+		}
+	}
+
+	private void passLeafInfo(Node theOther) {
+		theOther.receiveMessage(new Message(nodeName, softInfo));
 	}
 
 	private double[] marginalize() {
@@ -134,11 +147,11 @@ public class Dot extends SimpleNode {
 			} else {
 				System.out.println("One internal neighbor.");
 				// for n6 shuffled. 
-				double[] comb = calc.dSX(combineAllInternal(), combineAllLeaves());
+				// double[] comb = calc.dSX(combineAllInternal(), combineAllLeaves());
 				
 				
 				// for between
-				//double[] comb = calc.tSX(combineAllInternal(),  combineAllLeaves());
+				double[] comb = calc.tSX(combineAllInternal(),  combineAllLeaves());
 				
 				return calc.dot(comb, softInfo);
 			}
@@ -205,7 +218,8 @@ public class Dot extends SimpleNode {
 		ArrayList<Message> mA = removeMessage(except);
 		
 		if (mA.isEmpty()) {
-			return null;
+			double[] leaves = new double[]{1,0,1,0};
+			return leaves;
 			
 		} else {
 			double[] leaves = mA.get(0).getMessage();	

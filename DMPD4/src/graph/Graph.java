@@ -14,7 +14,7 @@ import channel.GNode;
 
 public class Graph {
 	
-	private int iterations = 10;
+	private int iterations = 40;
 	private double p;
 	private boolean fg;
 	private boolean isTree; 

@@ -20,7 +20,7 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("7star.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("three_bulls_shuffled.txt"))) {
 
 			
 			// INITIATE CHANNEL
@@ -93,7 +93,7 @@ public class Main {
 			// PASS CODEWORD THROUGH CHANNEL
 			//Element[] received = channel.sendThroughChannel(zero);
 			
-			Element[] received = {Element.ZERO, Element.ONE, Element.ZERO};
+			Element[] received = {Element.ZERO, Element.ONE};
 			//, Element.ZERO, Element.ONE, Element.ZERO
 			// MESSAGE-PASSING
 			Element[] decoded = g.decode(received);
