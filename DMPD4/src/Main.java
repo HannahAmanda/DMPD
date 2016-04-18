@@ -20,7 +20,7 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("three_bulls_shuffled.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("doubleP3.txt"))) {
 
 			
 			// INITIATE CHANNEL

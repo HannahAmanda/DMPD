@@ -1,6 +1,7 @@
 package node;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import message.Calculator;
 import message.Message;
@@ -64,6 +65,7 @@ public class Spot extends SimpleNode {
 		if (internals != null) {
 			message = calc.dSX(leaves,  internals);
 			message = calc.dSS(message,  softInfo);
+			
 		} else {
 			message = calc.dSS(leaves,  softInfo);
 		}
@@ -108,6 +110,7 @@ public class Spot extends SimpleNode {
 	private double[] combineAllLeaves() {
 
 		if (messagesA.size() == 0) {
+			System.out.println("No leaves!");
 			return new double[] {1,0,1,0};
 		} else if (messagesA.size() == 1) {
 			double[] leaf = new double[4];
@@ -187,15 +190,9 @@ public class Spot extends SimpleNode {
 				
 			} else if (internals != null && messagesA.size() == 0) {
 				// only internals
-				
-				System.out.println("Only internals");
 				result = calc.dot(softInfo, internals);
 				
 			}
-			// 1.) Combine leaves
-			// 2.) Combine internals
-			// 3.) Combine 1. and 2. with softInfo
-			
 		}
 		
 		return result;

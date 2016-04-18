@@ -14,7 +14,7 @@ import channel.GNode;
 
 public class Graph {
 	
-	private int iterations = 40;
+	private int iterations = 1;
 	private double p;
 	private boolean fg;
 	private boolean isTree; 
@@ -82,6 +82,12 @@ public class Graph {
 		edges.add(new Edge(nI, nJ));
 	}
 	
+	public void reset() {
+		for (Node n: nodes) {
+			n.reset();
+		}
+	}
+	
 	public Element[] decode(Element[] transmission) {
 		passSoftInformation(transmission);
 		init();
@@ -91,13 +97,15 @@ public class Graph {
 		
 		return getDecodeState();
 	}
-	
-	public void reset() {
-		for (Node n: nodes) {
-			n.reset();
-		}
-	}
 
+	private void passSoftInformation(Element[] transmission) {
+		System.out.println();
+		gNodeBitNotification(transmission);
+		gNodeTransmit();
+		System.out.println("Soft information passed.");
+		System.out.println();
+	}
+	
 	private void propagateBeliefs() {
 		
 		if (isTree) {
@@ -107,6 +115,28 @@ public class Graph {
 		}
 	}
 
+	private void init() {
+		for (Node n: nodes) {
+			n.passInitialMessages();
+		}
+		System.out.println("Initial messages passed.");	
+		System.out.println();
+	}
+	
+	private void iterateEdges() {
+		int it = 0;
+		while (it < iterations) {
+			
+			for (Edge e: edges) {
+				System.out.println(e.toString());
+				e.theOne.passMessageTo(e.theOther);
+				e.theOther.passMessageTo(e.theOne);
+			}			
+			
+			it++;
+		}
+	}
+	
 	private void traverseTree() {
 		passMessagesFromLeaves(nodes.size()/2);
 		System.out.println("passed messages from leaves.");
@@ -175,28 +205,6 @@ public class Graph {
 		}
 	}
 
-	private void iterateEdges() {
-		int it = 0;
-		while (it < iterations) {
-			
-			for (Edge e: edges) {
-				System.out.println(e.toString());
-				e.theOne.passMessageTo(e.theOther);
-				e.theOther.passMessageTo(e.theOne);
-			}			
-			
-			it++;
-		}
-	}
-
-	private void init() {
-		for (Node n: nodes) {
-			n.passInitialMessages();
-		}
-		System.out.println("Initial messages passed.");	
-		System.out.println();
-	}
-
 	private Element[] getDecodeState() {
 		Element[] decodedWord = new Element[nodes.size()];
 		
@@ -206,14 +214,6 @@ public class Graph {
 		}
 		
 		return decodedWord;
-	}
-	
-	private void passSoftInformation(Element[] transmission) {
-		System.out.println();
-		gNodeBitNotification(transmission);
-		gNodeTransmit();
-		System.out.println("Soft information passed.");
-		System.out.println();
 	}
 
 	private void gNodeBitNotification(Element[] transmission) {
@@ -228,7 +228,6 @@ public class Graph {
 			g.passChannelInfo();
 		}
 	}
-	
 	
 	@Override
 	public String toString() {
@@ -246,7 +245,6 @@ public class Graph {
 		}
 	}
 	
-	
 	private class Edge {
 		public Node theOne;
 		public Node theOther;
@@ -261,9 +259,6 @@ public class Graph {
 			return "(" + theOne.toString() + ", " + theOther.toString() + ")";
 		}
 	}
-
-
-	
 	
 	public GNode getGNode(int i) {
 		for (GNode g: gNodes) {
