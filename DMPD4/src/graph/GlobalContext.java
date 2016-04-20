@@ -43,6 +43,9 @@ public class GlobalContext {
 	}
 	
 	public double[][] getGlobalMarginals() {
+		for (int i = 0; i < nodes; i++) {
+			marginals[i] = normalize(marginals[i]);
+		}
 		return marginals;
 	}
 
@@ -160,4 +163,17 @@ public class GlobalContext {
 		System.out.println("CODESPACE " + codeSpace.size());
 	}
 
+	public double[] normalize(double[] t) {
+		double sum = 0.0;
+		
+		for (int i = 0; i < t.length; i++) {
+			sum+= t[i];
+		}
+		
+		for (int i = 0; i < t.length; i++) {
+			t[i] /= sum;
+		}
+		return t;
+	}
+	
 }

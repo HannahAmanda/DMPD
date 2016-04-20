@@ -42,18 +42,18 @@ public class Spot extends SimpleNode {
 		if (internals != null){
 			double[] m = calc.dSX(leaves, softInfo);
 			m = calc.dSS(m, internals);
-			theOther.receiveMessage(new Message(nodeName, m));
+			theOther.receiveMessage(new Message(nodeName, normalize(m)));
 			
 		} else {
 			// correct for stars
 			double[] m = calc.dSS(leaves, softInfo);
-			theOther.receiveMessage(new Message(nodeName, m));
+			theOther.receiveMessage(new Message(nodeName, normalize(m)));
 		}
 	}
 
 
 	private void passLeafInfo(Node theOther) {
-		theOther.receiveMessage(new Message(nodeName, softInfo));
+		theOther.receiveMessage(new Message(nodeName, normalize(softInfo)));
 	}
 
 
@@ -61,16 +61,16 @@ public class Spot extends SimpleNode {
 		double[] leaves = combineAllLeaves();
 		double[] internals = combineAllInternal(theOther);
 		
-		double[] message = new double[4];
+		double[] m = new double[4];
 		if (internals != null) {
-			message = calc.dSX(leaves,  internals);
-			message = calc.dSS(message,  softInfo);
+			m = calc.dSX(leaves,  internals);
+			m = calc.dSS(m,  softInfo);
 			
 		} else {
-			message = calc.dSS(leaves,  softInfo);
+			m = calc.dSS(leaves,  softInfo);
 		}
 		
-		theOther.receiveMessage(new Message(nodeName, message));
+		theOther.receiveMessage(new Message(nodeName, normalize(m)));
 	}
 	
 	private double[] combineAllInternal(Node theOther) {
@@ -110,7 +110,7 @@ public class Spot extends SimpleNode {
 	private double[] combineAllLeaves() {
 
 		if (messagesA.size() == 0) {
-			System.out.println("No leaves!");
+			// System.out.println("No leaves!");
 			return new double[] {1,0,1,0};
 		} else if (messagesA.size() == 1) {
 			double[] leaf = new double[4];
@@ -195,7 +195,7 @@ public class Spot extends SimpleNode {
 			}
 		}
 		
-		return result;
+		return normalize(result);
 	}
 	
 	@Override 
