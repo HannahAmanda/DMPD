@@ -3,20 +3,16 @@ package graph;
 import java.util.List;
 
 import f4.Element;
-import f4.F4;
 
 import java.util.ArrayList;
 
-import node.MetaNode;
 import node.Node;
-import node.SimpleNode;
 import channel.GNode;
 
 public class Graph {
 	
 	private int iterations = 40;
 	private double p;
-	private boolean fg;
 	private boolean isTree; 
 	
 	private List<Node> nodes = new ArrayList<Node>();
@@ -25,17 +21,9 @@ public class Graph {
 	
 	private List<ArrayList<Element>> adjMatrix = new ArrayList<ArrayList<Element>>();
 	
-	public Graph(double p, boolean tree, int factorgraph){
+	public Graph(double p, boolean tree){
 		this.p = p;
-		this.isTree = tree;
-		if (factorgraph == 0) {
-			fg = false;
-		} else if (factorgraph == 1) {
-			fg = true;
-		} else {
-			fg = false;
-		}
-		
+		this.isTree = tree;		
 	}
 	
 	public double getP() {

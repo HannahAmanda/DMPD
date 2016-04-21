@@ -2,19 +2,25 @@ package node;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import message.Calculator;
 import message.Message;
 import f4.Element;
 
 
-public class Spot extends SimpleNode {
+public class Spot extends Node {
 	
+	protected double[] softInfo;
+	protected boolean isLeaf;
 	private Calculator calc = new Calculator();
 	
+	protected List<Message> messagesA = new ArrayList<Message>();
+	protected List<Message> messagesB = new ArrayList<Message>();
 	
 	public Spot(int id) {
-		super(id);
+			nodeId = id;
+			nodeName = "M" + id;
 	}
 	
 
@@ -34,7 +40,6 @@ public class Spot extends SimpleNode {
 		
 	}
 
-
 	private void passToLeaf(Node theOther) {
 		double[] leaves = combineAllLeaves(theOther);
 		double[] internals = combineAllInternal();
@@ -51,11 +56,9 @@ public class Spot extends SimpleNode {
 		}
 	}
 
-
 	private void passLeafInfo(Node theOther) {
 		theOther.receiveMessage(new Message(nodeName, normalize(softInfo)));
 	}
-
 
 	private void passToInternal(Node theOther) {
 		double[] leaves = combineAllLeaves();
@@ -168,7 +171,6 @@ public class Spot extends SimpleNode {
 		}
 	}
 
-
 	private double[] marginalize() {
 		double[] result = new double[4]; 
 		
@@ -224,7 +226,6 @@ public class Spot extends SimpleNode {
 		return null;
 	}
 	
-
 	private ArrayList<Message> removeLeafMessage(Node except) {
 		ArrayList<Message> mA = new ArrayList<Message>();
 		
@@ -238,7 +239,6 @@ public class Spot extends SimpleNode {
 		mA.remove(index);
 		return mA;
 	}
-
 
 	private ArrayList<Message> removeInternalMessage(Node except) {
 		ArrayList<Message> mB = new ArrayList<Message>();
@@ -254,5 +254,123 @@ public class Spot extends SimpleNode {
 		return mB;
 		
 	}
+
+	@Override
+	public void receiveSoftInfo(double[] softInfo) {
+		this.softInfo = softInfo;
+	}
+
+
+	@Override
+	public void passInitialMessages() {
+		double[] identityMessage = {1.0,1.0,1.0,1.0};
+		for (Node n: neighbors) {
+			n.receiveMessage(new Message(toString(), identityMessage));
+		}
+	}
+
+
+	@Override
+	public boolean hasMessageFrom(Node to) {
+		boolean has = false;
+		if (to.isLeaf()) {
+			for (Message m: messagesA) {
+				if (m.getSenderName().equals(to.getNodeName())) {
+					has = true;
+				}
+			}
+		} else {
+			for (Message m: messagesB) {
+				if (m.getSenderName().equals(to.getNodeName())) {
+					has = true;
+				}
+			}
+		}
+		return has;
+	}
+
+	@Override
+	public void receiveMessage(Message m) {
+		System.out.println(nodeName + " <--- " + m.toString());
+		
+		String name = m.getSenderName();
+		boolean leaf = ((Spot) neighbors.get(findNeighborIndex(name))).isLeaf();
+		int index = -1;
+
+		if (leaf) {
+			for (Message a: messagesA) {
+				if (a.getSenderName().equals(name)) {
+					index = messagesA.indexOf(a);
+				}
+			}
+			
+			if (index != -1) {
+				messagesA.remove(index);
+			}
+			messagesA.add(m);
+			
+		} else {
+			
+			for (Message b: messagesB) {
+				if(b.getSenderName().equals(name)) {
+					index = messagesB.indexOf(b);
+				}
+			}
+			
+			if (index != -1) {
+				messagesB.remove(index);
+			}
+			messagesB.add(m);
+		}
+
+	}
+
+	private int findNeighborIndex(String name) {
+		int index = -1;
+		for (Node v: neighbors) {
+			if (v.nodeName.equals(name)) {
+				index = neighbors.indexOf(v);
+			}
+		}
+
+		return index;
+	}
+
+	@Override
+	public boolean hasLeaves() {
+		return !isLeaf() && messagesA.size() > 0;
+	}
+
+	@Override
+	public void finalSetup() {
+		if (neighbors.size() == 1) {
+			isLeaf = true;
+		} else {
+			isLeaf = false;
+		}
+	}
+
+	@Override
+	public void reset() {
+		messagesA.clear();
+		messagesB.clear();
+	}
+
+	@Override
+	public void addNeighbor(Node n) {
+		neighbors.add(n);
+	}
 	
+	private double[] normalize(double[] t) {
+		double sum = 0.0;
+		
+		for (int i = 0; i < t.length; i++) {
+			sum+= t[i];
+		}
+		
+		for (int i = 0; i < t.length; i++) {
+			t[i] /= sum;
+		}
+		return t;
+	}
 }

@@ -9,10 +9,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-import node.Dot;
+
 import node.Spot;
 import node.MetaNode;
-import node.SimpleNode;
 import channel.QSChannel;
 import f4.Element;
 
@@ -39,17 +38,13 @@ public class Main {
 			}
 			
 			// CONSTRUCT GRAPH
-			Graph g = new Graph(p, tree, nodeType);
+			Graph g = new Graph(p, tree);
 			int nodes = Integer.parseInt(br.readLine());
 			
 			for (int i = 0; i < nodes; i++) {
 				if (nodeType == 1) {
 					g.addNode(new MetaNode(i));
-				} else if (nodeType == 0) {
-					g.addNode(new SimpleNode(i));
 				} else if (nodeType == 2) {
-					g.addNode(new Dot(i));
-				} else if (nodeType == 3) {
 					g.addNode(new Spot(i));
 				}
 			}
