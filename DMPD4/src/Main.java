@@ -1,4 +1,4 @@
-import graph.GlobalContext;
+import graph.GlobalFunction;
 import graph.Graph;
 
 import java.io.BufferedReader;
@@ -96,9 +96,9 @@ public class Main {
 			
 			
 			System.out.println();
-			GlobalContext context = new GlobalContext(g);
+			GlobalFunction global = new GlobalFunction(g);
 			// context.printOutPermutations();
-			double[][] marginals = context.getGlobalMarginals();
+			double[][] marginals = global.getGlobalMarginals();
 			for (int i = 0; i < marginals.length; i++) {
 				System.out.print("Marginal  M" + i + ": ");
 				for (int j = 0; j < marginals[i].length; j++) {
@@ -110,7 +110,7 @@ public class Main {
 			System.out.println();
 			System.out.println("##### r" + Arrays.toString(received) + " #####");
 			System.out.println("##### d" + Arrays.toString(decoded) + " #####");
-			
+			System.out.println("##### decoded to a codeword: " + global.isCodeWord(decoded));
 			g.reset();
 		
 			

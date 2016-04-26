@@ -7,7 +7,7 @@ import node.Node;
 import f4.Element;
 import f4.F4;
 
-public class GlobalContext {
+public class GlobalFunction {
 	
 	
 	private List<ArrayList<Element>> adjMatrix = new ArrayList<ArrayList<Element>>();
@@ -21,11 +21,11 @@ public class GlobalContext {
 	private Graph g;
 	private int nodes;
 	
-	public GlobalContext(Graph g) {
+	public GlobalFunction(Graph g) {
 		this.g = g;
 		nodes  = g.getNrOfNodes();
 		adjMatrix = g.getAdjMatrix();
-		permutations = genPermutations(nodes);
+		permutations = generatePermutations(nodes);
 		marginals = new double[nodes][4];
 		
 		for (ArrayList<Element> p: permutations) {
@@ -49,7 +49,7 @@ public class GlobalContext {
 		return marginals;
 	}
 
-	private ArrayList<ArrayList<Element>> genPermutations(int n) {	
+	private ArrayList<ArrayList<Element>> generatePermutations(int n) {	
 		if (n == 1) {
 			ArrayList<ArrayList<Element>> permutations = new ArrayList<ArrayList<Element>>();
 			for (Element e : alphabet) {
@@ -59,7 +59,7 @@ public class GlobalContext {
 			}
 			return permutations;
 		} else {
-			ArrayList<ArrayList<Element>> perms = genPermutations(n-1);
+			ArrayList<ArrayList<Element>> perms = generatePermutations(n-1);
 			ArrayList<ArrayList<Element>> permutations = new ArrayList<ArrayList<Element>>();
 			
 			for (ArrayList<Element> p: perms) {
@@ -174,6 +174,22 @@ public class GlobalContext {
 			t[i] /= sum;
 		}
 		return t;
+	}
+
+	public boolean isCodeWord(Element[] decoded) {
+		for (ArrayList<Element> c: codeSpace) {
+			boolean codeword = true;
+			for (int i = 0 ; i < decoded.length; i++) {
+				if (!c.get(i).equals(decoded[i])) {
+					codeword = false;
+				}
+			}
+			
+			if (codeword) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }
