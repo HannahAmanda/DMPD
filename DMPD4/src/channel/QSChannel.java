@@ -1,6 +1,7 @@
 package channel;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import f4.Element;
 
@@ -21,12 +22,13 @@ public class QSChannel {
 	public double p;
 	// a,b,c = q
 	public double q;
+	int distance;
 	
-	private static final Random rand = new Random(67);
 	
-	public QSChannel(double p) {
+	public QSChannel(double p, int distance) {
 		this.p = p;
 		q = ((1-p)/3);
+		this.distance = distance;
 	}
 	
 	
@@ -37,13 +39,21 @@ public class QSChannel {
 	 * @param message
 	 * @return
 	 */
-	public Element[] sendThroughChannel(Element[] message) {	
+	public Element[] sendThroughChannel(Element[] message) {
 		Element[] transmission = new Element[message.length];
+		int errorCount = 0;
 		
-		for (int i = 0; i < message.length; i++ ) {
-			transmission[i] = perturb(message[i]);
+			for (int index = 0; index < transmission.length; index++) {
+				if (errorCount < distance ) {
+					transmission[index] = perturb(message[index]);
+					if (message[index] != (transmission[index])) {
+						errorCount++;
+					}
+				} else {
+					transmission[index] = Element.ZERO;
+				}
 		}
-		
+		System.out.println(errorCount + " " + distance);
 		return transmission;	
 	}
 	
@@ -135,7 +145,7 @@ public class QSChannel {
 	}
 
 	public static double randomNumber() {
-		return (rand.nextDouble());
+		return ThreadLocalRandom.current().nextDouble(1);
 	}
 	
 
