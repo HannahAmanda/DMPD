@@ -1,3 +1,4 @@
+package main;
 import graph.GlobalFunction;
 import graph.Graph;
 
@@ -16,7 +17,7 @@ import f4.Element;
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("IS6.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("/home/hannah/IS6.txt"))) {
 
 			
 			// INITIATE CHANNEL

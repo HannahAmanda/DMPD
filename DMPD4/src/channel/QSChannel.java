@@ -145,7 +145,7 @@ public class QSChannel {
 	}
 
 	public static double randomNumber() {
-		return ThreadLocalRandom.current().nextDouble(1);
+		return ThreadLocalRandom.current().nextDouble(1.1);
 	}
 	
 
