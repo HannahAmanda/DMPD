@@ -1,6 +1,6 @@
-package simulator.decoding.embedded.factor_graph;
+package decoder.embedded.factor_graph;
 
-import simulator.decoding.message.Message;
+import decoder.message.Message;
 import f4.Element;
 
 public class Variable extends Vertex{

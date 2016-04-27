@@ -1,12 +1,12 @@
-package simulator.decoding.embedded.metanode;
+package decoder.embedded.metanode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import simulator.decoding.embedded.factor_graph.Factor;
-import simulator.decoding.embedded.factor_graph.Variable;
-import simulator.decoding.message.Message;
 import code.graph.Node;
+import decoder.embedded.factor_graph.Factor;
+import decoder.embedded.factor_graph.Variable;
+import decoder.message.Message;
 import f4.Element;
 
 public class MetaNode extends Node{

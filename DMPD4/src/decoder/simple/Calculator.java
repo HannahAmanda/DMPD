@@ -1,4 +1,4 @@
-package simulator.decoding.simple;
+package decoder.simple;
 
 public class Calculator {
 	

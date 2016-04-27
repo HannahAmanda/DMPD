@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import simulator.decoding.embedded.metanode.MetaNode;
-import simulator.decoding.simple.Point;
 import channel.Channel;
 import channel.QuaternarySymmetricChannel;
 import code.graph.Graph;
+import decoder.embedded.metanode.MetaNode;
+import decoder.simple.Point;
 import f4.Element;
 
 public class Simulator {
@@ -34,7 +34,6 @@ public class Simulator {
 			}
 		}
 		
-		// System.out.println(graph.getNodes().toString());
 		
 		// PARSE ADJ.MATRIX and ADD EDGES
 		int k = 0;
