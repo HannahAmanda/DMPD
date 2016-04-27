@@ -1,29 +1,64 @@
 package simulator;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import simulator.decoding.embedded.metanode.MetaNode;
 import simulator.decoding.simple.Point;
-import code.global_function.GlobalFunction;
-import code.graph.Graph;
+import channel.Channel;
 import channel.QuaternarySymmetricChannel;
-import f4.Element;
-
+import code.graph.Graph;
 
 public class Simulator {
-	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("graphs/cyclic/IS6.txt"))) {
+	
+	private Graph graph;
+	private Channel channel;
 
-			
-			// INITIATE CHANNEL
-			double p = Double.parseDouble(br.readLine());
-			QuaternarySymmetricChannel channel = new QuaternarySymmetricChannel(p);
+	public Simulator(double p, int nodeType, boolean isTree, int nrOfNodes, List<String> adjacencyMatrix) {
+		graph = new Graph(p, isTree);
+		channel = new QuaternarySymmetricChannel(p);
 		
-			
-			// UNDERLYING FACTOR GRAPH
+		// ADD NODES TO GRAPH
+		for (int i = 0; i < nrOfNodes; i++) {
+			if (nodeType == 1) {
+				graph.addNode(new MetaNode(i));
+			} else if (nodeType == 2) {
+				graph.addNode(new Point(i));
+			}
+		}
+		
+		// System.out.println(graph.getNodes().toString());
+		
+		// PARSE ADJ.MATRIX and ADD EDGES
+		int k = 0;
+		for (String row: adjacencyMatrix) {
+			graph.addRow(row);
+			int j = k;
+			while (j < nrOfNodes) {
+				if (row.charAt(j) == '1') {
+					graph.addEdge(k, j);
+				}
+				j++;
+			}
+			k++;
+		}
+		
+		// PRINT OUT GRAPH
+		System.out.println("*** GRAPH ***");
+		System.out.print(graph.toString());
+		System.out.println("*** ***** ***");
+		
+		graph.finalSetup();
+	}
+	
+	
+	public static void main(String[] args) throws IOException, FileNotFoundException{
+		try(BufferedReader br = new BufferedReader(new FileReader("graphs/cyclic/IS6.txt"))) {
+			double p = Double.parseDouble(br.readLine());
 			int nodeType = Integer.parseInt(br.readLine());
 			
 			boolean tree = false;
@@ -32,95 +67,23 @@ public class Simulator {
 				tree = true;
 			}
 			
-			// CONSTRUCT GRAPH
-			Graph g = new Graph(p, tree);
 			int nodes = Integer.parseInt(br.readLine());
 			
-			for (int i = 0; i < nodes; i++) {
-				if (nodeType == 1) {
-					g.addNode(new MetaNode(i));
-				} else if (nodeType == 2) {
-					g.addNode(new Point(i));
-				}
-			}
-			
-			System.out.println(g.getNodes().toString());
-			
-			// PARSE ADJACENCY MATRIX
+			List<String> adjacencyMatrix = new ArrayList<String>();
 			int k = 0;
-			while (k < nodes) {
+			while(k < nodes) {
 				String row = br.readLine();
-				System.out.println(row);
-				g.addRow(row);
-				int j = k;
-				while (j < nodes) {
-					if (row.charAt(j) == '1') {
-						g.addEdge(k, j);
-					}
-					j++;
-				}
+				adjacencyMatrix.add(row);
 				k++;
 			}
 			
-			
-			// PRINT OUT GRAPH
-			System.out.println("*** GRAPH ***");
-			System.out.print(g.toString());
-			System.out.println("*** ***** ***");
-			
-		
-			// CALCULATE CONSTRAINT VECTORS
-			g.finalSetup(); // IndicatorVectors made TODO: yet to be TESTED!!!
+			Simulator simulator = new Simulator(p, nodeType, tree, nodes, adjacencyMatrix);
 			
 			
-			// THE ZERO CODEWORD
-			Element[] zero = new Element[nodes];
-			for (int i = 0; i < nodes; i++) {
-				zero[i] = Element.ZERO;
-			}
 			
 			
-			// CREATING THE ZERO-CODEWORD
-			Element[] codeword = new Element[nodes];
-			for (int i = 0; i < nodes; i++) {
-				codeword[i] = Element.ZERO;
-			}
-			
-			// SEND TRANSMISSION THROUGH CHANNEL
-			Element[] received = channel.sendThroughChannel(codeword);
-			
-			// MESSAGE-PASSING
-			Element[] decoded = g.decode(received);
-			
-			
-			System.out.println();
-			GlobalFunction global = new GlobalFunction(g);
-			// context.printOutPermutations();
-			double[][] marginals = global.getGlobalMarginals();
-			for (int i = 0; i < marginals.length; i++) {
-				System.out.print("Marginal  M" + i + ": ");
-				for (int j = 0; j < marginals[i].length; j++) {
-					System.out.print(marginals[i][j] + ", ");
-				}
-				System.out.println();
-			}
-			
-			System.out.println();
-			System.out.println("##### r" + Arrays.toString(received) + " #####");
-			System.out.println("##### d" + Arrays.toString(decoded) + " #####");
-			System.out.println("##### decoded to a codeword: " + global.isCodeWord(decoded));
-			g.reset();
-		
-			
-		} catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
-
-		
-		
-		
-		
 	}
-
 }

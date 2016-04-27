@@ -16,7 +16,7 @@ import f4.Element;
  * ( def. 2 - http://ocw.usu.edu/Electrical_and_Computer_Engineering/Information_Theory/lecture9.pdf ) 
  */
 
-public class QuaternarySymmetricChannel {
+public class QuaternarySymmetricChannel implements Channel{
 	
 	public double p;
 	// a,b,c = q
@@ -137,7 +137,7 @@ public class QuaternarySymmetricChannel {
 		
 	}
 
-	public static double randomNumber() {
+	private static double randomNumber() {
 		return ThreadLocalRandom.current().nextDouble(1.1);
 	}
 	
