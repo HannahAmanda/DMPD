@@ -1,15 +1,15 @@
 package decoder.simple;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import message.Message;
+import message.recieveMessage;
 import code.graph.Node;
-import decoder.message.Message;
 import f4.Element;
 
 
-public class Point extends Node {
+public class Point extends Node implements recieveMessage {
 	
 	protected double[] softInfo;
 	protected boolean isLeaf;
@@ -47,17 +47,17 @@ public class Point extends Node {
 		if (internals != null){
 			double[] m = calc.dSX(leaves, softInfo);
 			m = calc.dSS(m, internals);
-			theOther.receiveMessage(new Message(nodeName, normalize(m)));
+			((Point) theOther).receiveMessage(new Message(nodeName, normalize(m)));
 			
 		} else {
 			// correct for stars
 			double[] m = calc.dSS(leaves, softInfo);
-			theOther.receiveMessage(new Message(nodeName, normalize(m)));
+			((Point) theOther).receiveMessage(new Message(nodeName, normalize(m)));
 		}
 	}
 
 	private void passLeafInfo(Node theOther) {
-		theOther.receiveMessage(new Message(nodeName, normalize(softInfo)));
+		((Point) theOther).receiveMessage(new Message(nodeName, normalize(softInfo)));
 	}
 
 	private void passToInternal(Node theOther) {
@@ -73,7 +73,7 @@ public class Point extends Node {
 			m = calc.dSS(leaves,  softInfo);
 		}
 		
-		theOther.receiveMessage(new Message(nodeName, normalize(m)));
+		((Point) theOther).receiveMessage(new Message(nodeName, normalize(m)));
 	}
 	
 	private double[] combineAllInternal(Node theOther) {
@@ -265,7 +265,7 @@ public class Point extends Node {
 	public void passInitialMessages() {
 		double[] identityMessage = {1.0,1.0,1.0,1.0};
 		for (Node n: neighbors) {
-			n.receiveMessage(new Message(toString(), identityMessage));
+			((Point) n).receiveMessage(new Message(toString(), identityMessage));
 		}
 	}
 

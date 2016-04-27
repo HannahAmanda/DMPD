@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import decoder.message.Message;
+import message.Message;
+import message.recieveMessage;
 
-public abstract class FactorGraphNode implements Comparable<FactorGraphNode> {
+public abstract class FactorGraphNode implements Comparable<FactorGraphNode>, recieveMessage{
 
 	protected int nodeId;
 	protected String nodeName;
@@ -76,6 +77,7 @@ public abstract class FactorGraphNode implements Comparable<FactorGraphNode> {
 		}
 	}
 
+	@Override
 	public void receiveMessage(Message incoming) {
 		int index = -1;
 		Message m = normalize(incoming);

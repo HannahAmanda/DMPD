@@ -3,7 +3,7 @@ package decoder.embedded.factor_graph;
 import java.util.Arrays;
 import java.util.Collections;
 
-import decoder.message.Message;
+import message.Message;
 
 public class Factor extends FactorGraphNode {
 

@@ -1,10 +1,6 @@
-package decoder.message;
+package message;
 
 import java.util.Arrays;
-
-import code.graph.Node;
-import decoder.embedded.factor_graph.FactorGraphNode;
-
 
 public class Message {
 	

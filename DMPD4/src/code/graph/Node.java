@@ -3,7 +3,7 @@ package code.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-import decoder.message.Message;
+import message.Message;
 import f4.Element;
 
 public abstract class Node {
@@ -16,7 +16,6 @@ public abstract class Node {
 	public abstract void passMessageTo(Node theOther);
 	public abstract void passInitialMessages();
 	public abstract boolean hasMessageFrom(Node to);
-	public abstract void receiveMessage(Message m);
 	
 	public abstract boolean hasLeaves();
 	public abstract void finalSetup();

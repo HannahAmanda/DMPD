@@ -1,6 +1,6 @@
 package decoder.embedded.factor_graph;
 
-import decoder.message.Message;
+import message.Message;
 import f4.Element;
 
 public class Variable extends FactorGraphNode{

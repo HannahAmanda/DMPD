@@ -3,10 +3,10 @@ package decoder.embedded.metanode;
 import java.util.ArrayList;
 import java.util.List;
 
+import message.Message;
 import code.graph.Node;
 import decoder.embedded.factor_graph.Factor;
 import decoder.embedded.factor_graph.Variable;
-import decoder.message.Message;
 import f4.Element;
 
 public class MetaNode extends Node{
@@ -57,7 +57,6 @@ public class MetaNode extends Node{
 	}
 
 	
-	// TODO: Casting okay?
 	@Override
 	public void passMessageTo(Node m) {
 		if( m instanceof MetaNode){
@@ -85,23 +84,6 @@ public class MetaNode extends Node{
 	@Override
 	public void receiveSoftInfo(double[] softInfo) {
 		v.receiveSoftInfo(softInfo);
-	}
-
-	@Override
-	public void receiveMessage(Message m) {
-		// TODO Auto-generated method stub
-		String name = m.getSenderName();
-		int index = -1;
-		for (Message x: messages) {
-			if (x.getSenderName().equals(name)) {
-				index = messages.indexOf(x);
-			}
-		}
-		
-		if (index != -1) {
-			messages.remove(index);
-		}
-		messages.add(m);
 	}
 
 	@Override
