@@ -1,9 +1,10 @@
-package graph;
+package code.global_function;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import node.Node;
+import code.graph.Graph;
+import code.graph.Node;
 import f4.Element;
 import f4.F4;
 

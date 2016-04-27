@@ -1,4 +1,4 @@
-package vertex;
+package code.decoding.embedded.factor_graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;

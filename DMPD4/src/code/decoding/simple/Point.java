@@ -1,10 +1,10 @@
-package node;
+package code.decoding.simple;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import message.Calculator;
+import code.graph.Node;
 import message.Message;
 import f4.Element;
 
@@ -232,7 +232,7 @@ public class Point extends Node {
 		mA.addAll(messagesA);
 		int index = -1;
 		for (Message m: mA) {
-			if (m.getSenderName().equals(except.nodeName)) {
+			if (m.getSenderName().equals(except.getNodeName())) {
 				index = mA.indexOf(m);
 			}
 		}
@@ -246,7 +246,7 @@ public class Point extends Node {
 		mB.addAll(messagesB);
 		int index = -1;
 		for (Message m: mB) {
-			if (m.getSenderName().equals(except.nodeName)) {
+			if (m.getSenderName().equals(except.getNodeName())) {
 				index = mB.indexOf(m);
 			}
 		}
@@ -328,7 +328,7 @@ public class Point extends Node {
 	private int findNeighborIndex(String name) {
 		int index = -1;
 		for (Node v: neighbors) {
-			if (v.nodeName.equals(name)) {
+			if (v.getNodeName().equals(name)) {
 				index = neighbors.indexOf(v);
 			}
 		}

@@ -1,12 +1,13 @@
-package node;
+package code.decoding.embedded.metanode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import code.decoding.embedded.factor_graph.Factor;
+import code.decoding.embedded.factor_graph.Variable;
+import code.graph.Node;
 import f4.Element;
 import message.Message;
-import vertex.Factor;
-import vertex.Variable;
 
 public class MetaNode extends Node{
 	

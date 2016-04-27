@@ -1,4 +1,4 @@
-package graph;
+package code.graph;
 
 import java.util.List;
 
@@ -6,7 +6,6 @@ import f4.Element;
 
 import java.util.ArrayList;
 
-import node.Node;
 import channel.GNode;
 
 public class Graph {
@@ -233,21 +232,7 @@ public class Graph {
 		}
 	}
 	
-	private class Edge {
-		public Node theOne;
-		public Node theOther;
-		
-		public Edge(Node theOne, Node theOther) {
-			this.theOne = theOne;
-			this.theOther = theOther;
-		}
-		
-		@Override
-		public String toString() {
-			return "(" + theOne.toString() + ", " + theOther.toString() + ")";
-		}
-	}
-	
+
 	public GNode getGNode(int i) {
 		for (GNode g: gNodes) {
 			if (g.getId() == i) {

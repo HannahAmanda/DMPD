@@ -1,4 +1,4 @@
-package vertex;
+package code.decoding.embedded.factor_graph;
 
 import f4.Element;
 import message.Message;

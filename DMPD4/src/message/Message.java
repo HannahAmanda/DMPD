@@ -2,8 +2,8 @@ package message;
 
 import java.util.Arrays;
 
-import node.Node;
-import vertex.Vertex;
+import code.decoding.embedded.factor_graph.Vertex;
+import code.graph.Node;
 
 
 public class Message {

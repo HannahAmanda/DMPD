@@ -3,7 +3,7 @@ package channel;
 import java.util.Arrays;
 import java.util.Random;
 
-import node.Node;
+import code.graph.Node;
 import f4.Element;
 
 public class GNode {

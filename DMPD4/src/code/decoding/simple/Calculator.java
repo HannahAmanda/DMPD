@@ -1,4 +1,4 @@
-package message;
+package code.decoding.simple;
 
 public class Calculator {
 	

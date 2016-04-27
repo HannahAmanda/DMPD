@@ -1,16 +1,14 @@
 package main;
-import graph.GlobalFunction;
-import graph.Graph;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-
-import node.Point;
-import node.MetaNode;
+import code.decoding.embedded.metanode.MetaNode;
+import code.decoding.simple.Point;
+import code.global_function.GlobalFunction;
+import code.graph.Graph;
 import channel.QuaternarySymmetricChannel;
 import f4.Element;
 
