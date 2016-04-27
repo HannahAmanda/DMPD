@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import channel.Channel;
 import channel.QuaternarySymmetricChannel;
+import code.global_function.GlobalFunction;
 import code.graph.Graph;
 import decoder.embedded.metanode.MetaNode;
 import decoder.simple.Point;
@@ -20,6 +21,7 @@ public class Simulator {
 	
 	private Graph graph;
 	private Channel channel;
+	private GlobalFunction globalFunction;
 
 	public Simulator(double p, int nodeType, boolean isTree, int nrOfNodes, List<String> adjacencyMatrix) {
 		graph = new Graph(p, isTree);
@@ -55,6 +57,8 @@ public class Simulator {
 		System.out.println("*** ***** ***");
 		
 		graph.finalSetup();
+		
+		globalFunction = new GlobalFunction(graph);
 	}
 	
 	
@@ -78,18 +82,19 @@ public class Simulator {
 		// MESSAGE-PASSING
 		Element[] decoded = graph.decode(received);
 		
+		System.out.println();
 		System.out.println("##### recieved transmission: " + Arrays.toString(received) + " #####");
 		System.out.println("##### decoded transmission: " + Arrays.toString(decoded) + " #####");
+		System.out.println("Decoded to a codeword: " + globalFunction.isCodeWord(decoded));
 		graph.reset();
 		
 	}
 	
-	
 	public static void main(String[] args) throws IOException, FileNotFoundException{
 		Scanner input = new Scanner(System.in);
 	    System.out.print("Please provide a path to the specification file: ");
-	    String file = input.nextLine();
-	    // String file = "graphs/cyclic/IS6.txt";
+	    //String file = input.nextLine();
+	    String file = "graphs/cyclic/IS6.txt";
 		Simulator simulator;
 		
 		try(BufferedReader br = new BufferedReader(new FileReader(file))) {

@@ -1,8 +1,12 @@
 package code.graph;
 
 import java.util.List;
+
 import f4.Element;
+
 import java.util.ArrayList;
+
+import code.global_function.GlobalFunction;
 import channel.GNode;
 
 public class Graph {
@@ -221,7 +225,6 @@ public class Graph {
 		}
 	}
 	
-
 	public GNode getGNode(int i) {
 		for (GNode g: gNodes) {
 			if (g.getId() == i) {
