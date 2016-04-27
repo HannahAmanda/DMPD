@@ -204,7 +204,7 @@ public class Point extends Node {
 	public Element getState() {
 		double[] marginal = marginalize();
 		
-		System.out.println(nodeName + " marginal: " + marginal[0] + ", " + marginal[1]+ ", " + marginal[2] + ", " + marginal[3]);
+		System.out.println(nodeName + " : " + marginal[0] + ", " + marginal[1]+ ", " + marginal[2] + ", " + marginal[3]);
 		
 		int index = 0;
 		for (int i = 0; i < marginal.length; i++) {
@@ -291,7 +291,7 @@ public class Point extends Node {
 
 	@Override
 	public void receiveMessage(Message m) {
-		System.out.println(nodeName + " <--- " + m.toString());
+		// System.out.println(nodeName + " <--- " + m.toString());
 		
 		String name = m.getSenderName();
 		boolean leaf = ((Point) neighbors.get(findNeighborIndex(name))).isLeaf();

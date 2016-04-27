@@ -78,8 +78,8 @@ public class Simulator {
 		// MESSAGE-PASSING
 		Element[] decoded = graph.decode(received);
 		
-		System.out.println("##### r" + Arrays.toString(received) + " #####");
-		System.out.println("##### d" + Arrays.toString(decoded) + " #####");
+		System.out.println("##### recieved transmission: " + Arrays.toString(received) + " #####");
+		System.out.println("##### decoded transmission: " + Arrays.toString(decoded) + " #####");
 		graph.reset();
 		
 	}

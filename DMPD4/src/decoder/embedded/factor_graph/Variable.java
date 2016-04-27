@@ -146,7 +146,7 @@ public class Variable extends Vertex{
 			marginalization = softInfo;
 		}
 		
-		System.out.println(nodeName + " marginal: " + marge[0] + ", " + marge[1] + ", " + marge[2] + ", " + marge[3]);
+		System.out.println(nodeName + " : " + marge[0] + ", " + marge[1] + ", " + marge[2] + ", " + marge[3]);
 
 	}
 

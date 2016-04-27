@@ -46,7 +46,7 @@ public class QuaternarySymmetricChannel implements Channel{
 			if (message[index] != (transmission[index])) errorCount++;
 				
 		}
-		System.out.println("Errors: " + errorCount);
+		// System.out.println("Errors: " + errorCount);
 		return transmission;	
 	}
 	

@@ -86,8 +86,6 @@ public class Graph {
 		System.out.println();
 		gNodeBitNotification(transmission);
 		gNodeTransmit();
-		System.out.println("Soft information passed.");
-		System.out.println();
 	}
 	
 	private void propagateBeliefs() {
@@ -103,8 +101,6 @@ public class Graph {
 		for (Node n: nodes) {
 			n.passInitialMessages();
 		}
-		System.out.println("Initial messages passed.");	
-		System.out.println();
 	}
 	
 	private void iterateEdges() {
@@ -112,7 +108,7 @@ public class Graph {
 		while (it < iterations) {
 			
 			for (Edge e: edges) {
-				System.out.println(e.toString());
+				//System.out.println(e.toString());
 				e.theOne.passMessageTo(e.theOther);
 				e.theOther.passMessageTo(e.theOne);
 			}			
@@ -123,12 +119,10 @@ public class Graph {
 	
 	private void traverseTree() {
 		passMessagesFromLeaves(nodes.size()/2);
-		System.out.println("passed messages from leaves.");
-		System.out.println();
+		System.out.println("Passed messages from leaves.");
 		
 		passMessagesToLeaves(nodes.size()/2);
-		System.out.println("passed messages to leaves.");
-		System.out.println();
+		System.out.println("Passed messages to leaves.");
 	}
 
 	private void passMessagesToLeaves(int i) {
@@ -159,8 +153,6 @@ public class Graph {
 	private void passMessagesFromLeaves(int i) {
 
 		Node root = getNodeFromId(i);
-		System.out.println("root " + root.getNodeName());
-		System.out.println();
 		
 		if (root.isLeaf()) {
 			Node parent = root.getNeighborList().get(0);
@@ -201,7 +193,7 @@ public class Graph {
 	}
 
 	private void gNodeBitNotification(Element[] transmission) {
-		System.out.println(transmission.length);
+		
 		for (int i = 0; i < transmission.length; i++) {
 			gNodes.get(i).setRecievedBit(transmission[i]);
 		}
