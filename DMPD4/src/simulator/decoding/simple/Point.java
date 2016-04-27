@@ -1,11 +1,11 @@
-package code.decoding.simple;
+package simulator.decoding.simple;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import simulator.decoding.message.Message;
 import code.graph.Node;
-import message.Message;
 import f4.Element;
 
 

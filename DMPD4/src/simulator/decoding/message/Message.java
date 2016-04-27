@@ -1,8 +1,8 @@
-package message;
+package simulator.decoding.message;
 
 import java.util.Arrays;
 
-import code.decoding.embedded.factor_graph.Vertex;
+import simulator.decoding.embedded.factor_graph.Vertex;
 import code.graph.Node;
 
 

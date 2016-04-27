@@ -3,8 +3,8 @@ package code.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import simulator.decoding.message.Message;
 import f4.Element;
-import message.Message;
 
 public abstract class Node {
 	

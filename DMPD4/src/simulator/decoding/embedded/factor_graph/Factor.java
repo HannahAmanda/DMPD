@@ -1,9 +1,9 @@
-package code.decoding.embedded.factor_graph;
+package simulator.decoding.embedded.factor_graph;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-import message.Message;
+import simulator.decoding.message.Message;
 
 public class Factor extends Vertex {
 

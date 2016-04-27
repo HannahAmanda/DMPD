@@ -1,10 +1,10 @@
-package code.decoding.embedded.factor_graph;
+package simulator.decoding.embedded.factor_graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import message.Message;
+import simulator.decoding.message.Message;
 
 public abstract class Vertex implements Comparable<Vertex> {
 

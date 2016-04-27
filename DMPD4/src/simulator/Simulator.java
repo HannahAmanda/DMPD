@@ -1,27 +1,26 @@
-package main;
+package simulator;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-import code.decoding.embedded.metanode.MetaNode;
-import code.decoding.simple.Point;
+import simulator.decoding.embedded.metanode.MetaNode;
+import simulator.decoding.simple.Point;
 import code.global_function.GlobalFunction;
 import code.graph.Graph;
 import channel.QuaternarySymmetricChannel;
 import f4.Element;
 
 
-public class Main {
+public class Simulator {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
 		try(BufferedReader br = new BufferedReader(new FileReader("graphs/cyclic/IS6.txt"))) {
 
 			
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
-			int distance = Integer.parseInt(br.readLine());
-			QuaternarySymmetricChannel channel = new QuaternarySymmetricChannel(p, distance);
+			QuaternarySymmetricChannel channel = new QuaternarySymmetricChannel(p);
 		
 			
 			// UNDERLYING FACTOR GRAPH

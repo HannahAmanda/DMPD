@@ -21,13 +21,11 @@ public class QuaternarySymmetricChannel {
 	public double p;
 	// a,b,c = q
 	public double q;
-	int distance;
 	
 	
-	public QuaternarySymmetricChannel(double p, int distance) {
+	public QuaternarySymmetricChannel(double p) {
 		this.p = p;
 		q = ((1-p)/3);
-		this.distance = distance;
 	}
 	
 	
