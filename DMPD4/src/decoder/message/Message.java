@@ -3,7 +3,7 @@ package decoder.message;
 import java.util.Arrays;
 
 import code.graph.Node;
-import decoder.embedded.factor_graph.Vertex;
+import decoder.embedded.factor_graph.FactorGraphNode;
 
 
 public class Message {

@@ -6,17 +6,17 @@ import java.util.List;
 
 import decoder.message.Message;
 
-public abstract class Vertex implements Comparable<Vertex> {
+public abstract class FactorGraphNode implements Comparable<FactorGraphNode> {
 
 	protected int nodeId;
 	protected String nodeName;
-	protected Vertex buddy;
+	protected FactorGraphNode buddy;
 
-	protected List<Vertex> neighborList = new ArrayList<Vertex>();
+	protected List<FactorGraphNode> neighborList = new ArrayList<FactorGraphNode>();
 	protected List<Message> messageList = new ArrayList<Message>();
-	protected List<Vertex> pendingNeighborList = new ArrayList<Vertex>();
+	protected List<FactorGraphNode> pendingNeighborList = new ArrayList<FactorGraphNode>();
 
-	public abstract double[] calculateTransmission(Vertex except);
+	public abstract double[] calculateTransmission(FactorGraphNode except);
 
 	public abstract void reset();
 
@@ -28,11 +28,11 @@ public abstract class Vertex implements Comparable<Vertex> {
 		return nodeName;
 	}
 
-	public Vertex getBuddy() {
+	public FactorGraphNode getBuddy() {
 		return buddy;
 	}
 
-	public void setBuddy(Vertex buddy) {
+	public void setBuddy(FactorGraphNode buddy) {
 		if (this.buddy != null) {
 			throw new IllegalStateException("Buddy should be final, is already set to " + this.buddy.toString());
 		}
@@ -40,16 +40,16 @@ public abstract class Vertex implements Comparable<Vertex> {
 		neighborList.add(buddy);
 	}
 
-	public List<Vertex> getNeighborList() {
+	public List<FactorGraphNode> getNeighborList() {
 		return neighborList;
 	}
 
-	public void addNeighbor(Vertex n) {
+	public void addNeighbor(FactorGraphNode n) {
 		neighborList.add(n);
 	}
 
-	public boolean canSendTo(Vertex n) {
-		for (Vertex v : neighborList) {
+	public boolean canSendTo(FactorGraphNode n) {
+		for (FactorGraphNode v : neighborList) {
 			if (!v.equals(n) && !hasMessageFrom(v)) {
 				return false;
 			
@@ -58,7 +58,7 @@ public abstract class Vertex implements Comparable<Vertex> {
 		return true;
 	}
 
-	public boolean hasMessageFrom(Vertex v) {
+	public boolean hasMessageFrom(FactorGraphNode v) {
 		for (Message m : messageList) {
 			if (m.getSenderName().equals(v.nodeName))
 				return true;
@@ -66,7 +66,7 @@ public abstract class Vertex implements Comparable<Vertex> {
 		return false;
 	}
 
-	public void passMessageTo(Vertex to) {
+	public void passMessageTo(FactorGraphNode to) {
 		if (canSendTo(to)) {
 			Message m = new Message(nodeName, calculateTransmission(to));
 		 	to.receiveMessage(m);
@@ -115,7 +115,7 @@ public abstract class Vertex implements Comparable<Vertex> {
 	 * Calculates and passes messages to all neighbors
 	 */
 	public void passAllMessages() {
-		for (Vertex n: neighborList) {
+		for (FactorGraphNode n: neighborList) {
 			passMessageTo(n);
 		}
 	}
@@ -123,7 +123,7 @@ public abstract class Vertex implements Comparable<Vertex> {
 	@Override
 	public boolean equals(Object o) {
 		// check null and not vertex
-		if (((Vertex) o).nodeName.equals(this.nodeName)) {
+		if (((FactorGraphNode) o).nodeName.equals(this.nodeName)) {
 			return true;
 		}
 		return false;
@@ -135,7 +135,7 @@ public abstract class Vertex implements Comparable<Vertex> {
 	}
 
 	@Override
-	public int compareTo(Vertex o) {
+	public int compareTo(FactorGraphNode o) {
 		if (nodeId < o.nodeId) {
 			return -1;
 		} else if (nodeId > o.nodeId) {

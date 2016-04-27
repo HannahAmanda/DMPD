@@ -1,4 +1,4 @@
-package channel;
+package code.graph;
 
 import java.util.Arrays;
 import java.util.Random;

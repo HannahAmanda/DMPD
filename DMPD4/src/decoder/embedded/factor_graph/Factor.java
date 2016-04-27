@@ -5,7 +5,7 @@ import java.util.Collections;
 
 import decoder.message.Message;
 
-public class Factor extends Vertex {
+public class Factor extends FactorGraphNode {
 
 	private int[] indicatorValues;
 
@@ -23,7 +23,7 @@ public class Factor extends Vertex {
 	}
 
 	@Override
-	public double[] calculateTransmission(Vertex except) {
+	public double[] calculateTransmission(FactorGraphNode except) {
 		double[] transmission = new double[4];
 
 		if (neighborList.size() == 1) {
@@ -50,7 +50,7 @@ public class Factor extends Vertex {
 
 	}
 
-	private double[] sumOver(double[] product, Vertex except) {
+	private double[] sumOver(double[] product, FactorGraphNode except) {
 		double[] summation = { 0, 0, 0, 0 };
 		int pos = neighborList.indexOf(except);
 		int rep = (int) Math.pow(4, pos);
@@ -79,14 +79,14 @@ public class Factor extends Vertex {
 		return summation;
 	}
 
-	private double[] productOfMessages(Vertex except) {
+	private double[] productOfMessages(FactorGraphNode except) {
 		double[] product = new double[indicatorValues.length];
 
 		for (int i = 0; i < indicatorValues.length; i++) {
 			product[i] = indicatorValues[i];
 		}
 
-		for (Vertex n : neighborList) {
+		for (FactorGraphNode n : neighborList) {
 			if (!n.equals(except) && hasMessageFrom(n)) {
 
 				int repetitionLength = findRepetitionLength(neighborList
@@ -169,7 +169,7 @@ public class Factor extends Vertex {
 		int[] rVector = new int[nrOfZeros];
 		
 
-		for (Vertex n : neighborList) {
+		for (FactorGraphNode n : neighborList) {
 			if (!n.equals(buddy)) {
 				
 				int nRepLength = findRepetitionLength(neighborList.indexOf(n));
@@ -261,7 +261,7 @@ public class Factor extends Vertex {
 	public void passInitialMessages() {
 		double[] identityMessage = { 1.0, 1.0, 1.0, 1.0 };
 
-		for (Vertex n : neighborList) {
+		for (FactorGraphNode n : neighborList) {
 			n.receiveMessage(new Message(nodeName, identityMessage));
 		}
 	}

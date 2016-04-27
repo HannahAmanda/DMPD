@@ -3,7 +3,7 @@ package decoder.embedded.factor_graph;
 import decoder.message.Message;
 import f4.Element;
 
-public class Variable extends Vertex{
+public class Variable extends FactorGraphNode{
 	
 	
 	private Element state;
@@ -32,7 +32,7 @@ public class Variable extends Vertex{
 	}
 
 	@Override
-	public double[] calculateTransmission(Vertex except) {
+	public double[] calculateTransmission(FactorGraphNode except) {
 		double[] transmission = {1,1,1,1};
 		
 		for (int i = 0; i < messageList.size(); i++) {
@@ -61,7 +61,7 @@ public class Variable extends Vertex{
 	 */
 	public void passInitialMessages() {
 		if (receivedSoftInfo) {
-			for (Vertex n:neighborList) {
+			for (FactorGraphNode n:neighborList) {
 				double[] tran = new double[4];
 				tran[0] = (softInfo[0]);
 				tran[1] = (softInfo[1]);
