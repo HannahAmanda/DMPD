@@ -73,13 +73,6 @@ public class Main {
 			g.finalSetup(); // IndicatorVectors made TODO: yet to be TESTED!!!
 			
 			
-			// THE ZERO CODEWORD
-			Element[] zero = new Element[nodes];
-			for (int i = 0; i < nodes; i++) {
-				zero[i] = Element.ZERO;
-			}
-			
-			
 			// CREATING THE ZERO-CODEWORD
 			Element[] codeword = new Element[nodes];
 			for (int i = 0; i < nodes; i++) {
