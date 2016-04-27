@@ -11,19 +11,19 @@ import java.util.Arrays;
 
 import node.Spot;
 import node.MetaNode;
-import channel.QSChannel;
+import channel.QuaternarySymmetricChannel;
 import f4.Element;
 
 
 public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException {
-		try(BufferedReader br = new BufferedReader(new FileReader("/home/hannah/IS6.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("graphs/cyclic/IS6.txt"))) {
 
 			
 			// INITIATE CHANNEL
 			double p = Double.parseDouble(br.readLine());
 			int distance = Integer.parseInt(br.readLine());
-			QSChannel channel = new QSChannel(p, distance);
+			QuaternarySymmetricChannel channel = new QuaternarySymmetricChannel(p, distance);
 		
 			
 			// UNDERLYING FACTOR GRAPH
