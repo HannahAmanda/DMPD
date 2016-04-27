@@ -6,7 +6,7 @@ import java.util.List;
 import code.graph.Graph;
 import code.graph.Node;
 import f4.Element;
-import f4.F4;
+import f4.GaloisField4;
 
 public class GlobalFunction {
 	
@@ -112,10 +112,10 @@ public class GlobalFunction {
 		Element sum = Element.ZERO;
 		
 		for (int i = 0; i < row.size(); i++) {
-			Element one = F4.mult(F4.mult(row.get(i), row.get(i)), p2.get(i));
-			Element two = F4.mult(row.get(i), F4.mult(p2.get(i), p2.get(i)));
+			Element one = GaloisField4.mult(GaloisField4.mult(row.get(i), row.get(i)), p2.get(i));
+			Element two = GaloisField4.mult(row.get(i), GaloisField4.mult(p2.get(i), p2.get(i)));
 			
-			sum = F4.add(sum, F4.add(one,two));
+			sum = GaloisField4.add(sum, GaloisField4.add(one,two));
 		}
 		return sum;
 	}

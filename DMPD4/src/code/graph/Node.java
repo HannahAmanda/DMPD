@@ -3,7 +3,6 @@ package code.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-import message.Message;
 import f4.Element;
 
 public abstract class Node {

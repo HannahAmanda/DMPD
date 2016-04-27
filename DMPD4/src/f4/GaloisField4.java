@@ -3,7 +3,7 @@ package f4;
 
 
 
-public class F4 {
+public class GaloisField4 {
 
 	/**
 	 * 
