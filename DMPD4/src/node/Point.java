@@ -9,7 +9,7 @@ import message.Message;
 import f4.Element;
 
 
-public class Spot extends Node {
+public class Point extends Node {
 	
 	protected double[] softInfo;
 	protected boolean isLeaf;
@@ -18,7 +18,7 @@ public class Spot extends Node {
 	protected List<Message> messagesA = new ArrayList<Message>();
 	protected List<Message> messagesB = new ArrayList<Message>();
 	
-	public Spot(int id) {
+	public Point(int id) {
 			nodeId = id;
 			nodeName = "M" + id;
 	}
@@ -294,7 +294,7 @@ public class Spot extends Node {
 		System.out.println(nodeName + " <--- " + m.toString());
 		
 		String name = m.getSenderName();
-		boolean leaf = ((Spot) neighbors.get(findNeighborIndex(name))).isLeaf();
+		boolean leaf = ((Point) neighbors.get(findNeighborIndex(name))).isLeaf();
 		int index = -1;
 
 		if (leaf) {

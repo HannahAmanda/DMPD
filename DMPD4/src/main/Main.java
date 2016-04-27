@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 
-import node.Spot;
+import node.Point;
 import node.MetaNode;
 import channel.QuaternarySymmetricChannel;
 import f4.Element;
@@ -43,7 +43,7 @@ public class Main {
 				if (nodeType == 1) {
 					g.addNode(new MetaNode(i));
 				} else if (nodeType == 2) {
-					g.addNode(new Spot(i));
+					g.addNode(new Point(i));
 				}
 			}
 			
