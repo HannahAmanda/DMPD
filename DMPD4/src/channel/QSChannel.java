@@ -43,17 +43,13 @@ public class QSChannel {
 		Element[] transmission = new Element[message.length];
 		int errorCount = 0;
 		
-			for (int index = 0; index < transmission.length; index++) {
-				if (errorCount < distance ) {
-					transmission[index] = perturb(message[index]);
-					if (message[index] != (transmission[index])) {
-						errorCount++;
-					}
-				} else {
-					transmission[index] = Element.ZERO;
-				}
+		for (int index = 0; index < transmission.length; index++) {
+			
+			transmission[index] = perturb(message[index]);
+			if (message[index] != (transmission[index])) errorCount++;
+				
 		}
-		System.out.println(errorCount + " " + distance);
+		System.out.println("Errors: " + errorCount);
 		return transmission;	
 	}
 	
