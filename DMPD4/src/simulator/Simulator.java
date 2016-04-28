@@ -92,9 +92,9 @@ public class Simulator {
 	
 	public static void main(String[] args) throws IOException, FileNotFoundException{
 		Scanner input = new Scanner(System.in);
-	    System.out.print("Please provide a path to the specification file: ");
+	    System.out.print("Please provide a path to the code specification file: ");
 	    //String file = input.nextLine();
-	    String file = "graphs/cyclic/IS6.txt";
+	    String file = "graphs/trees/three_bulls.txt";
 		Simulator simulator;
 		
 		try(BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -118,7 +118,11 @@ public class Simulator {
 			}
 			
 		 simulator = new Simulator(p, nodeType, tree, nodes, adjacencyMatrix);
-		 System.out.println("Simulator generated. Please specify how many simulations you wish to run.");
+		 if (nodeType == 1) {
+			 System.out.println("Simulator using embedded factor graph generated. \nPlease, specifiy how many simulations you wish to run:");
+		 } else {
+			 System.out.println("Simulator using simple graph decoder generated. \nPlease specify how many simulations you wish to run:");
+		 }
 		 int rounds = input.nextInt();
 		 
 		 simulator.runSimulations(rounds);

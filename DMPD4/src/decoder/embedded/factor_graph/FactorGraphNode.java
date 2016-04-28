@@ -71,7 +71,7 @@ public abstract class FactorGraphNode implements Comparable<FactorGraphNode>, re
 		if (canSendTo(to)) {
 			Message m = new Message(nodeName, calculateTransmission(to));
 		 	to.receiveMessage(m);
-		 	System.out.println(toString() + " -> " + to.toString() + ": " + Arrays.toString(m.getMessage()));
+		 	// System.out.println(toString() + " -> " + to.toString() + ": " + Arrays.toString(m.getMessage()));
 		} else {
 			new IllegalArgumentException("Cannot send message to " + to.toString());
 		}

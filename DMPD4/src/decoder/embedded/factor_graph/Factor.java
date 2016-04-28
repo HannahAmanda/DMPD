@@ -32,8 +32,7 @@ public class Factor extends FactorGraphNode {
 				double value = indicatorValues[i];
 
 				if (value < 0) {
-					System.out
-							.println("Factor: Value of getBinaryConstraint is negative");
+					System.out.println("Factor: Value of getBinaryConstraint is negative");
 					return null;
 				} else {
 					transmission[i] = value;
@@ -147,7 +146,7 @@ public class Factor extends FactorGraphNode {
 		}
 
 		this.indicatorValues = indicatorValues;
-		System.out.println(toString() +": " + Arrays.toString(indicatorValues));
+		// System.out.println(toString() +": " + Arrays.toString(indicatorValues));
 
 	}
 
@@ -199,8 +198,8 @@ public class Factor extends FactorGraphNode {
 			rVector[i] = binarySum(rVector[i], 1);
 		}
 
-		System.out.println(toString()  +": " +  neighborList.toString()); 
-		System.out.println("rVector: " + Arrays.toString(rVector));
+		// System.out.println(toString()  +": " +  neighborList.toString()); 
+		// System.out.println("rVector: " + Arrays.toString(rVector));
 
 		return rVector;
 	}

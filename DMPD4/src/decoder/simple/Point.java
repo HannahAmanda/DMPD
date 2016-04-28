@@ -80,7 +80,7 @@ public class Point extends Node implements recieveMessage {
 		ArrayList<Message> mB = removeInternalMessage(theOther);
 		
 		if (mB.isEmpty()) {
-			System.out.println("don't know what to do");
+			System.out.println(nodeName + " don't know what to do");
 			return null;
 		} else if (mB.size() == 1) {
 			return mB.get(0).getMessage();
@@ -204,7 +204,7 @@ public class Point extends Node implements recieveMessage {
 	public GF4Element getState() {
 		double[] marginal = marginalize();
 		
-		System.out.println(nodeName + " : " + marginal[0] + ", " + marginal[1]+ ", " + marginal[2] + ", " + marginal[3]);
+		// System.out.println(nodeName + " : " + marginal[0] + ", " + marginal[1]+ ", " + marginal[2] + ", " + marginal[3]);
 		
 		int index = 0;
 		for (int i = 0; i < marginal.length; i++) {

@@ -89,7 +89,7 @@ public class GNode {
 		}*/
 		// this.softInfo = softInfo;
 		
-		System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo)); 
+		// System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo)); 
 		n.receiveSoftInfo(softInfo);
 		
 	}

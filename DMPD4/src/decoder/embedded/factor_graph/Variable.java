@@ -146,7 +146,7 @@ public class Variable extends FactorGraphNode{
 			marginalization = softInfo;
 		}
 		
-		System.out.println(nodeName + " : " + marge[0] + ", " + marge[1] + ", " + marge[2] + ", " + marge[3]);
+		// System.out.println(nodeName + " : " + marge[0] + ", " + marge[1] + ", " + marge[2] + ", " + marge[3]);
 
 	}
 
