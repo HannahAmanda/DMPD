@@ -2,7 +2,7 @@ package channel;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import f4.Element;
+import f4.GF4Element;
 
 /**
  * Implemented Transmission Matrix 
@@ -36,8 +36,8 @@ public class QuaternarySymmetricChannel implements Channel{
 	 * @param message
 	 * @return
 	 */
-	public Element[] sendThroughChannel(Element[] message) {
-		Element[] transmission = new Element[message.length];
+	public GF4Element[] sendThroughChannel(GF4Element[] message) {
+		GF4Element[] transmission = new GF4Element[message.length];
 		int errorCount = 0;
 		
 		for (int index = 0; index < transmission.length; index++) {
@@ -59,7 +59,7 @@ public class QuaternarySymmetricChannel implements Channel{
 	 * @return
 	 */
 	
-	private Element perturb(Element element) {
+	private GF4Element perturb(GF4Element element) {
 		double multiCoin = randomNumber();		
 		
 		if (multiCoin <= p) {
@@ -88,44 +88,44 @@ public class QuaternarySymmetricChannel implements Channel{
 	 * @param x
 	 * @return
 	 */
-	private Element flip(Element element, String x) {
-		if(element == Element.ZERO) {
+	private GF4Element flip(GF4Element element, String x) {
+		if(element == GF4Element.ZERO) {
 			if (x == "a") {
-				return Element.ONE;
+				return GF4Element.ONE;
 			} else if (x == "b") {
-				return Element.OMEGA;
+				return GF4Element.OMEGA;
 			} else if (x == "c") {
-				return Element.OMEGASQ;
+				return GF4Element.OMEGASQ;
 			} else {
 				// exception
 			}
-		} else if (element == Element.ONE) {
+		} else if (element == GF4Element.ONE) {
 			if (x == "a") {
-				return Element.OMEGA;
+				return GF4Element.OMEGA;
 			} else if (x == "b") {
-				return Element.OMEGASQ;
+				return GF4Element.OMEGASQ;
 			} else if (x == "c") {
-				return Element.ZERO;
+				return GF4Element.ZERO;
 			} else {
 				// exception
 			}
-		} else if (element == Element.OMEGA) {
+		} else if (element == GF4Element.OMEGA) {
 			if (x == "a") {
-				return Element.OMEGASQ;
+				return GF4Element.OMEGASQ;
 			} else if (x == "b") {
-				return Element.ZERO;
+				return GF4Element.ZERO;
 			} else if (x == "c") {
-				return Element.ONE;
+				return GF4Element.ONE;
 			} else {
 				// exception
 			}
-		} else if (element == Element.OMEGASQ) {
+		} else if (element == GF4Element.OMEGASQ) {
 			if (x == "a") {
-				return Element.ZERO;
+				return GF4Element.ZERO;
 			} else if (x == "b") {
-				return Element.ONE;
+				return GF4Element.ONE;
 			} else if (x == "c") {
-				return Element.OMEGA;
+				return GF4Element.OMEGA;
 			} else {
 				// exception
 			}

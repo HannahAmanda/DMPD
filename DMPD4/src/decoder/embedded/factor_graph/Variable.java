@@ -1,12 +1,12 @@
 package decoder.embedded.factor_graph;
 
 import message.Message;
-import f4.Element;
+import f4.GF4Element;
 
 public class Variable extends FactorGraphNode{
 	
 	
-	private Element state;
+	private GF4Element state;
 	private int a, b;
 	private boolean receivedSoftInfo = false;
 	private double[] softInfo = {0,0,0,0};
@@ -18,7 +18,7 @@ public class Variable extends FactorGraphNode{
 		nodeName = "x" + i;
 	}
 	
-	public Element getState() {
+	public GF4Element getState() {
 		marginalize();
 		return state;
 	}
@@ -172,13 +172,13 @@ public class Variable extends FactorGraphNode{
 		}
 		
 		switch(s) {
-		case 0: state = Element.ZERO;
+		case 0: state = GF4Element.ZERO;
 				break;
-		case 1: state = Element.ONE;
+		case 1: state = GF4Element.ONE;
 				break;
-		case 2: state = Element.OMEGA;
+		case 2: state = GF4Element.OMEGA;
 				break;
-		case 3: state = Element.OMEGASQ;
+		case 3: state = GF4Element.OMEGASQ;
 				break;
 		}
 	}

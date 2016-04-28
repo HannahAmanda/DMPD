@@ -15,33 +15,33 @@ public class GaloisField4 {
 	 * 
 	 */
 
-	public static Element mult(Element x, Element y) {
+	public static GF4Element mult(GF4Element x, GF4Element y) {
 		
-		if (x.equals(Element.ZERO) || y.equals(Element.ZERO)) {
-			return Element.ZERO;
+		if (x.equals(GF4Element.ZERO) || y.equals(GF4Element.ZERO)) {
+			return GF4Element.ZERO;
 			
-		} else if (x.equals(Element.ONE)) {
+		} else if (x.equals(GF4Element.ONE)) {
 			return y;
 		
-		} else if (y.equals(Element.ONE)) {
+		} else if (y.equals(GF4Element.ONE)) {
 			return x;
 		
-		} else if (x.equals(Element.OMEGA)) {
+		} else if (x.equals(GF4Element.OMEGA)) {
 			
-			if (y.equals(Element.OMEGA)) {
-				return Element.OMEGASQ;
+			if (y.equals(GF4Element.OMEGA)) {
+				return GF4Element.OMEGASQ;
 		
-			} else if (y.equals(Element.OMEGASQ)) {
-				return Element.ONE;
+			} else if (y.equals(GF4Element.OMEGASQ)) {
+				return GF4Element.ONE;
 			}
 			
-		} else if (x.equals(Element.OMEGASQ)) {
+		} else if (x.equals(GF4Element.OMEGASQ)) {
 			
-			if (y.equals(Element.OMEGA)) {
-				return Element.ONE;
+			if (y.equals(GF4Element.OMEGA)) {
+				return GF4Element.ONE;
 			
-			} else if (y.equals(Element.OMEGASQ)){
-				return Element.OMEGA;
+			} else if (y.equals(GF4Element.OMEGASQ)){
+				return GF4Element.OMEGA;
 			}
 		}
 		
@@ -60,41 +60,41 @@ public class GaloisField4 {
 	 */
 
 
-	public static Element add(Element x, Element y) {
-		if (x.equals(Element.ZERO)) {
+	public static GF4Element add(GF4Element x, GF4Element y) {
+		if (x.equals(GF4Element.ZERO)) {
 			return y;
 			
-		} else if (y.equals(Element.ZERO)) {
+		} else if (y.equals(GF4Element.ZERO)) {
 			return x;
 			
-		} else if (x.equals(Element.ONE)) {
+		} else if (x.equals(GF4Element.ONE)) {
 			
-			if (y.equals(Element.ONE)) {
-				return Element.ZERO;
-			} else if (y.equals(Element.OMEGA)) {
-				return Element.OMEGASQ;
-			} else if (y.equals(Element.OMEGASQ)) {
-				return Element.OMEGA;
+			if (y.equals(GF4Element.ONE)) {
+				return GF4Element.ZERO;
+			} else if (y.equals(GF4Element.OMEGA)) {
+				return GF4Element.OMEGASQ;
+			} else if (y.equals(GF4Element.OMEGASQ)) {
+				return GF4Element.OMEGA;
 			}
 			
-		} else if (x.equals(Element.OMEGA)) {
+		} else if (x.equals(GF4Element.OMEGA)) {
 			
-			if (y.equals(Element.ONE)) {
-				return Element.OMEGASQ;
-			} else if (y.equals(Element.OMEGA)) {
-				return Element.ZERO;
-			} else if (y.equals(Element.OMEGASQ)) {
-				return Element.ONE;
+			if (y.equals(GF4Element.ONE)) {
+				return GF4Element.OMEGASQ;
+			} else if (y.equals(GF4Element.OMEGA)) {
+				return GF4Element.ZERO;
+			} else if (y.equals(GF4Element.OMEGASQ)) {
+				return GF4Element.ONE;
 			}
 			
-		} else if (x.equals(Element.OMEGASQ)) {
+		} else if (x.equals(GF4Element.OMEGASQ)) {
 			
-			if (y.equals(Element.ONE)) {
-				return Element.OMEGA;
-			} else if  (y.equals(Element.OMEGA)) {
-				return Element.ONE;
-			} else if (y.equals(Element.OMEGASQ)) {
-				return Element.ZERO;
+			if (y.equals(GF4Element.ONE)) {
+				return GF4Element.OMEGA;
+			} else if  (y.equals(GF4Element.OMEGA)) {
+				return GF4Element.ONE;
+			} else if (y.equals(GF4Element.OMEGASQ)) {
+				return GF4Element.ZERO;
 			}
 			
 		}

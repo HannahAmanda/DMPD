@@ -7,7 +7,7 @@ import message.Message;
 import code.graph.Node;
 import decoder.embedded.factor_graph.Factor;
 import decoder.embedded.factor_graph.Variable;
-import f4.Element;
+import f4.GF4Element;
 
 public class MetaNode extends Node{
 	
@@ -98,7 +98,7 @@ public class MetaNode extends Node{
 	}
 
 	@Override
-	public Element getState() {
+	public GF4Element getState() {
 		return v.getState();
 	}
 

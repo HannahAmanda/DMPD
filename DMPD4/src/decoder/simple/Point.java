@@ -6,7 +6,7 @@ import java.util.List;
 import message.Message;
 import message.recieveMessage;
 import code.graph.Node;
-import f4.Element;
+import f4.GF4Element;
 
 
 public class Point extends Node implements recieveMessage {
@@ -201,7 +201,7 @@ public class Point extends Node implements recieveMessage {
 	}
 	
 	@Override 
-	public Element getState() {
+	public GF4Element getState() {
 		double[] marginal = marginalize();
 		
 		System.out.println(nodeName + " : " + marginal[0] + ", " + marginal[1]+ ", " + marginal[2] + ", " + marginal[3]);
@@ -214,13 +214,13 @@ public class Point extends Node implements recieveMessage {
 		}
 		
 		if (index == 0) {
-			return Element.ZERO;
+			return GF4Element.ZERO;
 		} else if (index == 1) {
-			return Element.ONE;
+			return GF4Element.ONE;
 		} else if (index == 2) {
-			return Element.OMEGA;
+			return GF4Element.OMEGA;
 		} else if (index == 3) {
-			return Element.OMEGASQ;
+			return GF4Element.OMEGASQ;
 		}
 		
 		return null;

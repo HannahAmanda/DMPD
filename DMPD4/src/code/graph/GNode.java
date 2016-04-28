@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import code.graph.Node;
-import f4.Element;
+import f4.GF4Element;
 
 public class GNode {
 	
@@ -13,7 +13,7 @@ public class GNode {
 	private String nodeName;
 	private double p; 
 	private double q;
-	private Element bit;
+	private GF4Element bit;
 	private int bitNumber;
 	private static final Random rand = new Random(67);
 	private double[] softInfo;
@@ -27,13 +27,13 @@ public class GNode {
 		softInfo = new double[4];
 	}
 
-	public void setRecievedBit(Element bit) {
+	public void setRecievedBit(GF4Element bit) {
 		this.bit = bit;
-		if (bit == Element.ZERO) {
+		if (bit == GF4Element.ZERO) {
 			bitNumber = 0;
-		} else if (bit == Element.ONE) {
+		} else if (bit == GF4Element.ONE) {
 			bitNumber = 1;
-		} else if ( bit == Element.OMEGA) {
+		} else if ( bit == GF4Element.OMEGA) {
 			bitNumber = 2;
 		} else {
 			bitNumber = 3;
@@ -53,7 +53,7 @@ public class GNode {
 		return n;
 	}
 	
-	public Element getBit() {
+	public GF4Element getBit() {
 		return bit;
 	}
 	

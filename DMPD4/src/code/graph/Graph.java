@@ -1,7 +1,7 @@
 package code.graph;
 
 import java.util.List;
-import f4.Element;
+import f4.GF4Element;
 import java.util.ArrayList;
 
 
@@ -15,7 +15,7 @@ public class Graph {
 	private List<GNode> gNodes = new ArrayList<GNode>();
 	private List<Edge> edges = new ArrayList<Edge>();
 	
-	private List<ArrayList<Element>> adjMatrix = new ArrayList<ArrayList<Element>>();
+	private List<ArrayList<GF4Element>> adjMatrix = new ArrayList<ArrayList<GF4Element>>();
 	
 	public Graph(double p, boolean tree){
 		this.p = p;
@@ -72,7 +72,7 @@ public class Graph {
 		}
 	}
 	
-	public Element[] decode(Element[] transmission) {
+	public GF4Element[] decode(GF4Element[] transmission) {
 		passSoftInformation(transmission);
 		init();
 		propagateBeliefs();
@@ -82,7 +82,7 @@ public class Graph {
 		return getDecodeState();
 	}
 
-	private void passSoftInformation(Element[] transmission) {
+	private void passSoftInformation(GF4Element[] transmission) {
 		System.out.println();
 		gNodeBitNotification(transmission);
 		gNodeTransmit();
@@ -181,18 +181,18 @@ public class Graph {
 		}
 	}
 
-	private Element[] getDecodeState() {
-		Element[] decodedWord = new Element[nodes.size()];
+	private GF4Element[] getDecodeState() {
+		GF4Element[] decodedWord = new GF4Element[nodes.size()];
 		
 		for (Node n: nodes) {		
-			Element decodedBit = n.getState();
+			GF4Element decodedBit = n.getState();
 			decodedWord[n.getNodeId()] = decodedBit;
 		}
 		
 		return decodedWord;
 	}
 
-	private void gNodeBitNotification(Element[] transmission) {
+	private void gNodeBitNotification(GF4Element[] transmission) {
 		
 		for (int i = 0; i < transmission.length; i++) {
 			gNodes.get(i).setRecievedBit(transmission[i]);
@@ -231,12 +231,12 @@ public class Graph {
 		return null;
 	}
 
-	public List<ArrayList<Element>> getAdjMatrix() {
+	public List<ArrayList<GF4Element>> getAdjMatrix() {
 		return adjMatrix;
 	}
 
 	public void addRow(String r) {
-		ArrayList<Element> row = new ArrayList<Element>();
+		ArrayList<GF4Element> row = new ArrayList<GF4Element>();
 		
 		for (int i = 0; i < r.length(); i++) {
 			row.add(getElement(r.charAt(i)));
@@ -245,15 +245,15 @@ public class Graph {
 		adjMatrix.add(row);
 	}
 
-	private Element getElement(char c) {
+	private GF4Element getElement(char c) {
 		if (c == '0') {
-			return Element.ZERO;
+			return GF4Element.ZERO;
 		} else if (c == '1') {
-			return Element.ONE;
+			return GF4Element.ONE;
 		} else if (c == 'w') {
-			return Element.OMEGA;
+			return GF4Element.OMEGA;
 		} else if (c == 'v') {
-			return Element.OMEGASQ;
+			return GF4Element.OMEGASQ;
 		}
 		
 		return null;

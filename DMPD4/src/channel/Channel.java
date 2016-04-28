@@ -1,7 +1,7 @@
 package channel;
 
-import f4.Element;
+import f4.GF4Element;
 
 public interface Channel {
-	public Element[] sendThroughChannel(Element[] message);
+	public GF4Element[] sendThroughChannel(GF4Element[] message);
 }

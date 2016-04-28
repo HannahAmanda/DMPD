@@ -15,7 +15,7 @@ import code.global_function.GlobalFunction;
 import code.graph.Graph;
 import decoder.embedded.metanode.MetaNode;
 import decoder.simple.Point;
-import f4.Element;
+import f4.GF4Element;
 
 public class Simulator {
 	
@@ -71,16 +71,16 @@ public class Simulator {
 
 	private void simulate() {
 		// THE ZERO CODEWORD
-		Element[] codeword = new Element[graph.getNrOfNodes()];
+		GF4Element[] codeword = new GF4Element[graph.getNrOfNodes()];
 		for (int i = 0; i < graph.getNrOfNodes(); i++) {
-			codeword[i] = Element.ZERO;
+			codeword[i] = GF4Element.ZERO;
 		}
 
 		// SEND TRANSMISSION THROUGH CHANNEL
-		Element[] received = channel.sendThroughChannel(codeword);
+		GF4Element[] received = channel.sendThroughChannel(codeword);
 		
 		// MESSAGE-PASSING
-		Element[] decoded = graph.decode(received);
+		GF4Element[] decoded = graph.decode(received);
 		
 		System.out.println();
 		System.out.println("##### recieved transmission: " + Arrays.toString(received) + " #####");

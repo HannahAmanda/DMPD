@@ -5,19 +5,19 @@ import java.util.List;
 
 import code.graph.Graph;
 import code.graph.Node;
-import f4.Element;
+import f4.GF4Element;
 import f4.GaloisField4;
 
 public class GlobalFunction {
 	
 	
-	private List<ArrayList<Element>> adjMatrix = new ArrayList<ArrayList<Element>>();
-	private List<ArrayList<Element>> codeSpace = new ArrayList<ArrayList<Element>>();
-	private List<ArrayList<Element>> permutations = new ArrayList<ArrayList<Element>>();
+	private List<ArrayList<GF4Element>> adjMatrix = new ArrayList<ArrayList<GF4Element>>();
+	private List<ArrayList<GF4Element>> codeSpace = new ArrayList<ArrayList<GF4Element>>();
+	private List<ArrayList<GF4Element>> permutations = new ArrayList<ArrayList<GF4Element>>();
 	
 	private double[][] marginals;
 
-	private Element[] alphabet = {Element.ZERO, Element.ONE, Element.OMEGA, Element.OMEGASQ};
+	private GF4Element[] alphabet = {GF4Element.ZERO, GF4Element.ONE, GF4Element.OMEGA, GF4Element.OMEGASQ};
 	
 	private Graph g;
 	private int nodes;
@@ -29,7 +29,7 @@ public class GlobalFunction {
 		permutations = generatePermutations(nodes);
 		marginals = new double[nodes][4];
 		
-		for (ArrayList<Element> p: permutations) {
+		for (ArrayList<GF4Element> p: permutations) {
 			if (isCodeWord(p)) {
 				codeSpace.add(p); 
 			} 
@@ -50,22 +50,22 @@ public class GlobalFunction {
 		return marginals;
 	}
 
-	private ArrayList<ArrayList<Element>> generatePermutations(int n) {	
+	private ArrayList<ArrayList<GF4Element>> generatePermutations(int n) {	
 		if (n == 1) {
-			ArrayList<ArrayList<Element>> permutations = new ArrayList<ArrayList<Element>>();
-			for (Element e : alphabet) {
-				ArrayList<Element> p = new ArrayList<Element>();
+			ArrayList<ArrayList<GF4Element>> permutations = new ArrayList<ArrayList<GF4Element>>();
+			for (GF4Element e : alphabet) {
+				ArrayList<GF4Element> p = new ArrayList<GF4Element>();
 				p.add(e);
 				permutations.add(p);
 			}
 			return permutations;
 		} else {
-			ArrayList<ArrayList<Element>> perms = generatePermutations(n-1);
-			ArrayList<ArrayList<Element>> permutations = new ArrayList<ArrayList<Element>>();
+			ArrayList<ArrayList<GF4Element>> perms = generatePermutations(n-1);
+			ArrayList<ArrayList<GF4Element>> permutations = new ArrayList<ArrayList<GF4Element>>();
 			
-			for (ArrayList<Element> p: perms) {
-				for (Element e: alphabet) {
-					ArrayList<Element> newp = new ArrayList<Element>();
+			for (ArrayList<GF4Element> p: perms) {
+				for (GF4Element e: alphabet) {
+					ArrayList<GF4Element> newp = new ArrayList<GF4Element>();
 					newp.addAll(p);
 					newp.add(e);
 					permutations.add(newp);
@@ -77,12 +77,12 @@ public class GlobalFunction {
 	}
 	
 	private double globalMarginal(int id, int e) {
-		Element element = getElem(e);
+		GF4Element element = getElem(e);
 		
 		double channel = channelInfo(id, e);
 		double sum = 0;
 		
-		for (ArrayList<Element> c: codeSpace) {
+		for (ArrayList<GF4Element> c: codeSpace) {
 			if (c.get(id).equals(element)) {
 				double product = 1;
 				for (int i = 0; i < c.size(); i++) {
@@ -98,22 +98,22 @@ public class GlobalFunction {
 		return marginal;
 	}
 
-	private boolean isCodeWord(ArrayList<Element> p) {
+	private boolean isCodeWord(ArrayList<GF4Element> p) {
 		boolean isCodeWord = true;
-		for (ArrayList<Element> row: adjMatrix) {
-			if (hermitianInnerProduct(row, p) != Element.ZERO) {
+		for (ArrayList<GF4Element> row: adjMatrix) {
+			if (hermitianInnerProduct(row, p) != GF4Element.ZERO) {
 				return false;
 			}	
 		}
 		return isCodeWord;
 	}
 
-	private Element hermitianInnerProduct(ArrayList<Element> row, ArrayList<Element> p2) {
-		Element sum = Element.ZERO;
+	private GF4Element hermitianInnerProduct(ArrayList<GF4Element> row, ArrayList<GF4Element> p2) {
+		GF4Element sum = GF4Element.ZERO;
 		
 		for (int i = 0; i < row.size(); i++) {
-			Element one = GaloisField4.mult(GaloisField4.mult(row.get(i), row.get(i)), p2.get(i));
-			Element two = GaloisField4.mult(row.get(i), GaloisField4.mult(p2.get(i), p2.get(i)));
+			GF4Element one = GaloisField4.mult(GaloisField4.mult(row.get(i), row.get(i)), p2.get(i));
+			GF4Element two = GaloisField4.mult(row.get(i), GaloisField4.mult(p2.get(i), p2.get(i)));
 			
 			sum = GaloisField4.add(sum, GaloisField4.add(one,two));
 		}
@@ -126,12 +126,12 @@ public class GlobalFunction {
 	}
 	
 	
-	private int getNumberFromElement(Element element) {
-		if (element.equals(Element.ZERO)) {
+	private int getNumberFromElement(GF4Element element) {
+		if (element.equals(GF4Element.ZERO)) {
 			return 0;
-		} else if (element.equals(Element.ONE)) {
+		} else if (element.equals(GF4Element.ONE)) {
 			return 1;
-		} else if (element.equals(Element.OMEGA)) {
+		} else if (element.equals(GF4Element.OMEGA)) {
 			return 2;
 		} else {
 			return 3;
@@ -139,20 +139,20 @@ public class GlobalFunction {
 	}
 
 	
-	private Element getElem(int e) {
+	private GF4Element getElem(int e) {
 		if (e == 0) {
-			return Element.ZERO;
+			return GF4Element.ZERO;
 		} else if (e == 1) {
-			return Element.ONE;
+			return GF4Element.ONE;
 		} else if (e == 2) {
-			return Element.OMEGA;
+			return GF4Element.OMEGA;
 		} else {
-			return Element.OMEGASQ;
+			return GF4Element.OMEGASQ;
 		}
 	}
 
 	public void printOutPermutations() {
-		for (ArrayList<Element> p : codeSpace) {
+		for (ArrayList<GF4Element> p : codeSpace) {
 			for (int i = 0; i < p.size(); i++) {
 				if (i == p.size()-1) {
 					System.out.println(p.get(i)+ " ");					
@@ -177,8 +177,8 @@ public class GlobalFunction {
 		return t;
 	}
 
-	public boolean isCodeWord(Element[] decoded) {
-		for (ArrayList<Element> c: codeSpace) {
+	public boolean isCodeWord(GF4Element[] decoded) {
+		for (ArrayList<GF4Element> c: codeSpace) {
 			boolean codeword = true;
 			for (int i = 0 ; i < decoded.length; i++) {
 				if (!c.get(i).equals(decoded[i])) {

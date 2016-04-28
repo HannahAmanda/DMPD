@@ -1,5 +1,5 @@
 package f4;
 
-public enum Element {
+public enum GF4Element {
 ZERO, ONE, OMEGA, OMEGASQ,
 }
