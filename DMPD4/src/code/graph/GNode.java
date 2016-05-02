@@ -1,33 +1,29 @@
 package code.graph;
-
-import java.util.Arrays;
-import java.util.Random;
-
 import code.graph.Node;
 import f4.GF4Element;
 
 public class GNode {
 	
-	private Node n;
+	private Node node;
 	
-	private String nodeName;
+	private String name;
 	private double p; 
 	private double q;
 	private GF4Element bit;
 	private int bitNumber;
-	private static final Random rand = new Random(67);
 	private double[] softInfo;
+	
 	
 	
 	public GNode(Node n, double p) {
 		this.p = p;
 		q = (1-p)/3;
-		this.n = n;
-		nodeName = "g" + n.getNodeId();
+		this.node = n;
+		name = "g" + n.getNodeId();
 		softInfo = new double[4];
 	}
 
-	public void setRecievedBit(GF4Element bit) {
+	public void setReceivedBit(GF4Element bit) {
 		this.bit = bit;
 		if (bit == GF4Element.ZERO) {
 			bitNumber = 0;
@@ -50,7 +46,7 @@ public class GNode {
 	}
 
 	public Node getNeighbor() {
-		return n;
+		return node;
 	}
 	
 	public GF4Element getBit() {
@@ -62,22 +58,9 @@ public class GNode {
 	}
 
 	public int getId() {
-		return n.getNodeId();
+		return node.getNodeId();
 	}
 	
-	
-	private double[] calculateTransmission() {
-		double[] softInformation = new double[4];
-		for (int i = 0; i < softInformation.length; i++) {
-			if ( i == bitNumber) {
-				softInformation[i] = p*10;
-			} else {
-				softInformation[i] = q*10;
-			}
-		}
-		
-		return softInformation;
-	}
 	
 
 	public void passChannelInfo() {
@@ -90,19 +73,14 @@ public class GNode {
 		// this.softInfo = softInfo;
 		
 		// System.out.println(this.toString() + " -> " + n.toString() + ": " + Arrays.toString(softInfo)); 
-		n.receiveSoftInfo(softInfo);
+		node.receiveSoftInfo(softInfo);
 		
 	}
 
 	
 	@Override
 	public String toString() {
-		return nodeName;
+		return name;
 	}
-	
-	public static double randomNumber() {
-		return (rand.nextDouble());
-	}
-	
 	
 }

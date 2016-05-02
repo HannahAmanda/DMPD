@@ -51,7 +51,7 @@ public class MetaNode extends Node{
 	}
 
 	@Override
-	public void passInitialMessages() {
+	public void passIdentityMessages() {
 		v.passInitialMessages();
 		f.passInitialMessages();
 	}

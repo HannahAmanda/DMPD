@@ -262,7 +262,7 @@ public class Point extends Node implements recieveMessage {
 
 
 	@Override
-	public void passInitialMessages() {
+	public void passIdentityMessages() {
 		double[] identityMessage = {1.0,1.0,1.0,1.0};
 		for (Node n: neighbors) {
 			((Point) n).receiveMessage(new Message(toString(), identityMessage));

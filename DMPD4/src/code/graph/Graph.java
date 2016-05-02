@@ -74,18 +74,19 @@ public class Graph {
 	
 	public GF4Element[] decode(GF4Element[] transmission) {
 		passSoftInformation(transmission);
-		init();
+		passIdentityMessages();
 		propagateBeliefs();
 		
 		System.out.println();
 		
-		return getDecodeState();
+		return getDecodedState();
 	}
 
-	private void passSoftInformation(GF4Element[] transmission) {
-		System.out.println();
-		gNodeBitNotification(transmission);
-		gNodeTransmit();
+	private void passSoftInformation(GF4Element[] transmission) {		
+		for (int i = 0; i < transmission.length; i++) {
+			gNodes.get(i).setReceivedBit(transmission[i]);
+			gNodes.get(i).passChannelInfo();
+		}
 	}
 	
 	private void propagateBeliefs() {
@@ -93,17 +94,17 @@ public class Graph {
 		if (isTree) {
 			traverseTree();
 		} else {
-			iterateEdges();
+			iterateOverEdges();
 		}
 	}
 
-	private void init() {
+	private void passIdentityMessages() {
 		for (Node n: nodes) {
-			n.passInitialMessages();
+			n.passIdentityMessages();
 		}
 	}
 	
-	private void iterateEdges() {
+	private void iterateOverEdges() {
 		int it = 0;
 		while (it < iterations) {
 			
@@ -181,7 +182,7 @@ public class Graph {
 		}
 	}
 
-	private GF4Element[] getDecodeState() {
+	private GF4Element[] getDecodedState() {
 		GF4Element[] decodedWord = new GF4Element[nodes.size()];
 		
 		for (Node n: nodes) {		
@@ -192,18 +193,6 @@ public class Graph {
 		return decodedWord;
 	}
 
-	private void gNodeBitNotification(GF4Element[] transmission) {
-		
-		for (int i = 0; i < transmission.length; i++) {
-			gNodes.get(i).setRecievedBit(transmission[i]);
-		}
-	}
-
-	private void gNodeTransmit() {
-		for (GNode g: gNodes) {
-			g.passChannelInfo();
-		}
-	}
 	
 	@Override
 	public String toString() {
