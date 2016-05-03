@@ -35,10 +35,10 @@ public class Variable extends FactorGraphNode{
 	public double[] calculateTransmission(FactorGraphNode except) {
 		double[] transmission = {1,1,1,1};
 		
-		for (int i = 0; i < messageList.size(); i++) {
-			if (!messageList.get(i).getSenderName().equals(except.nodeName)) {
+		for (int i = 0; i < messages.size(); i++) {
+			if (!messages.get(i).getSenderName().equals(except.nodeName)) {
 				
-				double[] message = messageList.get(i).getMessage();
+				double[] message = messages.get(i).getMessage();
 				// System.out.println(toString() + " Message: " + Arrays.toString(message) + " from: " + messageList.get(i).getSender());
 				for (int j = 0; j < 4; j++) {
 					// System.out.println("i: " + i + " trans[j]: " + transmission[j] + " j: " + j + " message[j] " + message[j]);
@@ -59,9 +59,10 @@ public class Variable extends FactorGraphNode{
 	 * Merely passes along the soft information 
 	 * received from the channel. 
 	 */
+	@Override
 	public void passInitialMessages() {
 		if (receivedSoftInfo) {
-			for (FactorGraphNode n:neighborList) {
+			for (FactorGraphNode n:neighbors) {
 				double[] tran = new double[4];
 				tran[0] = (softInfo[0]);
 				tran[1] = (softInfo[1]);
@@ -77,7 +78,7 @@ public class Variable extends FactorGraphNode{
 		}
 	}
 
-	public void receiveSoftInfo(double[] softInfo) {
+	public void recieveSoftInfo(double[] softInfo) {
 		receivedSoftInfo = true;
 		this.softInfo = softInfo;
 		setAB();
@@ -118,8 +119,8 @@ public class Variable extends FactorGraphNode{
 
 	private void marginalize() {
 		double[] marge = marginalization;
-		if (messageList.size() == neighborList.size()){
-			for (Message m: messageList) {
+		if (messages.size() == neighbors.size()){
+			for (Message m: messages) {
 				double[] message = m.getMessage();
 				marge[0] *= message[0];
 				marge[1] *= message[1];
@@ -192,9 +193,11 @@ public class Variable extends FactorGraphNode{
 		softInfo = s;
 		state = null;
 		receivedSoftInfo = false;
-		messageList.clear();	
+		messages.clear();	
 		
 	}
+
+	
 
 	
 

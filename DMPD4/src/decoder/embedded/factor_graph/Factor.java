@@ -1,6 +1,5 @@
 package decoder.embedded.factor_graph;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import message.Message;
@@ -14,19 +13,11 @@ public class Factor extends FactorGraphNode {
 		nodeName = "f" + i;
 	}
 
-	public void setConstraint(int[] constraint) {
-		indicatorValues = constraint;
-	}
-
-	public int[] getConstraint() {
-		return indicatorValues;
-	}
-
 	@Override
 	public double[] calculateTransmission(FactorGraphNode except) {
 		double[] transmission = new double[4];
 
-		if (neighborList.size() == 1) {
+		if (neighbors.size() == 1) {
 			// System.out.println(toString() + " has only one neighbor.");
 			for (int i = 0; i < transmission.length; i++) {
 				double value = indicatorValues[i];
@@ -44,14 +35,14 @@ public class Factor extends FactorGraphNode {
 		} else {
 			double[] product = productOfMessages(except);
 
-			return sumOver(product, except);
+			return sumOverProductOfMessages(product, except);
 		}
 
 	}
 
-	private double[] sumOver(double[] product, FactorGraphNode except) {
+	private double[] sumOverProductOfMessages(double[] product, FactorGraphNode except) {
 		double[] summation = { 0, 0, 0, 0 };
-		int pos = neighborList.indexOf(except);
+		int pos = neighbors.indexOf(except);
 		int rep = (int) Math.pow(4, pos);
 		int i = 0;
 		int j = 1;
@@ -85,10 +76,10 @@ public class Factor extends FactorGraphNode {
 			product[i] = indicatorValues[i];
 		}
 
-		for (FactorGraphNode n : neighborList) {
+		for (FactorGraphNode n : neighbors) {
 			if (!n.equals(except) && hasMessageFrom(n)) {
 
-				int repetitionLength = findRepetitionLength(neighborList
+				int repetitionLength = findRepetitionLength(neighbors
 						.indexOf(n));
 
 				int i = 0;
@@ -97,7 +88,7 @@ public class Factor extends FactorGraphNode {
 					while (count < 4) {
 						int j = 0;
 						while (j < repetitionLength) {
-							for (Message m : messageList) {
+							for (Message m : messages) {
 								if (m.getSenderName().equals(n.nodeName)) {
 									product[i] *= m.getMessage()[count];
 								}
@@ -114,12 +105,12 @@ public class Factor extends FactorGraphNode {
 		return product;
 	}
 
-	public void generateVector() {
+	public void generateIndicatorVector() {
 
-		int repLength = findRepetitionLength(neighborList.indexOf(buddy));
+		int repLength = findRepetitionLength(neighbors.indexOf(buddy));
 		int[] rVector = getRVector();
 
-		int[] indicatorValues = new int[(int) Math.pow(4, neighborList.size())];
+		int[] indicatorValues = new int[(int) Math.pow(4, neighbors.size())];
 
 		for (int i = 0; i < rVector.length; i++) {
 			int b = i / repLength;
@@ -162,16 +153,16 @@ public class Factor extends FactorGraphNode {
 
 
 	private int[] getRVector() {
-		int repLength = findRepetitionLength(neighborList.indexOf(buddy));
+		int repLength = findRepetitionLength(neighbors.indexOf(buddy));
 		
-		int nrOfZeros = (int) Math.pow(2, 2 * (neighborList.size() - 1));
+		int nrOfZeros = (int) Math.pow(2, 2 * (neighbors.size() - 1));
 		int[] rVector = new int[nrOfZeros];
 		
 
-		for (FactorGraphNode n : neighborList) {
+		for (FactorGraphNode n : neighbors) {
 			if (!n.equals(buddy)) {
 				
-				int nRepLength = findRepetitionLength(neighborList.indexOf(n));
+				int nRepLength = findRepetitionLength(neighbors.indexOf(n));
 				
 				for (int i = 0; i < rVector.length; i++) {
 					int bulk = (i/repLength);
@@ -245,7 +236,7 @@ public class Factor extends FactorGraphNode {
 		} else {
 			int size = 1;
 			int i = 0;
-			while (i < pos && i < neighborList.size()) {
+			while (i < pos && i < neighbors.size()) {
 				size *= 4;
 				i++;
 			}
@@ -257,22 +248,25 @@ public class Factor extends FactorGraphNode {
 	 * Passes identity message to all neighboring variable nodes such that they
 	 * all have a received message from |this|
 	 */
+	@Override
 	public void passInitialMessages() {
 		double[] identityMessage = { 1.0, 1.0, 1.0, 1.0 };
 
-		for (FactorGraphNode n : neighborList) {
+		for (FactorGraphNode n : neighbors) {
 			n.receiveMessage(new Message(nodeName, identityMessage));
 		}
 	}
 
 	public void sortNeighbors() {
-		Collections.sort(neighborList);
+		Collections.sort(neighbors);
 	}
 
 	@Override
 	public void reset() {
-		messageList.clear();
+		messages.clear();
 	}
+
+	
 
 
 }

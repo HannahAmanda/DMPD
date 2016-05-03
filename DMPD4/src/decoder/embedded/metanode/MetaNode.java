@@ -18,7 +18,7 @@ public class MetaNode extends Node{
 		f = new Factor(i);
 		v = new Variable(i);
 		
-		makeBuddies();
+		associateFactorAndVariable();
 	}
 	
 	public Factor getFactor() {
@@ -32,10 +32,10 @@ public class MetaNode extends Node{
 	@Override
 	public void finalSetup(){
 		f.sortNeighbors();
-		f.generateVector();
+		f.generateIndicatorVector();
 	}
 	
-	// TODO: Casting okay?
+	
 	@Override
 	public void addNeighbor(Node m) {
 		if (m instanceof MetaNode) {
@@ -72,26 +72,16 @@ public class MetaNode extends Node{
 		v.reset();
 	}
 
-	private void makeBuddies() {
-		f.setBuddy(v);
-		v.setBuddy(f);
+	private void associateFactorAndVariable() {
+		f.setAssociate(v);
+		v.setAssociate(f);
 	}
 
 	@Override
 	public void receiveSoftInfo(double[] softInfo) {
-		v.receiveSoftInfo(softInfo);
+		v.recieveSoftInfo(softInfo);
 	}
 
-	/**@Override
-	public boolean hasMessageFrom(Node to) {
-		boolean has = false; 
-		for (Message m: messages) {
-			if (m.getSenderName().equals(to.getNodeName())) {
-				has = true;
-			}
-		}
-		return has;
-	}**/
 
 	@Override
 	public GF4Element getState() {
@@ -100,8 +90,7 @@ public class MetaNode extends Node{
 
 	@Override
 	public boolean hasLeaves() {
-		// TODO Auto-generated method stub
-		System.out.println("unnecessary method");
+		// TODO: unnecassary
 		return false;
 	}
 

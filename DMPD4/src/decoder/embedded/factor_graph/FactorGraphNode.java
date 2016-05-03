@@ -13,12 +13,12 @@ public abstract class FactorGraphNode implements Comparable<FactorGraphNode>, re
 	protected String nodeName;
 	protected FactorGraphNode buddy;
 
-	protected List<FactorGraphNode> neighborList = new ArrayList<FactorGraphNode>();
-	protected List<Message> messageList = new ArrayList<Message>();
-	protected List<FactorGraphNode> pendingNeighborList = new ArrayList<FactorGraphNode>();
-
+	protected List<FactorGraphNode> neighbors = new ArrayList<FactorGraphNode>();
+	protected List<Message> messages = new ArrayList<Message>();
+	
 	public abstract double[] calculateTransmission(FactorGraphNode except);
-
+	public abstract void passInitialMessages();
+	
 	public abstract void reset();
 
 	public int getNodeId() {
@@ -33,24 +33,24 @@ public abstract class FactorGraphNode implements Comparable<FactorGraphNode>, re
 		return buddy;
 	}
 
-	public void setBuddy(FactorGraphNode buddy) {
+	public void setAssociate(FactorGraphNode buddy) {
 		if (this.buddy != null) {
 			throw new IllegalStateException("Buddy should be final, is already set to " + this.buddy.toString());
 		}
 		this.buddy = buddy;
-		neighborList.add(buddy);
+		neighbors.add(buddy);
 	}
 
 	public List<FactorGraphNode> getNeighborList() {
-		return neighborList;
+		return neighbors;
 	}
 
 	public void addNeighbor(FactorGraphNode n) {
-		neighborList.add(n);
+		neighbors.add(n);
 	}
 
 	public boolean canSendTo(FactorGraphNode n) {
-		for (FactorGraphNode v : neighborList) {
+		for (FactorGraphNode v : neighbors) {
 			if (!v.equals(n) && !hasMessageFrom(v)) {
 				return false;
 			
@@ -60,7 +60,7 @@ public abstract class FactorGraphNode implements Comparable<FactorGraphNode>, re
 	}
 
 	public boolean hasMessageFrom(FactorGraphNode v) {
-		for (Message m : messageList) {
+		for (Message m : messages) {
 			if (m.getSenderName().equals(v.nodeName))
 				return true;
 		}
@@ -81,20 +81,20 @@ public abstract class FactorGraphNode implements Comparable<FactorGraphNode>, re
 	public void receiveMessage(Message incoming) {
 		int index = -1;
 		Message m = normalize(incoming);
-		for (Message v : messageList) {
+		for (Message v : messages) {
 			if (v.getSenderName().equals(m.getSenderName())) {
-				index = messageList.indexOf(v);
+				index = messages.indexOf(v);
 			}
 		}
 
 		if (index == -1) {
 			// System.out.println(-1 + " " + m.toString() + " to " +
 			// toString());
-			messageList.add(m);
+			messages.add(m);
 		} else {
 			
-			messageList.remove(index);
-			messageList.add(m);
+			messages.remove(index);
+			messages.add(m);
 		}
 	}
 
@@ -117,7 +117,7 @@ public abstract class FactorGraphNode implements Comparable<FactorGraphNode>, re
 	 * Calculates and passes messages to all neighbors
 	 */
 	public void passAllMessages() {
-		for (FactorGraphNode n: neighborList) {
+		for (FactorGraphNode n: neighbors) {
 			passMessageTo(n);
 		}
 	}
