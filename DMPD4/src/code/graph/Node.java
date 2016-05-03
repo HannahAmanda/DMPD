@@ -14,7 +14,7 @@ public abstract class Node {
 	public abstract void receiveSoftInfo(double[] softInfo);
 	public abstract void passMessageTo(Node theOther);
 	public abstract void passIdentityMessages();
-	public abstract boolean hasMessageFrom(Node to);
+	//public abstract boolean hasMessageFrom(Node to);
 	
 	public abstract boolean hasLeaves();
 	public abstract void finalSetup();

@@ -1,9 +1,6 @@
 package decoder.embedded.metanode;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import message.Message;
 import code.graph.Node;
 import decoder.embedded.factor_graph.Factor;
 import decoder.embedded.factor_graph.Variable;
@@ -13,7 +10,6 @@ public class MetaNode extends Node{
 	
 	private Factor f;
 	private Variable v;
-	private List<Message> messages = new ArrayList<Message>();
 	
 	public MetaNode(int i) {
 		
@@ -86,7 +82,7 @@ public class MetaNode extends Node{
 		v.receiveSoftInfo(softInfo);
 	}
 
-	@Override
+	/**@Override
 	public boolean hasMessageFrom(Node to) {
 		boolean has = false; 
 		for (Message m: messages) {
@@ -95,7 +91,7 @@ public class MetaNode extends Node{
 			}
 		}
 		return has;
-	}
+	}**/
 
 	@Override
 	public GF4Element getState() {

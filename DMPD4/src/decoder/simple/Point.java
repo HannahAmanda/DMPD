@@ -270,7 +270,6 @@ public class Point extends Node implements recieveMessage {
 	}
 
 
-	@Override
 	public boolean hasMessageFrom(Node to) {
 		boolean has = false;
 		if (to.isLeaf()) {
