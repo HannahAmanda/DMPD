@@ -11,12 +11,12 @@ import f4.GF4Element;
 
 public class Point extends Node implements recieveMessage {
 	
-	protected double[] softInfo;
-	protected boolean isLeaf;
+	private double[] softInfo;
+	private boolean isLeaf;
 	private Calculator calc = new Calculator();
 	
-	protected List<Message> messagesA = new ArrayList<Message>();
-	protected List<Message> messagesB = new ArrayList<Message>();
+	private List<Message> leafMssg = new ArrayList<Message>();
+	private List<Message> internalMssg = new ArrayList<Message>();
 	
 	public Point(int id) {
 			nodeId = id;
@@ -28,7 +28,7 @@ public class Point extends Node implements recieveMessage {
 	public void passMessageTo(Node theOther) {
 		
 		if (isLeaf()) {
-			passLeafInfo(theOther);
+			passSoftInfo(theOther);
 			
 		} else if (!theOther.isLeaf()) {
 			passToInternal(theOther);
@@ -56,7 +56,7 @@ public class Point extends Node implements recieveMessage {
 		}
 	}
 
-	private void passLeafInfo(Node theOther) {
+	private void passSoftInfo(Node theOther) {
 		((Point) theOther).receiveMessage(new Message(nodeName, normalize(softInfo)));
 	}
 
@@ -97,13 +97,13 @@ public class Point extends Node implements recieveMessage {
 
 	private double[] combineAllInternal() {
 		
-		if (messagesB.isEmpty()) {
+		if (internalMssg.isEmpty()) {
 			return null;
 		} else {
-			double[] result = messagesB.get(0).getMessage();
+			double[] result = internalMssg.get(0).getMessage();
 			
-			for (int i = 1; i < messagesB.size(); i++) {
-				result = calc.dSX(result, messagesB.get(i).getMessage());
+			for (int i = 1; i < internalMssg.size(); i++) {
+				result = calc.dSX(result, internalMssg.get(i).getMessage());
 			}
 			
 			return result;
@@ -112,26 +112,26 @@ public class Point extends Node implements recieveMessage {
 	
 	private double[] combineAllLeaves() {
 
-		if (messagesA.size() == 0) {
+		if (leafMssg.size() == 0) {
 			// System.out.println("No leaves!");
 			return new double[] {1,0,1,0};
-		} else if (messagesA.size() == 1) {
+		} else if (leafMssg.size() == 1) {
 			double[] leaf = new double[4];
 			
-			leaf[0] = messagesA.get(0).getMessage()[0];
-			leaf[1] = messagesA.get(0).getMessage()[2];
-			leaf[2] = messagesA.get(0).getMessage()[1];
-			leaf[3] = messagesA.get(0).getMessage()[3];
+			leaf[0] = leafMssg.get(0).getMessage()[0];
+			leaf[1] = leafMssg.get(0).getMessage()[2];
+			leaf[2] = leafMssg.get(0).getMessage()[1];
+			leaf[3] = leafMssg.get(0).getMessage()[3];
 			return leaf;
 			
 		} else {
-			double[] leaves = messagesA.get(0).getMessage();
+			double[] leaves = leafMssg.get(0).getMessage();
 			
-			for (int i = 1; i < messagesA.size(); i++) {
+			for (int i = 1; i < leafMssg.size(); i++) {
 				if (i == 1) {
-					leaves = calc.dTSX(leaves, messagesA.get(1).getMessage());
+					leaves = calc.dTSX(leaves, leafMssg.get(1).getMessage());
 				} else {
-					leaves = calc.tSX(messagesA.get(i).getMessage(), leaves);
+					leaves = calc.tSX(leafMssg.get(i).getMessage(), leaves);
 				}
 			}
 			
@@ -175,22 +175,22 @@ public class Point extends Node implements recieveMessage {
 		double[] result = new double[4]; 
 		
 		if (isLeaf) {
-			result = calc.dot(softInfo, messagesB.get(0).getMessage());
+			result = calc.dot(softInfo, internalMssg.get(0).getMessage());
 		} else {
 
 			double[] leaves = combineAllLeaves();
 			double[] internals = combineAllInternal();
-			if (internals != null && messagesA.size() != 0) {
+			if (internals != null && leafMssg.size() != 0) {
 				
 				// leaves and internals exist
 				double[] messages = calc.dSX(internals, leaves);
 				result = calc.dot(messages, softInfo);
 				
-			} else if (internals == null && messagesA.size() > 0) {
+			} else if (internals == null && leafMssg.size() > 0) {
 				// only leaves exist
 				result = calc.dot(leaves, softInfo);
 				
-			} else if (internals != null && messagesA.size() == 0) {
+			} else if (internals != null && leafMssg.size() == 0) {
 				// only internals
 				result = calc.dot(softInfo, internals);
 				
@@ -229,7 +229,7 @@ public class Point extends Node implements recieveMessage {
 	private ArrayList<Message> removeLeafMessage(Node except) {
 		ArrayList<Message> mA = new ArrayList<Message>();
 		
-		mA.addAll(messagesA);
+		mA.addAll(leafMssg);
 		int index = -1;
 		for (Message m: mA) {
 			if (m.getSenderName().equals(except.getNodeName())) {
@@ -243,7 +243,7 @@ public class Point extends Node implements recieveMessage {
 	private ArrayList<Message> removeInternalMessage(Node except) {
 		ArrayList<Message> mB = new ArrayList<Message>();
 		
-		mB.addAll(messagesB);
+		mB.addAll(internalMssg);
 		int index = -1;
 		for (Message m: mB) {
 			if (m.getSenderName().equals(except.getNodeName())) {
@@ -274,13 +274,13 @@ public class Point extends Node implements recieveMessage {
 	public boolean hasMessageFrom(Node to) {
 		boolean has = false;
 		if (to.isLeaf()) {
-			for (Message m: messagesA) {
+			for (Message m: leafMssg) {
 				if (m.getSenderName().equals(to.getNodeName())) {
 					has = true;
 				}
 			}
 		} else {
-			for (Message m: messagesB) {
+			for (Message m: internalMssg) {
 				if (m.getSenderName().equals(to.getNodeName())) {
 					has = true;
 				}
@@ -298,29 +298,29 @@ public class Point extends Node implements recieveMessage {
 		int index = -1;
 
 		if (leaf) {
-			for (Message a: messagesA) {
+			for (Message a: leafMssg) {
 				if (a.getSenderName().equals(name)) {
-					index = messagesA.indexOf(a);
+					index = leafMssg.indexOf(a);
 				}
 			}
 			
 			if (index != -1) {
-				messagesA.remove(index);
+				leafMssg.remove(index);
 			}
-			messagesA.add(m);
+			leafMssg.add(m);
 			
 		} else {
 			
-			for (Message b: messagesB) {
+			for (Message b: internalMssg) {
 				if(b.getSenderName().equals(name)) {
-					index = messagesB.indexOf(b);
+					index = internalMssg.indexOf(b);
 				}
 			}
 			
 			if (index != -1) {
-				messagesB.remove(index);
+				internalMssg.remove(index);
 			}
-			messagesB.add(m);
+			internalMssg.add(m);
 		}
 
 	}
@@ -338,7 +338,7 @@ public class Point extends Node implements recieveMessage {
 
 	@Override
 	public boolean hasLeaves() {
-		return !isLeaf() && messagesA.size() > 0;
+		return !isLeaf() && leafMssg.size() > 0;
 	}
 
 	@Override
@@ -352,8 +352,8 @@ public class Point extends Node implements recieveMessage {
 
 	@Override
 	public void reset() {
-		messagesA.clear();
-		messagesB.clear();
+		leafMssg.clear();
+		internalMssg.clear();
 	}
 
 	@Override
