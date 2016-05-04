@@ -42,20 +42,6 @@ public class Calculator {
 		return new double[]{a,b,c,d};
 		
 	}
-
-	
-	public double[] dTSX(double[] m, double[] n) {
-		double[] result;
-		
-		double a = m[0]*n[0] + m[2]*n[2];
-		double b = m[0]*n[2] + m[2]*n[0];
-		double c = m[1]*n[1] + m[3]*n[3];
-		double d = m[1]*n[3] + m[3]*n[1];
-		
-		result = new double[]{a,b,c,d};
-		
-		return result;
-	}
 	
 
 	
