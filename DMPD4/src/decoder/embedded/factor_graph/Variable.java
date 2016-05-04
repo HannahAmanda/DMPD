@@ -197,7 +197,10 @@ public class Variable extends FactorGraphNode{
 		
 	}
 
-	
+	public double[] getMarginal(){
+		marginalize();
+		return marginalization;
+	}
 
 	
 

@@ -39,6 +39,7 @@ public class GlobalFunction {
 			int nodeId = n.getNodeId();
 			for (int i = 0; i < 4; i++) {
 				marginals[nodeId][i] = globalMarginal(nodeId, i);
+				System.out.println(marginals[nodeId][i]);
 			}
 		}
 	}

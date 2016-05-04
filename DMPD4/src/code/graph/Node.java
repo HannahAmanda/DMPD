@@ -41,6 +41,8 @@ public abstract class Node {
 	
 	public boolean isLeaf() {
 		return neighbors.size() == 1;
-	}	
+	}
+	
+	public abstract double[] getMarginal();	
 
 }

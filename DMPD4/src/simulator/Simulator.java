@@ -57,8 +57,6 @@ public class Simulator {
 		System.out.println("*** ***** ***");
 		
 		graph.finalSetup();
-		
-		globalFunction = new GlobalFunction(graph);
 	}
 	
 	
@@ -81,11 +79,13 @@ public class Simulator {
 		
 		// MESSAGE-PASSING
 		GF4Element[] decoded = graph.decode(received);
+		globalFunction = new GlobalFunction(graph);
 		
 		System.out.println();
 		System.out.println("##### recieved transmission: " + Arrays.toString(received) + " #####");
 		System.out.println("##### decoded transmission: " + Arrays.toString(decoded) + " #####");
 		System.out.println("Decoded to a codeword: " + globalFunction.isCodeWord(decoded));
+		printOutMarginals();
 		graph.reset();
 		
 	}
@@ -94,7 +94,7 @@ public class Simulator {
 		Scanner input = new Scanner(System.in);
 	    System.out.print("Please provide a path to the code specification file: ");
 	    //String file = input.nextLine();
-	    String file = "graphs/trees/three_bulls.txt";
+	    String file = "graphs/trees/doubleP3.txt";
 		Simulator simulator;
 		
 		try(BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -131,6 +131,19 @@ public class Simulator {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+		
+	}
+
+
+	private void printOutMarginals() {
+		double[][] gf = globalFunction.getGlobalMarginals();
+		System.out.println("The Global Marginals.");
+		for (int i = 0; i < gf.length; i++){
+			System.out.println("M" + i + " " + Arrays.toString(gf[i]));
+			System.out.println("M" + i + " " + Arrays.toString(graph.getNodeFromId(i).getMarginal()));
+		
+		}
+		
 		
 	}
 }

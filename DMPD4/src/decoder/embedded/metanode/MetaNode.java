@@ -94,6 +94,11 @@ public class MetaNode extends Node{
 		return false;
 	}
 
+	@Override
+	public double[] getMarginal() {
+		return v.getMarginal();
+	}
+
 	
 	
 }

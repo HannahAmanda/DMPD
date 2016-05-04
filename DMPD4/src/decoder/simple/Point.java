@@ -113,26 +113,17 @@ public class Point extends Node implements recieveMessage {
 	private double[] combineAllLeaves() {
 
 		if (leafMssg.size() == 0) {
-			// System.out.println("No leaves!");
+			
 			return new double[] {1,0,1,0};
 		} else if (leafMssg.size() == 1) {
-			double[] leaf = new double[4];
 			
-			leaf[0] = leafMssg.get(0).getMessage()[0];
-			leaf[1] = leafMssg.get(0).getMessage()[2];
-			leaf[2] = leafMssg.get(0).getMessage()[1];
-			leaf[3] = leafMssg.get(0).getMessage()[3];
-			return leaf;
+			return calc.tSX(leafMssg.get(0).getMessage() , new double[] {1,0,1,0});
 			
 		} else {
-			double[] leaves = leafMssg.get(0).getMessage();
+			double[] leaves = new double[] {1,0,1,0};
 			
-			for (int i = 1; i < leafMssg.size(); i++) {
-				if (i == 1) {
-					leaves = calc.dTSX(leaves, leafMssg.get(1).getMessage());
-				} else {
-					leaves = calc.tSX(leafMssg.get(i).getMessage(), leaves);
-				}
+			for (int i = 0; i < leafMssg.size(); i++) {
+				leaves = calc.tSX(leafMssg.get(i).getMessage(), leaves);
 			}
 			
 			return leaves;
@@ -146,25 +137,15 @@ public class Point extends Node implements recieveMessage {
 			return new double[]{1,0,1,0};
 			
 		} else if (mA.size() == 1){
-			double[] leaf = new double[4];
 			
-			leaf[0] = mA.get(0).getMessage()[0];
-			leaf[1] = mA.get(0).getMessage()[2];
-			leaf[2] = mA.get(0).getMessage()[1];
-			leaf[3] = mA.get(0).getMessage()[3];
+			return calc.tSX(mA.get(0).getMessage() , new double[] {1,0,1,0});
 			
-			return leaf;
 			
 		} else {
-			double[] leaves = mA.get(0).getMessage();	
+			double[] leaves = new double[]{1,0,1,0};	
 			
-			for (int i = 1; i < mA.size(); i++) {
-				// leaves = calc.dTSS(leaves, mA.get(i).getMessage());
-				if (i == 1) {
-					leaves = calc.dTSX(leaves, mA.get(1).getMessage());
-				} else {
-					leaves = calc.tSX(mA.get(i).getMessage(), leaves);
-				}
+			for (int i = 0; i < mA.size(); i++) {
+				leaves = calc.tSX(mA.get(i).getMessage(), leaves);
 			}
 			
 			return leaves;
@@ -371,5 +352,11 @@ public class Point extends Node implements recieveMessage {
 			t[i] /= sum;
 		}
 		return t;
+	}
+
+
+	@Override
+	public double[] getMarginal() {
+		return marginalize();
 	}
 }
