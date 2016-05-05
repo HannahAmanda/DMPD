@@ -14,7 +14,7 @@ import channel.QuaternarySymmetricChannel;
 import code.global_function.GlobalFunction;
 import code.graph.Graph;
 import decoder.embedded.metanode.MetaNode;
-import decoder.simple.Point;
+import decoder.naive.Point;
 import f4.GF4Element;
 
 public class Simulator {

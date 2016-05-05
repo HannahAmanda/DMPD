@@ -1,0 +1,7 @@
+[master 61fe3e9] simple
+ 7 files changed, 3 insertions(+), 4 deletions(-)
+ rename DMPD4/bin/decoder/{simple => naive}/Calculator.class (80%)
+ create mode 100644 DMPD4/bin/decoder/naive/Point.class
+ delete mode 100644 DMPD4/bin/decoder/simple/Point.class
+ rename DMPD4/src/decoder/{simple => naive}/Calculator.java (97%)
+ rename DMPD4/src/decoder/{simple => naive}/Point.java (98%)

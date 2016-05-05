@@ -1,4 +1,4 @@
-package decoder.simple;
+package decoder.naive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +80,6 @@ public class Point extends Node implements recieveMessage {
 		ArrayList<Message> mB = removeInternalMessage(theOther);
 		
 		if (mB.isEmpty()) {
-			System.out.println(nodeName + " don't know what to do");
 			return null;
 		} else if (mB.size() == 1) {
 			return mB.get(0).getMessage();

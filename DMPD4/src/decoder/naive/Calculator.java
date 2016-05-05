@@ -1,4 +1,4 @@
-package decoder.simple;
+package decoder.naive;
 
 public class Calculator {
 	
