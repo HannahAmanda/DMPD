@@ -39,7 +39,6 @@ public class GlobalFunction {
 			int nodeId = n.getNodeId();
 			for (int i = 0; i < 4; i++) {
 				marginals[nodeId][i] = globalMarginal(nodeId, i);
-				System.out.println(marginals[nodeId][i]);
 			}
 		}
 	}
@@ -152,7 +151,7 @@ public class GlobalFunction {
 		}
 	}
 
-	public void printOutPermutations() {
+	public void printOutCodespace() {
 		for (ArrayList<GF4Element> p : codeSpace) {
 			for (int i = 0; i < p.size(); i++) {
 				if (i == p.size()-1) {

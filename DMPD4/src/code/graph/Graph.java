@@ -120,10 +120,8 @@ public class Graph {
 	
 	private void traverseTree() {
 		passMessagesFromLeaves(nodes.size()/2);
-		System.out.println("Passed messages from leaves.");
-		
 		passMessagesToLeaves(nodes.size()/2);
-		System.out.println("Passed messages to leaves.");
+		
 	}
 
 	private void passMessagesToLeaves(int i) {

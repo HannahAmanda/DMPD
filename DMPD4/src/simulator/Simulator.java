@@ -137,12 +137,13 @@ public class Simulator {
 
 	private void printOutMarginals() {
 		double[][] gf = globalFunction.getGlobalMarginals();
-		System.out.println("The Global Marginals.");
 		for (int i = 0; i < gf.length; i++){
 			System.out.println("M" + i + " " + Arrays.toString(gf[i]));
 			System.out.println("M" + i + " " + Arrays.toString(graph.getNodeFromId(i).getMarginal()));
 		
 		}
+		
+		//globalFunction.printOutCodespace();
 		
 		
 	}
