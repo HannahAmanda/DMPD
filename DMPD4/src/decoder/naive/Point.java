@@ -30,20 +30,24 @@ public class Point extends Node implements recieveMessage {
 		if (isLeaf()) {
 			passSoftInfo(theOther);
 			
-		} else if (!theOther.isLeaf()) {
-			passToInternal(theOther);
+		} else{
+			double[] leaves = new double[4];
+			double[] internals = new double[4];
+			if (!theOther.isLeaf()) {
+				leaves = combineAllLeaves();
+				internals = combineAllInternals(theOther);
 			
-		} else {
-			passToLeaf(theOther);
+			} else {
+				leaves = combineAllLeaves(theOther);
+				internals = combineAllInternal();
+			}
 			
+			passMessage(theOther, leaves, internals);
 		}
-		
 	}
 
-	private void passToLeaf(Node theOther) {
-		double[] leaves = combineAllLeaves(theOther);
-		double[] internals = combineAllInternal();
-		
+
+	private void passMessage(Node theOther, double[] leaves, double[] internals) {
 		if (internals != null){
 			double[] m = calc.dSX(leaves, softInfo);
 			m = calc.dSS(m, internals);
@@ -58,24 +62,8 @@ public class Point extends Node implements recieveMessage {
 	private void passSoftInfo(Node theOther) {
 		((Point) theOther).receiveMessage(new Message(nodeName, normalize(softInfo)));
 	}
-
-	private void passToInternal(Node theOther) {
-		double[] leaves = combineAllLeaves();
-		double[] internals = combineAllInternal(theOther);
-		
-		double[] m = new double[4];
-		if (internals != null) {
-			m = calc.dSX(leaves,  internals);
-			m = calc.dSS(m,  softInfo);
-			
-		} else {
-			m = calc.dSS(leaves,  softInfo);
-		}
-		
-		((Point) theOther).receiveMessage(new Message(nodeName, normalize(m)));
-	}
 	
-	private double[] combineAllInternal(Node theOther) {
+	private double[] combineAllInternals(Node theOther) {
 		ArrayList<Message> mB = removeInternalMessage(theOther);
 		
 		if (mB.isEmpty()) {
