@@ -33,13 +33,14 @@ public class Point extends Node implements recieveMessage {
 		} else{
 			double[] leaves = new double[4];
 			double[] internals = new double[4];
-			if (!theOther.isLeaf()) {
-				leaves = combineAllLeaves();
-				internals = combineAllInternals(theOther);
-			
-			} else {
+			if (theOther.isLeaf()) {
 				leaves = combineAllLeaves(theOther);
 				internals = combineAllInternal();
+			
+			} else {
+				leaves = combineAllLeaves();
+				internals = combineAllInternals(theOther);
+				
 			}
 			
 			passMessage(theOther, leaves, internals);
