@@ -1,7 +1,9 @@
 package code.graph;
 
 import java.util.List;
+
 import f4.GF4Element;
+
 import java.util.ArrayList;
 
 
@@ -187,7 +189,8 @@ public class Graph {
 			GF4Element decodedBit = n.getState();
 			decodedWord[n.getNodeId()] = decodedBit;
 		}
-		
+
+		System.out.println("hehe");
 		return decodedWord;
 	}
 

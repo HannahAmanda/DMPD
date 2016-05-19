@@ -13,8 +13,8 @@ import channel.Channel;
 import channel.QuaternarySymmetricChannel;
 import code.global_function.GlobalFunction;
 import code.graph.Graph;
+import decoder.discr.Point;
 import decoder.embedded.metanode.MetaNode;
-import decoder.naive.Point;
 import f4.GF4Element;
 
 public class Simulator {
@@ -76,7 +76,7 @@ public class Simulator {
 
 		// SEND TRANSMISSION THROUGH CHANNEL
 		GF4Element[] received = channel.sendThroughChannel(codeword);
-		
+	
 		// MESSAGE-PASSING
 		GF4Element[] decoded = graph.decode(received);
 		globalFunction = new GlobalFunction(graph);
@@ -143,7 +143,7 @@ public class Simulator {
 		
 		}
 		
-		//globalFunction.printOutCodespace();
+		globalFunction.printOutCodespace();
 		
 		
 	}

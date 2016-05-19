@@ -1,4 +1,4 @@
-package decoder.naive;
+package decoder.discr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +136,7 @@ public class Point extends Node implements recieveMessage {
 				double[] messages = calc.dSX(internals, leaves);
 				result = calc.dot(messages, softInfo);
 				
-			} else if (internals == null && leafMssg.size() > 0) {
+			} else if (internals == null) {
 				// only leaves exist
 				result = calc.dot(leaves, softInfo);
 				
@@ -153,7 +153,8 @@ public class Point extends Node implements recieveMessage {
 	@Override 
 	public GF4Element getState() {
 		double[] marginal = marginalize();
-		
+
+	
 		// System.out.println(nodeName + " : " + marginal[0] + ", " + marginal[1]+ ", " + marginal[2] + ", " + marginal[3]);
 		
 		int index = 0;
@@ -174,20 +175,6 @@ public class Point extends Node implements recieveMessage {
 		}
 		
 		return null;
-	}
-	
-	private ArrayList<Message> removeLeafMessage(Node except) {
-		ArrayList<Message> mA = new ArrayList<Message>();
-		
-		mA.addAll(leafMssg);
-		int index = -1;
-		for (Message m: mA) {
-			if (m.getSenderName().equals(except.getNodeName())) {
-				index = mA.indexOf(m);
-			}
-		}
-		mA.remove(index);
-		return mA;
 	}
 
 	private ArrayList<Message> removeInternalMessage(Node except) {
